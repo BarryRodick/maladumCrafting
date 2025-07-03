@@ -10,5 +10,14 @@
 <body class="bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
   <div id="app"></div>
   <script type="module" src="js/app.js"></script>
+  <script>
+    // Simple loading spinner for draft
+    document.getElementById('app').innerHTML = `
+      <div class='flex flex-col items-center justify-center min-h-screen'>
+        <div class='animate-spin rounded-full h-16 w-16 border-b-2 border-gray-900 mb-4'></div>
+        <p class='text-lg'>Loading Maladum Crafting Companion...</p>
+      </div>
+    `;
+  </script>
 </body>
 </html>
