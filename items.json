@@ -1,0 +1,909 @@
+[
+  {
+    "name": "Arrow - Entangle",
+    "expansion": "Of Ale and Adventure",
+    "type": "Ammunition",
+    "size": "XS",
+    "resources": {
+      "W": 1,
+      "T": 1
+    },
+    "total_cost": 2,
+    "relic": 0
+  },
+  {
+    "name": "Arrow - Viscous/Sharp",
+    "expansion": "Of Ale and Adventure",
+    "type": "Ammunition",
+    "size": "XS",
+    "resources": {
+      "W": 1,
+      "S": 1
+    },
+    "total_cost": 3,
+    "relic": 0
+  },
+  {
+    "name": "Arrow - Poison/Sharp",
+    "expansion": "Of Ale and Adventure",
+    "type": "Ammunition",
+    "size": "XS",
+    "resources": {
+      "W": 1,
+      "V": 1
+    },
+    "total_cost": 2,
+    "relic": 0
+  },
+  {
+    "name": "Magic Potion",
+    "expansion": "Of Ale and Adventure",
+    "type": "Potion",
+    "size": "XS",
+    "resources": {
+      "H": 1,
+      "F": 2
+    },
+    "total_cost": 14,
+    "relic": 0
+  },
+  {
+    "name": "Health Potion",
+    "expansion": "Of Ale and Adventure",
+    "type": "Potion",
+    "size": "XS",
+    "resources": {
+      "H": 2,
+      "F": 1
+    },
+    "total_cost": 15,
+    "relic": 0
+  },
+  {
+    "name": "Arrow - Hawkeye/Sharp",
+    "expansion": "Of Ale and Adventure",
+    "type": "Ammunition",
+    "size": "XS",
+    "resources": {
+      "W": 1,
+      "G": 1
+    },
+    "total_cost": 18,
+    "relic": 0
+  },
+  {
+    "name": "Skill Potion",
+    "expansion": "Of Ale and Adventure",
+    "type": "Potion",
+    "size": "XS",
+    "resources": {
+      "H": 1,
+      "F": 1,
+      "M": 1
+    },
+    "total_cost": 11,
+    "relic": 0
+  },
+  {
+    "name": "Ethereal Edge",
+    "expansion": "Oblivion's Maw",
+    "type": "Weapon",
+    "size": "L",
+    "resources": {
+      "S": 1,
+      "R": 1,
+      "N": 2
+    },
+    "total_cost": 10,
+    "relic": 0
+  },
+  {
+    "name": "Shilielagh",
+    "expansion": "Of Ale and Adventure",
+    "type": "Weapon",
+    "size": "M",
+    "resources": {
+      "W": 2,
+      "M": 1
+    },
+    "total_cost": 15,
+    "relic": 0
+  },
+  {
+    "name": "Mighty Brew",
+    "expansion": "Of Ale and Adventure",
+    "type": "Potion",
+    "size": "S",
+    "resources": {
+      "H": 1,
+      "M": 1,
+      "V": 1
+    },
+    "total_cost": 5,
+    "relic": 0
+  },
+  {
+    "name": "Cordial of Cognisance",
+    "expansion": "Of Ale and Adventure",
+    "type": "Potion",
+    "size": "S",
+    "resources": {
+      "M": 2,
+      "R": 1
+    },
+    "total_cost": 14,
+    "relic": 0
+  },
+  {
+    "name": "Bullet - Burning",
+    "expansion": "Of Ale and Adventure",
+    "type": "Ammunition",
+    "size": "XS",
+    "resources": {
+      "S": 1,
+      "I": 1
+    },
+    "total_cost": 3,
+    "relic": 0
+  },
+  {
+    "name": "Honed Leather Armour",
+    "expansion": "Of Ale and Adventure",
+    "type": "Armour",
+    "size": "S",
+    "resources": {
+      "T": 2,
+      "R": 1
+    },
+    "total_cost": 12,
+    "relic": 0
+  },
+  {
+    "name": "Hat*",
+    "expansion": "Of Ale and Adventure",
+    "type": "Armour",
+    "size": "XS",
+    "resources": {
+      "T": 1,
+      "A": 1
+    },
+    "total_cost": 25,
+    "relic": 0
+  },
+  {
+    "name": "Action Poition",
+    "expansion": "Of Ale and Adventure",
+    "type": "Potion",
+    "size": "XS",
+    "resources": {
+      "H": 1,
+      "M": 1,
+      "B": 1
+    },
+    "total_cost": 19,
+    "relic": 0
+  },
+  {
+    "name": "Dreamers Draught",
+    "expansion": "Oblivion's Maw",
+    "type": "Potion",
+    "size": "M",
+    "resources": {
+      "H": 1,
+      "F": 2,
+      "V": 1,
+      "N": 1
+    },
+    "total_cost": 18,
+    "relic": 0
+  },
+  {
+    "name": "Horned War Axe",
+    "expansion": "Of Ale and Adventure",
+    "type": "Weapon",
+    "size": "M",
+    "resources": {
+      "W": 1,
+      "S": 1,
+      "K": 1
+    },
+    "total_cost": 24,
+    "relic": 0
+  },
+  {
+    "name": "Spiked Armour",
+    "expansion": "Of Ale and Adventure",
+    "type": "Armour",
+    "size": "M",
+    "resources": {
+      "S": 3,
+      "T": 1
+    },
+    "total_cost": 14,
+    "relic": 0
+  },
+  {
+    "name": "Honed Long Sword",
+    "expansion": "Of Ale and Adventure",
+    "type": "Weapon",
+    "size": "L",
+    "resources": {
+      "S": 1,
+      "R": 1,
+      "K": 1
+    },
+    "total_cost": 21,
+    "relic": 0
+  },
+  {
+    "name": "Eld Short Bow",
+    "expansion": "Of Ale and Adventure",
+    "type": "Weapon",
+    "size": "S",
+    "resources": {
+      "W": 1,
+      "S": 1,
+      "G": 1
+    },
+    "total_cost": 25,
+    "relic": 0
+  },
+  {
+    "name": "Potion of Finesse",
+    "expansion": "Of Ale and Adventure",
+    "type": "Potion",
+    "size": "S",
+    "resources": {
+      "H": 1,
+      "R": 1,
+      "G": 1
+    },
+    "total_cost": 22,
+    "relic": 0
+  },
+  {
+    "name": "Starstrike Flail",
+    "expansion": "Of Ale and Adventure",
+    "type": "Weapon",
+    "size": "L",
+    "resources": {
+      "W": 1,
+      "S": 2,
+      "R": 1
+    },
+    "total_cost": 14,
+    "relic": 0
+  },
+  {
+    "name": "Herbalist's Cloak",
+    "expansion": "Of Ale and Adventure",
+    "type": "Armour",
+    "size": "M",
+    "resources": {
+      "T": 2,
+      "H": 1,
+      "F": 1,
+      "V": 1
+    },
+    "total_cost": 12,
+    "relic": 0
+  },
+  {
+    "name": "Mastercrafted Box",
+    "expansion": "Of Ale and Adventure",
+    "type": "Weapon",
+    "size": "L",
+    "resources": {
+      "W": 2,
+      "T": 1,
+      "R": 1
+    },
+    "total_cost": 21,
+    "relic": 0
+  },
+  {
+    "name": "Mastercrafted Bow",
+    "expansion": "Of Ale and Adventure",
+    "type": "Weapon",
+    "size": "L",
+    "resources": {
+      "W": 2,
+      "T": 1,
+      "R": 1
+    },
+    "total_cost": 21,
+    "relic": 0
+  },
+  {
+    "name": "Curative Cuirass",
+    "expansion": "Of Ale and Adventure",
+    "type": "Armour",
+    "size": "M",
+    "resources": {
+      "S": 1,
+      "T": 1,
+      "H": 2
+    },
+    "total_cost": 23,
+    "relic": 0
+  },
+  {
+    "name": "Wardweaver's Nip",
+    "expansion": "Of Ale and Adventure",
+    "type": "Potion",
+    "size": "S",
+    "resources": {
+      "F": 2,
+      "E": 1
+    },
+    "total_cost": 40,
+    "relic": 0
+  },
+  {
+    "name": "Crafted Great Axe",
+    "expansion": "Of Ale and Adventure",
+    "type": "Weapon",
+    "size": "XL",
+    "resources": {
+      "W": 1,
+      "S": 2,
+      "T": 1,
+      "R": 1
+    },
+    "total_cost": 14,
+    "relic": 0
+  },
+  {
+    "name": "Crafted Great Sword",
+    "expansion": "Of Ale and Adventure",
+    "type": "Weapon",
+    "size": "XL",
+    "resources": {
+      "S": 4,
+      "R": 1
+    },
+    "total_cost": 13,
+    "relic": 0
+  },
+  {
+    "name": "Viperfang",
+    "expansion": "Of Ale and Adventure",
+    "type": "Weapon",
+    "size": "L",
+    "resources": {
+      "S": 1,
+      "R": 1,
+      "V": 2
+    },
+    "total_cost": 20,
+    "relic": 0
+  },
+  {
+    "name": "Disarming Staff",
+    "expansion": "Of Ale and Adventure",
+    "type": "Weapon",
+    "size": "L",
+    "resources": {
+      "W": 2,
+      "K": 1,
+      "B": 1
+    },
+    "total_cost": 38,
+    "relic": 0
+  },
+  {
+    "name": "Destiny's Tincture",
+    "expansion": "Of Ale and Adventure",
+    "type": "Potion",
+    "size": "S",
+    "resources": {
+      "F": 1,
+      "M": 1,
+      "A": 1
+    },
+    "total_cost": 36,
+    "relic": 0
+  },
+  {
+    "name": "Keltic Falchion",
+    "expansion": "Of Ale and Adventure",
+    "type": "Weapon",
+    "size": "M",
+    "resources": {
+      "S": 2,
+      "R": 1,
+      "K": 1
+    },
+    "total_cost": 26,
+    "relic": 0
+  },
+  {
+    "name": "Blitz-Hammer",
+    "expansion": "Of Ale and Adventure",
+    "type": "Weapon",
+    "size": "M",
+    "resources": {
+      "W": 1,
+      "S": 2,
+      "R": 1,
+      "B": 1
+    },
+    "total_cost": 23,
+    "relic": 0
+  },
+  {
+    "name": "Makeshift Wings",
+    "expansion": "Of Ale and Adventure",
+    "type": "Armour",
+    "size": "M",
+    "resources": {
+      "W": 1,
+      "T": 2,
+      "A": 1
+    },
+    "total_cost": 31,
+    "relic": 0
+  },
+  {
+    "name": "Sentient Scimitar",
+    "expansion": "Of Ale and Adventure",
+    "type": "Weapon",
+    "size": "M",
+    "resources": {
+      "S": 2,
+      "R": 1,
+      "G": 1
+    },
+    "total_cost": 30,
+    "relic": 0
+  },
+  {
+    "name": "Warrior Totem",
+    "expansion": "Of Ale and Adventure",
+    "type": "Maladar/Misc",
+    "size": "S",
+    "resources": {
+      "W": 1,
+      "M": 1,
+      "R": 1,
+      "I": 1
+    },
+    "total_cost": 8,
+    "relic": 0
+  },
+  {
+    "name": "Sacrificium",
+    "expansion": "Oblivion's Maw",
+    "type": "Maladar/Misc",
+    "size": "M",
+    "resources": {
+      "H": 2,
+      "R": 1,
+      "E": 1,
+      "N": 1
+    },
+    "total_cost": 35,
+    "relic": 0
+  },
+  {
+    "name": "Keltmail Armour",
+    "expansion": "Of Ale and Adventure",
+    "type": "Armour",
+    "size": "M",
+    "resources": {
+      "T": 1,
+      "R": 1,
+      "K": 2
+    },
+    "total_cost": 36,
+    "relic": 0
+  },
+  {
+    "name": "Arcane Steel",
+    "expansion": "Of Ale and Adventure",
+    "type": "Weapon",
+    "size": "L",
+    "resources": {
+      "S": 2,
+      "K": 1,
+      "G": 1
+    },
+    "total_cost": 39,
+    "relic": 0
+  },
+  {
+    "name": "Crafted Breastplate Amour",
+    "expansion": "Of Ale and Adventure",
+    "type": "Armour",
+    "size": "M",
+    "resources": {
+      "S": 4,
+      "T": 1,
+      "R": 1
+    },
+    "total_cost": 17,
+    "relic": 0
+  },
+  {
+    "name": "Bewitched Blade",
+    "expansion": "Of Ale and Adventure",
+    "type": "Weapon",
+    "size": "L",
+    "resources": {
+      "S": 2,
+      "R": 1,
+      "G": 1
+    },
+    "total_cost": 32,
+    "relic": 0
+  },
+  {
+    "name": "Calamitous Caber",
+    "expansion": "Of Ale and Adventure",
+    "type": "Weapon",
+    "size": "XL",
+    "resources": {
+      "W": 3,
+      "M": 1,
+      "A": 1
+    },
+    "total_cost": 41,
+    "relic": 0
+  },
+  {
+    "name": "Reaper's Riposte",
+    "expansion": "Of Ale and Adventure",
+    "type": "Weapon",
+    "size": "M",
+    "resources": {
+      "S": 2,
+      "R": 1,
+      "A": 1
+    },
+    "total_cost": 35,
+    "relic": 0
+  },
+  {
+    "name": "Bladed Shield",
+    "expansion": "Of Ale and Adventure",
+    "type": "Weapon",
+    "size": "M",
+    "resources": {
+      "W": 1,
+      "S": 2,
+      "K": 1,
+      "B": 1
+    },
+    "total_cost": 41,
+    "relic": 0
+  },
+  {
+    "name": "Spelleater",
+    "expansion": "Of Ale and Adventure",
+    "type": "Weapon",
+    "size": "L",
+    "resources": {
+      "R": 2,
+      "K": 1,
+      "G": 1
+    },
+    "total_cost": 47,
+    "relic": 0
+  },
+  {
+    "name": "Necrotic Censor",
+    "expansion": "Oblivion's Maw",
+    "type": "Weapon",
+    "size": "L",
+    "resources": {
+      "W": 1,
+      "M": 1,
+      "R": 1,
+      "V": 1,
+      "G": 1
+    },
+    "total_cost": 27,
+    "relic": 0
+  },
+  {
+    "name": "Liberator Of Souls",
+    "expansion": "Oblivion's Maw",
+    "type": "Weapon",
+    "size": "L",
+    "resources": {
+      "W": 1,
+      "G": 1,
+      "A": 1,
+      "N": 2
+    },
+    "total_cost": 52,
+    "relic": 0
+  },
+  {
+    "name": "Mechanical Musket",
+    "expansion": "Of Ale and Adventure",
+    "type": "Weapon",
+    "size": "L",
+    "resources": {
+      "W": 1,
+      "S": 1,
+      "M": 1,
+      "R": 1,
+      "G": 1
+    },
+    "total_cost": 34,
+    "relic": 0
+  },
+  {
+    "name": "Blade of Momentum",
+    "expansion": "Of Ale and Adventure",
+    "type": "Weapon",
+    "size": "L",
+    "resources": {
+      "S": 1,
+      "R": 1,
+      "B": 1,
+      "G": 1
+    },
+    "total_cost": 46,
+    "relic": 0
+  },
+  {
+    "name": "Adamantine Elixir",
+    "expansion": "Of Ale and Adventure",
+    "type": "Potion",
+    "size": "S",
+    "resources": {
+      "M": 1,
+      "V": 1,
+      "B": 1,
+      "I": 1
+    },
+    "total_cost": 24,
+    "relic": 0
+  },
+  {
+    "name": "Vampiric Blade",
+    "expansion": "Oblivion's Maw",
+    "type": "Weapon",
+    "size": "XL",
+    "resources": {
+      "S": 2,
+      "V": 1,
+      "B": 1,
+      "G": 1,
+      "N": 1
+    },
+    "total_cost": 46,
+    "relic": 0
+  },
+  {
+    "name": "Robes Of Invulnerability",
+    "expansion": "Of Ale and Adventure",
+    "type": "Armour",
+    "size": "M",
+    "resources": {
+      "T": 2,
+      "M": 1,
+      "B": 1,
+      "A": 1
+    },
+    "total_cost": 53,
+    "relic": 0
+  },
+  {
+    "name": "Cloak Of Cloning",
+    "expansion": "Oblivion's Maw",
+    "type": "Armour",
+    "size": "M",
+    "resources": {
+      "T": 2,
+      "F": 1,
+      "I": 1,
+      "E": 1
+    },
+    "total_cost": 39,
+    "relic": 0
+  },
+  {
+    "name": "Anyssal Trophy",
+    "expansion": "Oblivion's Maw",
+    "type": "Maladar/Misc",
+    "size": "M",
+    "resources": {
+      "F": 1,
+      "B": 1,
+      "A": 1,
+      "N": 1
+    },
+    "total_cost": 71,
+    "relic": 7
+  },
+  {
+    "name": "Protection Orb",
+    "expansion": "Of Ale and Adventure",
+    "type": "Maladar/Misc",
+    "size": "S",
+    "resources": {
+      "R": 1,
+      "B": 1,
+      "G": 1,
+      "E": 1
+    },
+    "total_cost": 68,
+    "relic": 0
+  },
+  {
+    "name": "Daemon Mantle",
+    "expansion": "Of Ale and Adventure",
+    "type": "Armour",
+    "size": "L",
+    "resources": {
+      "T": 1,
+      "F": 1,
+      "V": 1,
+      "B": 2
+    },
+    "total_cost": 63,
+    "relic": 5
+  },
+  {
+    "name": "Hellfire Blade",
+    "expansion": "Of Ale and Adventure",
+    "type": "Weapon",
+    "size": "L",
+    "resources": {
+      "S": 1,
+      "R": 1,
+      "K": 1,
+      "I": 2
+    },
+    "total_cost": 46,
+    "relic": 0
+  },
+  {
+    "name": "Sword Of Tephysus",
+    "expansion": "Of Ale and Adventure",
+    "type": "Weapon",
+    "size": "XL",
+    "resources": {
+      "S": 1,
+      "R": 1,
+      "K": 2,
+      "B": 1
+    },
+    "total_cost": 69,
+    "relic": 1
+  },
+  {
+    "name": "Soul Siphon",
+    "expansion": "Of Ale and Adventure",
+    "type": "Weapon",
+    "size": "L",
+    "resources": {
+      "W": 1,
+      "R": 1,
+      "V": 1,
+      "G": 1,
+      "I": 1
+    },
+    "total_cost": 44,
+    "relic": 3
+  },
+  {
+    "name": "Astral Arbiter",
+    "expansion": "Oblivion's Maw",
+    "type": "Weapon",
+    "size": "XL",
+    "resources": {
+      "W": 2,
+      "M": 1,
+      "K": 1,
+      "G": 1,
+      "E": 1
+    },
+    "total_cost": 77,
+    "relic": 0
+  },
+  {
+    "name": "Natures Fury",
+    "expansion": "Of Ale and Adventure",
+    "type": "Weapon",
+    "size": "XL",
+    "resources": {
+      "M": 2,
+      "V": 1,
+      "B": 1,
+      "A": 1
+    },
+    "total_cost": 73,
+    "relic": 6
+  },
+  {
+    "name": "Sceptre of Domion",
+    "expansion": "Of Ale and Adventure",
+    "type": "Maladar/Misc",
+    "size": "L",
+    "resources": {
+      "R": 3,
+      "G": 1,
+      "A": 1
+    },
+    "total_cost": 83,
+    "relic": 4
+  },
+  {
+    "name": "Refined Robes",
+    "expansion": "Of Ale and Adventure",
+    "type": "Armour",
+    "size": "M",
+    "resources": {
+      "T": 1,
+      "F": 1,
+      "R": 1,
+      "E": 2
+    },
+    "total_cost": 79,
+    "relic": 0
+  },
+  {
+    "name": "Acendant Blades",
+    "expansion": "The Forbidden Creed",
+    "type": "Weapon",
+    "size": "XL",
+    "resources": {
+      "S": 1,
+      "M": 1,
+      "K": 1,
+      "I": 1,
+      "E": 1
+    },
+    "total_cost": 66,
+    "relic": 10
+  },
+  {
+    "name": "Uncanny Oculus",
+    "expansion": "Oblivion's Maw",
+    "type": "Weapon",
+    "size": "XL",
+    "resources": {
+      "V": 1,
+      "G": 1,
+      "I": 1,
+      "E": 1,
+      "N": 1
+    },
+    "total_cost": 69,
+    "relic": 8
+  },
+  {
+    "name": "Light In The Darkness",
+    "expansion": "The Forbidden Creed",
+    "type": "Maladar/Misc",
+    "size": "L",
+    "resources": {
+      "R": 1,
+      "G": 1,
+      "A": 1,
+      "E": 1,
+      "N": 1
+    },
+    "total_cost": 92,
+    "relic": 9
+  },
+  {
+    "name": "Grail of the Gods",
+    "expansion": "Of Ale and Adventure",
+    "type": "Maladar/Misc",
+    "size": "M",
+    "resources": {
+      "M": 1,
+      "R": 1,
+      "G": 1,
+      "I": 1,
+      "E": 1
+    },
+    "total_cost": 69,
+    "relic": 2
+  }
+]

@@ -1,0 +1,107 @@
+[
+  {
+    "name": "WOOD",
+    "symbol": "W",
+    "rarity": "Common",
+    "base_cost": 4.0,
+    "notes": ""
+  },
+  {
+    "name": "STEEL",
+    "symbol": "S",
+    "rarity": "Common",
+    "base_cost": 5.0,
+    "notes": ""
+  },
+  {
+    "name": "TEXTILES",
+    "symbol": "T",
+    "rarity": "Common",
+    "base_cost": 5.0,
+    "notes": ""
+  },
+  {
+    "name": "HERBS",
+    "symbol": "H",
+    "rarity": "Common",
+    "base_cost": 5.0,
+    "notes": ""
+  },
+  {
+    "name": "FUNGUS",
+    "symbol": "F",
+    "rarity": "Common",
+    "base_cost": 5.0,
+    "notes": ""
+  },
+  {
+    "name": "MINERALS",
+    "symbol": "M",
+    "rarity": "Common",
+    "base_cost": 7.0,
+    "notes": ""
+  },
+  {
+    "name": "RICHES",
+    "symbol": "R",
+    "rarity": "Common",
+    "base_cost": 8.0,
+    "notes": ""
+  },
+  {
+    "name": "SERPENT VENOM",
+    "symbol": "V",
+    "rarity": "Uncommon",
+    "base_cost": 9.0,
+    "notes": ""
+  },
+  {
+    "name": "KELTIC STEEL",
+    "symbol": "K",
+    "rarity": "Uncommon",
+    "base_cost": 13.0,
+    "notes": ""
+  },
+  {
+    "name": "POWDERED DRAKON BONE",
+    "symbol": "B",
+    "rarity": "Uncommon",
+    "base_cost": 15.0,
+    "notes": ""
+  },
+  {
+    "name": "GRAAM ORE",
+    "symbol": "G",
+    "rarity": "Uncommon",
+    "base_cost": 16.0,
+    "notes": "2 Tokens"
+  },
+  {
+    "name": "ISSEN OIL",
+    "symbol": "I",
+    "rarity": "Uncommon",
+    "base_cost": 21.0,
+    "notes": "2 Tokens"
+  },
+  {
+    "name": "ALARY CARAPACE",
+    "symbol": "A",
+    "rarity": "Rare",
+    "base_cost": 23.0,
+    "notes": "2 Tokens"
+  },
+  {
+    "name": "EXTRACT OF MALADITE",
+    "symbol": "E",
+    "rarity": "Rare",
+    "base_cost": 25.0,
+    "notes": "1 Token"
+  },
+  {
+    "name": "NECROTIC FLUIDS",
+    "symbol": "N",
+    "rarity": "*",
+    "base_cost": 0,
+    "notes": "Found in crucible - Token in Oblivions Maw Expansion"
+  }
+]
