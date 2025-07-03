@@ -2,6 +2,8 @@
 import { loadInventory, updateInventory } from '../inventory.js';
 import { loadFavourites, toggleFavourite } from '../favourites.js';
 import { getCraftableItems } from '../crafting.js';
+import { loadSettings, saveSettings } from '../storage.js';
+import { applyTheme } from './theme.js';
 
 let cachedMaterials = [];
 let cachedItems = [];
@@ -27,6 +29,13 @@ export function renderHome(materials, items) {
 
   renderMaterialsGrid(cachedMaterials, inventory);
   renderCraftableList(cachedItems, inventory, favourites);
+
+  const settingsBtn = document.getElementById('settingsBtn');
+  if (settingsBtn) {
+    settingsBtn.addEventListener('click', () => {
+      renderSettings();
+    });
+  }
 }
 
 export function renderMaterialsGrid(materials, inventory) {
@@ -101,5 +110,41 @@ export function renderCraftableList(items, inventory, favourites) {
       const inv = loadInventory();
       renderCraftableList(cachedItems, inv, favs);
     });
+  });
+}
+
+export function renderSettings() {
+  const app = document.getElementById('app');
+  const settings = loadSettings();
+
+  app.innerHTML = `
+    <header class="p-4 flex justify-between items-center">
+      <button id="backBtn" class="text-sm">← Back</button>
+      <h1 class="text-xl font-bold flex-1 text-center">Settings</h1>
+      <span class="w-6"></span>
+    </header>
+    <main class="p-4 space-y-4">
+      <label class="flex items-center space-x-2">
+        <input type="checkbox" id="darkModeToggle" ${settings.darkMode ? 'checked' : ''}>
+        <span>Dark mode</span>
+      </label>
+      <button id="clearInventoryBtn" class="px-4 py-2 border rounded">Clear inventory</button>
+    </main>
+  `;
+
+  document.getElementById('backBtn').addEventListener('click', () => {
+    renderHome(cachedMaterials, cachedItems);
+  });
+
+  document.getElementById('darkModeToggle').addEventListener('change', (e) => {
+    const newSettings = { ...settings, darkMode: e.target.checked };
+    saveSettings(newSettings);
+    applyTheme(newSettings.darkMode);
+  });
+
+  document.getElementById('clearInventoryBtn').addEventListener('click', () => {
+    if (confirm('Clear all inventory?')) {
+      localStorage.removeItem('maladum_inventory');
+    }
   });
 }
