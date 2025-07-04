@@ -304,6 +304,7 @@ input[type="number"] {
 .rarity-border-common { border-color: green; }
 .rarity-border-uncommon { border-color: yellow; }
 .rarity-border-rare { border-color: lightblue; }
+.relic-border { border-color: var(--accent-gold); }
 
 /* Styles for the icon zoom modal */
 .icon-modal {

@@ -236,15 +236,15 @@ export function renderAllItemsView(items, inventory, favourites) {
       const rarity = calculateItemRarity(item);
       const rarityCls = rarityClass(rarity);
       const rarityBorderCls = rarityBorderClass(rarity);
+      const borderCls = item.relic > 0 ? 'relic-border' : rarityBorderCls;
       return `
-        <div class="card fade-in flex flex-col ${rarityBorderCls}" style="animation-delay: ${index * 75}ms">
+        <div class="card fade-in flex flex-col ${borderCls}" style="animation-delay: ${index * 75}ms">
           <div class="p-3">
             <div class="flex items-start mb-2">
               <h3 class="font-heading text-lg flex-grow text-black">${item.name}</h3>
               <button data-fav="${item.name}" data-view="all" class="text-2xl p-1 hover:text-yellow-400 transition-colors mr-2">${starred}</button>
               <div class="relative">
                 <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-24 h-24 cursor-pointer rounded">
-                <span class="rarity-badge ${rarityCls}"></span>
               </div>
             </div>
             <div class="text-sm space-y-1">
@@ -252,6 +252,7 @@ export function renderAllItemsView(items, inventory, favourites) {
               <p><strong class="font-semibold">Missing:</strong> <span class="${missingText === 'None' ? '' : 'text-red-500'}">${missingText}</span></p>
               <p><strong class="font-semibold">Build Cost:</strong> <span class="text-red-500">${buildCost}</span></p>
               <p><strong class="font-semibold">Craft Cost:</strong> ${item.price}</p>
+              ${item.relic > 0 ? `<p><strong class="font-semibold">Relic Token Required:</strong> ${item.relic}</p>` : ''}
               <p><strong class="font-semibold">Expansion:</strong> ${item.expansion}</p>
             </div>
           </div>
@@ -358,18 +359,18 @@ export function renderCraftableItemsView(items, inventory, favourites) {
       const rarity = calculateItemRarity(item);
       const rarityCls = rarityClass(rarity);
       const rarityBorderCls = rarityBorderClass(rarity);
+      const borderCls = item.relic > 0 ? 'relic-border' : rarityBorderCls;
       // Add a class if the item is not craftable but shown because it's a favourite
       const notCraftableFavouriteClass = !isCraftable && favourites.includes(item.name) ? 'opacity-75' : '';
 
       return `
-        <div class="card fade-in flex flex-col ${rarityBorderCls} ${notCraftableFavouriteClass}" style="animation-delay: ${index * 75}ms">
+        <div class="card fade-in flex flex-col ${borderCls} ${notCraftableFavouriteClass}" style="animation-delay: ${index * 75}ms">
           <div class="p-3">
             <div class="flex items-start mb-2">
               <h3 class="font-heading text-lg flex-grow text-black">${item.name}</h3>
               <button data-fav="${item.name}" data-view="craftable" class="text-2xl p-1 hover:text-yellow-400 transition-colors mr-2">${starred}</button>
               <div class="relative">
                 <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-24 h-24 cursor-pointer rounded">
-                <span class="rarity-badge ${rarityCls}"></span>
               </div>
             </div>
             <div class="text-sm space-y-1">
@@ -377,6 +378,7 @@ export function renderCraftableItemsView(items, inventory, favourites) {
               ${!isCraftable && favourites.includes(item.name) ? `<p><strong class="font-semibold">Missing:</strong> <span class="text-red-500">${missingText}</span></p>` : ''}
               <p><strong class="font-semibold">Build Cost:</strong> <span class="text-red-500">${buildCost}</span></p>
               <p><strong class="font-semibold">Craft Cost:</strong> ${item.price}</p>
+              ${item.relic > 0 ? `<p><strong class="font-semibold">Relic Token Required:</strong> ${item.relic}</p>` : ''}
               <p><strong class="font-semibold">Expansion:</strong> ${item.expansion}</p>
             </div>
           </div>
