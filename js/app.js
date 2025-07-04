@@ -2,11 +2,13 @@
 import { loadMaterials } from './materials.js';
 import { loadItems } from './items.js';
 import { renderHome } from './ui/components.js';
+import { initializeFavourites } from './favourites.js';
 import { setupTheme } from './ui/theme.js';
 import { applyRippleEffect } from './ui/effects.js'; // Import ripple effect
 import './pwa.js';
 
 window.addEventListener('DOMContentLoaded', async () => {
+  initializeFavourites();
   setupTheme();
   applyRippleEffect(); // Initialize ripple effect listeners globally
 

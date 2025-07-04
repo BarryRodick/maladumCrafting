@@ -1,14 +1,25 @@
 // Favourites management
 import { loadState, saveState } from './localStorageUtil.js';
 
+let currentFavourites = null;
+
+export function initializeFavourites() {
+  currentFavourites = loadState(FAVOURITES_KEY, DEFAULT_FAVOURITES);
+  return currentFavourites;
+}
+
 const FAVOURITES_KEY = 'maladum_favourites';
 const DEFAULT_FAVOURITES = [];
 
 export function loadFavourites() {
-  return loadState(FAVOURITES_KEY, DEFAULT_FAVOURITES);
+  if (currentFavourites === null) {
+    initializeFavourites();
+  }
+  return currentFavourites;
 }
 
 export function saveFavourites(favourites) {
+  currentFavourites = favourites;
   saveState(FAVOURITES_KEY, favourites);
 }
 
