@@ -111,3 +111,20 @@ body {
   max-height: 80vh;
   border-radius: 4px;
 }
+
+/* Simple table styling for the All Items view */
+.item-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.item-table th,
+.item-table td {
+  border-bottom: 1px solid #d1d5db;
+  padding: 0.25rem 0.5rem;
+}
+
+.dark .item-table th,
+.dark .item-table td {
+  border-color: #374151;
+}
