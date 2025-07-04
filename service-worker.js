@@ -70,29 +70,39 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Cache-first strategy for all GET requests
+  const url = event.request.url;
+
+  if (url.endsWith('materials.json') || url.endsWith('items.json')) {
+    // Network-first strategy for JSON data to ensure latest updates
+    event.respondWith(
+      fetch(event.request)
+        .then(networkResponse => {
+          if (networkResponse && networkResponse.status === 200) {
+            caches.open(CACHE_NAME).then(cache => {
+              cache.put(event.request, networkResponse.clone());
+            });
+          }
+          return networkResponse;
+        })
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // Cache-first strategy for other GET requests
   event.respondWith(
     caches.open(CACHE_NAME).then(cache => {
       return cache.match(event.request).then(cachedResponse => {
-        // If found in cache, return it
         if (cachedResponse) {
-          // console.log('[Service Worker] Serving from cache:', event.request.url);
           return cachedResponse;
         }
-
-        // If not in cache, fetch from network
-        // console.log('[Service Worker] Fetching from network:', event.request.url);
         return fetch(event.request).then(networkResponse => {
-          // Check if we received a valid response
           if (networkResponse && networkResponse.status === 200) {
-            // console.log('[Service Worker] Caching new resource:', event.request.url);
             cache.put(event.request, networkResponse.clone());
           }
           return networkResponse;
         }).catch(error => {
           console.error('[Service Worker] Fetch failed; returning offline fallback or error for:', event.request.url, error);
-          // Optionally, return a generic offline fallback page or image here
-          // For example: return caches.match('offline.html');
         });
       });
     })
