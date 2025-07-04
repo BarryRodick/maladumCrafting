@@ -16,67 +16,102 @@ export function renderHome(materials, items) {
   const favourites = loadFavourites();
 
   const app = document.getElementById('app');
-  app.innerHTML = `
-    <header class="app-header flex justify-between items-center">
-      <h1 class="app-title">Maladum Crafting</h1>
-      <div>
-        <button id="viewToggleBtn" class="btn mr-2">All Items</button>
-        <button id="settingsBtn" class="btn">⚙️</button>
-      </div>
-    </header>
-    <main class="app-main">
-      <div id="materialsGrid" class="mb-4"></div>
-      <div id="itemsListContainer"></div> {/* Container for both lists */}
-    </main>
+  // Clear previous content
+  app.innerHTML = '';
+
+  // Create Control Bar Section
+  const controlSection = document.createElement('section');
+  controlSection.id = 'controlsSection';
+  // Added fade-in to sections
+  controlSection.className = 'fade-in mb-6 p-4 rounded shadow-lg';
+  controlSection.innerHTML = `
+    <h2 class="text-xl font-heading mb-3 sr-only">Controls</h2> <!-- Screen-reader only title for now -->
+    <div class="flex flex-wrap gap-2 items-center">
+      <button id="viewToggleBtn" class="btn mr-2">All Items</button>
+      <button id="settingsBtn" class="btn">⚙️ Settings</button>
+    </div>
   `;
+  app.appendChild(controlSection);
 
+  // Create Materials Section
+  const materialsSection = document.createElement('section');
+  materialsSection.id = 'materialsSection';
+  materialsSection.className = 'fade-in mb-8'; // Added fade-in
+  materialsSection.innerHTML = `
+    <h2 class="text-2xl font-heading mb-4">Available Materials</h2>
+    <div id="materialsGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3" style="grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));">
+      <!-- materials grid will be rendered here by renderMaterialsGrid -->
+    </div>
+  `;
+  app.appendChild(materialsSection);
+
+  // Create Items Section
+  const itemsSection = document.createElement('section');
+  itemsSection.id = 'itemsSection';
+  itemsSection.className = 'fade-in'; // Added fade-in
+  itemsSection.innerHTML = `
+    <h2 class="text-2xl font-heading mb-4" id="itemsSectionTitle">Craftable Items</h2>
+    <div id="itemsDisplayGrid" class="grid gap-4" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
+      <!-- item cards will be rendered here -->
+    </div>
+  `;
+  app.appendChild(itemsSection);
+
+  // Initial renders
   renderMaterialsGrid(cachedMaterials, inventory);
-  // Default to showing craftable items
-  renderCraftableItemsView(cachedItems, inventory, favourites);
+  renderCraftableItemsView(cachedItems, inventory, favourites); // Default view
 
+  // Setup Event Listeners for controls
   const viewToggleBtn = document.getElementById('viewToggleBtn');
-  viewToggleBtn.addEventListener('click', () => {
-    const currentView = viewToggleBtn.textContent;
-    if (currentView === 'All Items') {
-      renderAllItemsView(cachedItems, loadInventory(), loadFavourites());
-      viewToggleBtn.textContent = 'Craftable';
-    } else {
-      renderCraftableItemsView(cachedItems, loadInventory(), loadFavourites());
-      viewToggleBtn.textContent = 'All Items';
-    }
-  });
+  if (viewToggleBtn) {
+    viewToggleBtn.addEventListener('click', () => {
+      const itemsSectionTitle = document.getElementById('itemsSectionTitle');
+      const currentViewText = viewToggleBtn.textContent;
+      if (currentViewText === 'All Items') {
+        renderAllItemsView(cachedItems, loadInventory(), loadFavourites());
+        viewToggleBtn.textContent = 'Craftable Items';
+        if (itemsSectionTitle) itemsSectionTitle.textContent = 'All Items';
+      } else {
+        renderCraftableItemsView(cachedItems, loadInventory(), loadFavourites());
+        viewToggleBtn.textContent = 'All Items';
+        if (itemsSectionTitle) itemsSectionTitle.textContent = 'Craftable Items';
+      }
+    });
+  }
 
   const settingsBtn = document.getElementById('settingsBtn');
   if (settingsBtn) {
     settingsBtn.addEventListener('click', () => {
+      // Settings rendering will inject into 'app' or a modal, replacing current content.
+      // For now, ensure it's called.
       renderSettings();
     });
   }
 }
 
 export function renderMaterialsGrid(materials, inventory) {
-  const grid = document.getElementById('materialsGrid');
-  if (!grid) return;
+  const gridContainer = document.getElementById('materialsGrid');
+  if (!gridContainer) return;
 
-  grid.innerHTML =
-    '<div class="grid grid-cols-4 gap-2">' +
-    materials
-      .map(m => {
-        const count = inventory[m.symbol] || 0;
-        return `
-          <div class="material-card flex flex-col items-center text-center">
-            <div class="font-bold">${m.symbol}</div>
-            <div class="text-sm">${count}</div>
-            <div class="mt-1 flex space-x-1">
-              <button class="btn" data-action="dec" data-symbol="${m.symbol}">–</button>
-              <button class="btn" data-action="inc" data-symbol="${m.symbol}">+</button>
-            </div>
-          </div>`;
-      })
-      .join('') +
-    '</div>';
+  // The parent div for grid is already in the HTML structure provided by renderHome.
+  // So, we just set the innerHTML of materialsGrid itself.
+  gridContainer.innerHTML = materials
+    .map(m => {
+      const count = inventory[m.symbol] || 0;
+      // Using the new .card class
+      return `
+        <div class="card fade-in flex flex-col items-center text-center p-2" style="animation-delay: ${index * 50}ms"> {/* Added fade-in and stagger */}
+          <div class="font-bold text-lg">${m.symbol}</div>
+          <div class="text-base my-1">${count}</div>
+          <div class="mt-auto flex space-x-1"> {/* mt-auto to push buttons to bottom if card height is fixed */}
+            <button class="btn btn-sm" data-action="dec" data-symbol="${m.symbol}">–</button>
+            <button class="btn btn-sm" data-action="inc" data-symbol="${m.symbol}">+</button>
+          </div>
+        </div>`;
+    })
+    .join('');
 
-  grid.querySelectorAll('button[data-action="inc"]').forEach(btn => {
+  gridContainer.querySelectorAll('button[data-action="inc"]').forEach(btn => {
     btn.addEventListener('click', () => {
       const sym = btn.dataset.symbol;
       const inv = updateInventory(sym, 1);
@@ -108,8 +143,9 @@ export function renderMaterialsGrid(materials, inventory) {
 }
 
 export function renderAllItemsView(items, inventory, favourites) {
-  const listContainer = document.getElementById('itemsListContainer');
-  if (!listContainer) return;
+  const displayGrid = document.getElementById('itemsDisplayGrid');
+  if (!displayGrid) return;
+  displayGrid.innerHTML = ''; // Clear previous content
 
   // Separate and sort items
   const favoriteItems = items.filter(item => favourites.includes(item.name));
@@ -123,7 +159,7 @@ export function renderAllItemsView(items, inventory, favourites) {
   const sortedItems = [...favoriteItems, ...otherItems];
 
   const rowsHtml = sortedItems
-    .map(item => {
+    .map((item, index) => { // Added index for animation delay
       const starred = favourites.includes(item.name) ? '⭐' : '☆'; // Still need this for the star icon
       const iconPath = `images/tokens/${item.resources.icon}`;
       const resourcesNeeded = Object.entries(item.resources).filter(([sym]) => sym !== 'icon');
@@ -157,36 +193,36 @@ export function renderAllItemsView(items, inventory, favourites) {
           <td class="p-2 text-center">
             <button data-fav="${item.name}" data-view="all" class="text-xl p-1">${starred}</button>
           </td>
-        </tr>`;
+        return `
+          <div class="card fade-in flex flex-col" style="animation-delay: ${index * 75}ms"> {/* Added fade-in and stagger */}
+            <div class="p-3"> {/* Card body */}
+              <div class="flex items-start mb-2">
+                <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-10 h-10 mr-3 cursor-pointer rounded">
+                <h3 class="font-heading text-lg flex-grow">${item.name}</h3>
+                <button data-fav="${item.name}" data-view="all" class="text-2xl p-1 hover:text-yellow-400 transition-colors">${starred}</button>
+              </div>
+              <div class="text-sm space-y-1">
+                <p><strong class="font-semibold">Requires:</strong> ${required || 'None'}</p>
+                <p><strong class="font-semibold">Missing:</strong> <span class="${missingText === 'None' ? '' : 'text-red-500'}">${missingText}</span></p>
+              </div>
+            </div>
+            {/* Add actions or more details in a card footer if needed */}
+          </div>
+        `;
     })
     .join('');
 
-  listContainer.innerHTML = `
-    <table class="item-table min-w-full text-left text-sm">
-      <thead class="border-b font-semibold">
-        <tr>
-          <th class="p-2">Icon</th>
-          <th class="p-2">Item</th>
-          <th class="p-2">Requires</th>
-          <th class="p-2">Missing</th>
-          <th class="p-2 text-center">Fav</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${rowsHtml}
-      </tbody>
-    </table>`;
+  displayGrid.innerHTML = cardsHtml;
 
-  listContainer.querySelectorAll('button[data-fav]').forEach(btn => {
+  displayGrid.querySelectorAll('button[data-fav]').forEach(btn => {
     btn.addEventListener('click', () => {
       const name = btn.dataset.fav;
       toggleFavourite(name);
-      // Re-render the current view
       renderAllItemsView(cachedItems, loadInventory(), loadFavourites());
     });
   });
 
-  listContainer.querySelectorAll('.item-icon').forEach(icon => {
+  displayGrid.querySelectorAll('.item-icon').forEach(icon => {
     icon.addEventListener('click', () => {
       const modal = document.createElement('div');
       modal.classList.add('icon-modal');
@@ -210,63 +246,66 @@ export function renderAllItemsView(items, inventory, favourites) {
   });
 }
 
-// Renamed from renderCraftableList
 export function renderCraftableItemsView(items, inventory, favourites) {
-  const listContainer = document.getElementById('itemsListContainer');
-  if (!listContainer) return;
+  const displayGrid = document.getElementById('itemsDisplayGrid');
+  if (!displayGrid) return;
+  displayGrid.innerHTML = ''; // Clear previous content
 
   const craftableItems = getCraftableItems(inventory, items);
 
   if (craftableItems.length === 0) {
-    listContainer.innerHTML = '<p class="italic text-sm">No craftable items.</p>';
+    displayGrid.innerHTML = '<p class="italic text-center col-span-full">No craftable items currently.</p>'; // Added col-span-full for grid context
     return;
   }
 
   // Separate and sort items
   const favoriteCraftableItems = craftableItems.filter(item => favourites.includes(item.name));
   const otherCraftableItems = craftableItems.filter(item => !favourites.includes(item.name));
-
-  // Assuming original order from getCraftableItems is desired for secondary sort.
-  // If specific sorting (e.g., by name) is needed:
-  // favoriteCraftableItems.sort((a, b) => a.name.localeCompare(b.name));
-  // otherCraftableItems.sort((a, b) => a.name.localeCompare(b.name));
-
   const sortedCraftableItems = [...favoriteCraftableItems, ...otherCraftableItems];
 
-  listContainer.innerHTML = sortedCraftableItems
-    .map(item => {
-      const starred = favourites.includes(item.name) ? '⭐' : '☆'; // Still need this for the star icon
+  const cardsHtml = sortedCraftableItems
+    .map((item, index) => { // Added index for animation delay
+      const starred = favourites.includes(item.name) ? '⭐' : '☆';
       const iconPath = `images/tokens/${item.resources.icon}`;
+      const resourcesNeeded = Object.entries(item.resources).filter(([sym]) => sym !== 'icon');
+      const required = resourcesNeeded
+        .map(([sym, qty]) => `${sym}: ${qty}`)
+        .join(', ');
+
       return `
-        <div class="item-card border-b py-2 flex items-center">
-          {/* Left Column: Icon */}
-          <div class="w-10 mr-2 flex-shrink-0">
-            <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-8 h-8 cursor-pointer">
+        <div class="card fade-in flex flex-col" style="animation-delay: ${index * 75}ms"> {/* Added fade-in and stagger */}
+          <div class="p-3"> {/* Card body */}
+            <div class="flex items-start mb-2">
+              <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-10 h-10 mr-3 cursor-pointer rounded">
+              <h3 class="font-heading text-lg flex-grow">${item.name}</h3>
+              <button data-fav="${item.name}" data-view="craftable" class="text-2xl p-1 hover:text-yellow-400 transition-colors">${starred}</button>
+            </div>
+            <div class="text-sm space-y-1">
+              <p><strong class="font-semibold">Requires:</strong> ${required || 'None'}</p>
+              {/* Craftable view doesn't typically show 'missing' since they are by definition craftable */}
+              {/* If you want to show it for consistency:
+                 let missingText = 'None'; // Calculate missingText as in renderAllItemsView
+                 <p><strong class="font-semibold">Missing:</strong> <span class="${missingText === 'None' ? '' : 'text-red-500'}">${missingText}</span></p>
+              */}
+            </div>
           </div>
-
-          {/* Middle Column: Item Name */}
-          <div class="flex-grow mr-2">
-            <span class="text-sm">${item.name}</span>
-          </div>
-
-          {/* Right Column: Favourite Button */}
-          <div class="w-8 flex-shrink-0 flex justify-center">
-            <button data-fav="${item.name}" data-view="craftable" class="text-xl p-1">${starred}</button>
-          </div>
-        </div>`;
+          {/* Add actions or more details in a card footer if needed */}
+        </div>
+      `;
     })
     .join('');
 
-  listContainer.querySelectorAll('button[data-fav]').forEach(btn => {
+  displayGrid.innerHTML = cardsHtml;
+
+  displayGrid.querySelectorAll('button[data-fav]').forEach(btn => {
     btn.addEventListener('click', () => {
       const name = btn.dataset.fav;
-      toggleFavourite(name); // favs are reloaded by the render function
-      // Re-render the current view
+      toggleFavourite(name);
       renderCraftableItemsView(cachedItems, loadInventory(), loadFavourites());
     });
   });
 
-  listContainer.querySelectorAll('.item-icon').forEach(icon => {
+  displayGrid.querySelectorAll('.item-icon').forEach(icon => {
     icon.addEventListener('click', () => {
       const modal = document.createElement('div');
       modal.classList.add('icon-modal');
@@ -291,25 +330,52 @@ export function renderCraftableItemsView(items, inventory, favourites) {
 }
 
 export function renderSettings() {
-  const app = document.getElementById('app');
+  const appContainer = document.getElementById('app'); // Target the main app container
   const settings = loadSettings();
 
-  app.innerHTML = `
-    <header class="app-header flex justify-between items-center">
-      <button id="backBtn" class="btn">← Back</button>
-      <h1 class="app-title flex-1 text-center">Settings</h1>
-      <span class="w-6"></span>
-    </header>
-    <main class="app-main space-y-4">
-      <label class="flex items-center space-x-2">
-        <input type="checkbox" id="darkModeToggle" ${settings.darkMode ? 'checked' : ''}>
-        <span>Dark mode</span>
-      </label>
-      <button id="clearInventoryBtn" class="btn">Clear inventory</button>
-    </main>
+  // Create a modal or a dedicated view for settings
+  // For simplicity, this example replaces the app content.
+  // A modal approach would be less disruptive.
+  appContainer.innerHTML = `
+    <section id="settingsView" class="p-4">
+      <header class="flex items-center mb-4">
+        <button id="backBtn" class="btn mr-4">← Back</button>
+        <h1 class="text-2xl font-heading flex-grow text-center">Settings</h1>
+        <div style="width: 60px;"></div> {/* Spacer to balance back button */}
+      </header>
+      <main class="space-y-6 max-w-md mx-auto">
+        {/* Dark mode toggle removed as theme is now consistently dark */}
+        <div class="card p-4">
+          <h2 class="font-heading text-lg mb-2">Data Management</h2>
+          <button id="clearInventoryBtn" class="btn btn-danger">Clear Inventory</button>
+          <p class="text-xs text-gray-500 mt-1">This will reset your tracked materials.</p>
+        </div>
+      </main>
+    </section>
   `;
 
-  document.getElementById('backBtn').addEventListener('click', () => {
+  // Re-attach event listeners
+  const backBtn = document.getElementById('backBtn');
+  if (backBtn) {
+    backBtn.addEventListener('click', () => {
+      renderHome(cachedMaterials, cachedItems); // Re-render the main home view
+    });
+  }
+
+  // Event listener for darkModeToggle removed as the element is gone.
+
+  const clearInventoryBtn = document.getElementById('clearInventoryBtn');
+  if (clearInventoryBtn) {
+    clearInventoryBtn.addEventListener('click', () => {
+      if (confirm('Are you sure you want to clear all inventory? This cannot be undone.')) {
+        localStorage.removeItem('maladum_inventory');
+        // Optionally, re-render or give feedback
+        alert('Inventory cleared.');
+        renderHome(cachedMaterials, cachedItems); // Re-render to reflect change
+      }
+    });
+  }
+}
     renderHome(cachedMaterials, cachedItems);
   });
 
