@@ -21,6 +21,9 @@ const PRECACHE_ASSETS = [
   'js/ui/components.js',
   'js/ui/theme.js',
   'js/ui/effects.js', // Added
+  'js/tokenGallery.js',
+  'tokens.html',
+  'tokens.json',
   // PWA Icons
   'images/icon-192.png',
   'images/icon-512.png',

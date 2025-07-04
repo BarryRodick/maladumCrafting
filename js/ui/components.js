@@ -65,6 +65,7 @@ function renderHeaderButtons() {
 
   headerNav.innerHTML = `
     <button id="viewToggleBtn" class="btn mr-2" data-view="craftable">All Items</button>
+    <a href="tokens.html" class="btn mr-2">Tokens</a>
     <button id="settingsBtn" class="btn">⚙️ Settings</button>
   `;
 }
