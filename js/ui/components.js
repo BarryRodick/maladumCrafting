@@ -140,10 +140,11 @@ export function renderMaterialsGrid(materials, inventory) {
       return `
         <div class="card flex flex-col items-center text-center p-2 ${rarityBorderCls}" data-material="${m.symbol}">
           <span class="rarity-badge ${rarityCls}"></span>
-          <div class="relative w-24 h-24 mb-2">
+          <div class="relative w-24 h-24 mb-1">
             <img src="images/icons/crafting.png" alt="${m.name} icon" class="w-full h-full" />
-            <span class="absolute inset-0 flex items-center justify-center text-xs font-bold pointer-events-none">${m.name}</span>
+            <span class="absolute inset-0 flex items-center justify-center text-lg font-bold pointer-events-none">${m.symbol}</span>
           </div>
+          <div class="text-sm font-semibold mb-2 text-center">${m.name}</div>
           <div class="text-sm my-1">Cost: ${m.base_cost}</div>
           <div class="text-base my-1 count">${count}</div>
           <div class="mt-auto flex space-x-1">
