@@ -7,7 +7,7 @@
     "resources": {
       "W": 1,
       "T": 1,
-      "icon": "entangling_arrows.png"
+      "icon": "net_arrows.png"
     },
     "total_cost": 2,
     "relic": 0
