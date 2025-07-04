@@ -33,6 +33,17 @@ function rarityClass(rarity) {
   }
 }
 
+function rarityBorderClass(rarity) {
+  switch (rarity) {
+    case 'Rare':
+      return 'rarity-border-rare';
+    case 'Uncommon':
+      return 'rarity-border-uncommon';
+    default:
+      return 'rarity-border-common';
+  }
+}
+
 export function renderHome(materials, items) {
   cachedMaterials = materials;
   cachedItems = items;
@@ -207,9 +218,11 @@ export function renderAllItemsView(items, inventory, favourites) {
         }
       }
 
-      const rarityCls = rarityClass(calculateItemRarity(item));
+      const rarity = calculateItemRarity(item);
+      const rarityCls = rarityClass(rarity);
+      const rarityBorderCls = rarityBorderClass(rarity);
       return `
-        <div class="card fade-in flex flex-col" style="animation-delay: ${index * 75}ms">
+        <div class="card fade-in flex flex-col ${rarityBorderCls}" style="animation-delay: ${index * 75}ms">
           <div class="p-3">
             <div class="flex items-start mb-2">
               <h3 class="font-heading text-lg flex-grow text-black">${item.name}</h3>
@@ -222,6 +235,7 @@ export function renderAllItemsView(items, inventory, favourites) {
             <div class="text-sm space-y-1">
               <p><strong class="font-semibold">Requires:</strong> ${required || 'None'}</p>
               <p><strong class="font-semibold">Missing:</strong> <span class="${missingText === 'None' ? '' : 'text-red-500'}">${missingText}</span></p>
+              <p><strong class="font-semibold">Cost:</strong> ${item.total_cost}</p>
             </div>
           </div>
         </div>
@@ -289,9 +303,11 @@ export function renderCraftableItemsView(items, inventory, favourites) {
         .map(([sym, qty]) => `${sym}: ${qty}`)
         .join(', ');
 
-      const rarityCls = rarityClass(calculateItemRarity(item));
+      const rarity = calculateItemRarity(item);
+      const rarityCls = rarityClass(rarity);
+      const rarityBorderCls = rarityBorderClass(rarity);
       return `
-        <div class="card fade-in flex flex-col" style="animation-delay: ${index * 75}ms">
+        <div class="card fade-in flex flex-col ${rarityBorderCls}" style="animation-delay: ${index * 75}ms">
           <div class="p-3">
             <div class="flex items-start mb-2">
               <h3 class="font-heading text-lg flex-grow text-black">${item.name}</h3>
@@ -303,6 +319,7 @@ export function renderCraftableItemsView(items, inventory, favourites) {
             </div>
             <div class="text-sm space-y-1">
               <p><strong class="font-semibold">Requires:</strong> ${required || 'None'}</p>
+              <p><strong class="font-semibold">Cost:</strong> ${item.total_cost}</p>
             </div>
           </div>
         </div>
