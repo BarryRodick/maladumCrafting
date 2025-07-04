@@ -24,7 +24,7 @@ A simple, mobile-first tool for tracking crafting materials and items in the Mal
 - JSON data uses a network-first strategy so updates are fetched when online.
 - Dark‑mode toggle available from the **Settings** screen.
 - Instant filtering of craftable items as you adjust inventory counts.
-- Displays a build cost for each item based on the price of any missing materials.
+- Displays a build cost for each item that includes the item price plus the cost of any missing materials.
 
 For layout ideas, see the [Maladum Event Cards repo](https://github.com/BarryRodick/MaladumEventCards).
 
