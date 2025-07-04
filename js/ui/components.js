@@ -44,6 +44,21 @@ function rarityBorderClass(rarity) {
   }
 }
 
+function calculateBuildCost(item, inventory) {
+  let total = 0;
+  Object.entries(item.resources).forEach(([sym, qty]) => {
+    if (sym === 'icon') return;
+    const have = inventory[sym] || 0;
+    if (have < qty) {
+      const mat = cachedMaterials.find(m => m.symbol === sym);
+      if (mat) {
+        total += (qty - have) * mat.base_cost;
+      }
+    }
+  });
+  return total;
+}
+
 export function renderHome(materials, items) {
   cachedMaterials = materials;
   cachedItems = items;
@@ -217,6 +232,8 @@ export function renderAllItemsView(items, inventory, favourites) {
         }
       }
 
+      const buildCost = calculateBuildCost(item, inventory);
+
       const rarity = calculateItemRarity(item);
       const rarityCls = rarityClass(rarity);
       const rarityBorderCls = rarityBorderClass(rarity);
@@ -234,6 +251,7 @@ export function renderAllItemsView(items, inventory, favourites) {
             <div class="text-sm space-y-1">
               <p><strong class="font-semibold">Requires:</strong> ${required || 'None'}</p>
               <p><strong class="font-semibold">Missing:</strong> <span class="${missingText === 'None' ? '' : 'text-red-500'}">${missingText}</span></p>
+              <p><strong class="font-semibold">Build Cost:</strong> ${buildCost}</p>
               <p><strong class="font-semibold">Price:</strong> ${item.price}</p>
               <p><strong class="font-semibold">Expansion:</strong> ${item.expansion}</p>
             </div>
@@ -336,6 +354,8 @@ export function renderCraftableItemsView(items, inventory, favourites) {
         }
       }
 
+      const buildCost = calculateBuildCost(item, inventory);
+
       const rarity = calculateItemRarity(item);
       const rarityCls = rarityClass(rarity);
       const rarityBorderCls = rarityBorderClass(rarity);
@@ -356,6 +376,7 @@ export function renderCraftableItemsView(items, inventory, favourites) {
             <div class="text-sm space-y-1">
               <p><strong class="font-semibold">Requires:</strong> ${required || 'None'}</p>
               ${!isCraftable && favourites.includes(item.name) ? `<p><strong class="font-semibold">Missing:</strong> <span class="text-red-500">${missingText}</span></p>` : ''}
+              <p><strong class="font-semibold">Build Cost:</strong> ${buildCost}</p>
               <p><strong class="font-semibold">Price:</strong> ${item.price}</p>
               <p><strong class="font-semibold">Expansion:</strong> ${item.expansion}</p>
             </div>
