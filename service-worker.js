@@ -1,5 +1,5 @@
 // Service worker for offline caching
-const CACHE_NAME = 'maladum-cache-v1';
+const CACHE_NAME = 'maladum-cache-v0.1';
 const PRECACHE_ASSETS = [
   './',
   'index.html',
