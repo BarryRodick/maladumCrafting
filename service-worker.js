@@ -25,7 +25,7 @@ const PRECACHE_ASSETS = [
   'images/icon-192.png',
   'images/icon-512.png',
   // Other essential images
-  'logos/parchment-texture.png' // Will be added in next step
+  'images/parchment-texture.png' // Will be added in next step
   // Item icons (e.g., images/tokens/*) are cached on demand by the fetch handler
 ];
 
