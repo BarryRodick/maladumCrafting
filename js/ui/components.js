@@ -111,9 +111,20 @@ export function renderAllItemsView(items, inventory, favourites) {
   const listContainer = document.getElementById('itemsListContainer');
   if (!listContainer) return;
 
-  const rowsHtml = items
+  // Separate and sort items
+  const favoriteItems = items.filter(item => favourites.includes(item.name));
+  const otherItems = items.filter(item => !favourites.includes(item.name));
+
+  // Assuming original order is desired for secondary sort, no explicit sort needed for subgroups yet.
+  // If specific sorting (e.g., by name) is needed for favoriteItems and otherItems:
+  // favoriteItems.sort((a, b) => a.name.localeCompare(b.name));
+  // otherItems.sort((a, b) => a.name.localeCompare(b.name));
+
+  const sortedItems = [...favoriteItems, ...otherItems];
+
+  const rowsHtml = sortedItems
     .map(item => {
-      const starred = favourites.includes(item.name) ? '⭐' : '☆';
+      const starred = favourites.includes(item.name) ? '⭐' : '☆'; // Still need this for the star icon
       const iconPath = `images/tokens/${item.resources.icon}`;
       const resourcesNeeded = Object.entries(item.resources).filter(([sym]) => sym !== 'icon');
 
@@ -204,16 +215,27 @@ export function renderCraftableItemsView(items, inventory, favourites) {
   const listContainer = document.getElementById('itemsListContainer');
   if (!listContainer) return;
 
-  const craftable = getCraftableItems(inventory, items);
+  const craftableItems = getCraftableItems(inventory, items);
 
-  if (craftable.length === 0) {
+  if (craftableItems.length === 0) {
     listContainer.innerHTML = '<p class="italic text-sm">No craftable items.</p>';
     return;
   }
 
-  listContainer.innerHTML = craftable
+  // Separate and sort items
+  const favoriteCraftableItems = craftableItems.filter(item => favourites.includes(item.name));
+  const otherCraftableItems = craftableItems.filter(item => !favourites.includes(item.name));
+
+  // Assuming original order from getCraftableItems is desired for secondary sort.
+  // If specific sorting (e.g., by name) is needed:
+  // favoriteCraftableItems.sort((a, b) => a.name.localeCompare(b.name));
+  // otherCraftableItems.sort((a, b) => a.name.localeCompare(b.name));
+
+  const sortedCraftableItems = [...favoriteCraftableItems, ...otherCraftableItems];
+
+  listContainer.innerHTML = sortedCraftableItems
     .map(item => {
-      const starred = favourites.includes(item.name) ? '⭐' : '☆';
+      const starred = favourites.includes(item.name) ? '⭐' : '☆'; // Still need this for the star icon
       const iconPath = `images/tokens/${item.resources.icon}`;
       return `
         <div class="item-card border-b py-2 flex items-center">
