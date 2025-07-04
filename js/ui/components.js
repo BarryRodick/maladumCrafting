@@ -26,7 +26,7 @@ export function renderHome(materials, items) {
     </header>
     <main class="app-main">
       <div id="materialsGrid" class="mb-4"></div>
-      <div id="itemsListContainer"></div> {/* Container for both lists */}
+      <div id="itemsListContainer"></div>
     </main>
   `;
 
