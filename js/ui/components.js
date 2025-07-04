@@ -228,7 +228,7 @@ export function renderAllItemsView(items, inventory, favourites) {
               <h3 class="font-heading text-lg flex-grow text-black">${item.name}</h3>
               <button data-fav="${item.name}" data-view="all" class="text-2xl p-1 hover:text-yellow-400 transition-colors mr-2">${starred}</button>
               <div class="relative">
-                <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-12 h-12 cursor-pointer rounded">
+                <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-24 h-24 cursor-pointer rounded">
                 <span class="rarity-badge ${rarityCls}"></span>
               </div>
             </div>
@@ -313,7 +313,7 @@ export function renderCraftableItemsView(items, inventory, favourites) {
               <h3 class="font-heading text-lg flex-grow text-black">${item.name}</h3>
               <button data-fav="${item.name}" data-view="craftable" class="text-2xl p-1 hover:text-yellow-400 transition-colors mr-2">${starred}</button>
               <div class="relative">
-                <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-12 h-12 cursor-pointer rounded">
+                <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-24 h-24 cursor-pointer rounded">
                 <span class="rarity-badge ${rarityCls}"></span>
               </div>
             </div>

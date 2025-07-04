@@ -281,7 +281,7 @@ input[type="number"] {
 
 /* Styles for item icons in the list */
 .item-icon {
-  /* Tailwind classes w-8 h-8 mr-2 are already applied for basic sizing */
+  /* Tailwind classes w-24 h-24 mr-2 are applied for sizing */
   /* Add any additional specific styles if needed, e.g., border */
   border: 1px solid #ccc; /* Example border */
   border-radius: 4px;
