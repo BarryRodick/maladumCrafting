@@ -153,7 +153,7 @@
     "resources": {
       "S": 1,
       "I": 1,
-      "icon": "burning_bullet.png"
+      "icon": "explosive_bullets.png"
     },
     "total_cost": 3,
     "relic": 0
