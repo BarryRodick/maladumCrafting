@@ -1,21 +1,33 @@
 // Favourites management
-const FAV_KEY = 'maladum_favourites';
+import { loadState, saveState } from './localStorageUtil.js';
+
+const FAVOURITES_KEY = 'maladum_favourites';
+const DEFAULT_FAVOURITES = [];
 
 export function loadFavourites() {
-  return JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+  return loadState(FAVOURITES_KEY, DEFAULT_FAVOURITES);
 }
 
-export function saveFavourites(favs) {
-  localStorage.setItem(FAV_KEY, JSON.stringify(favs));
+export function saveFavourites(favourites) {
+  saveState(FAVOURITES_KEY, favourites);
 }
 
 export function toggleFavourite(itemName) {
-  let favs = loadFavourites();
-  if (favs.includes(itemName)) {
-    favs = favs.filter(f => f !== itemName);
+  let favourites = loadFavourites(); // Uses new loadState with default []
+
+  const itemIndex = favourites.indexOf(itemName);
+
+  if (itemIndex > -1) {
+    favourites.splice(itemIndex, 1); // Remove item
   } else {
-    favs.push(itemName);
+    favourites.push(itemName); // Add item
   }
-  saveFavourites(favs);
-  return favs;
+
+  saveFavourites(favourites);
+  return favourites;
+}
+
+export function clearFavourites() {
+  saveFavourites(DEFAULT_FAVOURITES);
+  return DEFAULT_FAVOURITES;
 }
