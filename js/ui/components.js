@@ -63,7 +63,7 @@ export function renderHome(materials, items) {
   controlSection.innerHTML = `
     <h2 class="text-xl font-heading mb-3 sr-only">Controls</h2> <!-- Screen-reader only title for now -->
     <div class="flex flex-wrap gap-2 items-center">
-      <button id="viewToggleBtn" class="btn mr-2">All Items</button>
+      <button id="viewToggleBtn" class="btn mr-2" data-view="craftable">All Items</button>
       <button id="settingsBtn" class="btn">⚙️ Settings</button>
     </div>
   `;
@@ -100,15 +100,17 @@ export function renderHome(materials, items) {
   // Setup Event Listeners for controls
   const viewToggleBtn = document.getElementById('viewToggleBtn');
   if (viewToggleBtn) {
+    viewToggleBtn.dataset.view = 'craftable';
     viewToggleBtn.addEventListener('click', () => {
       const itemsSectionTitle = document.getElementById('itemsSectionTitle');
-      const currentViewText = viewToggleBtn.textContent;
-      if (currentViewText === 'All Items') {
+      if (viewToggleBtn.dataset.view === 'craftable') {
         renderAllItemsView(cachedItems, loadInventory(), loadFavourites());
+        viewToggleBtn.dataset.view = 'all';
         viewToggleBtn.textContent = 'Craftable Items';
         if (itemsSectionTitle) itemsSectionTitle.textContent = 'All Items';
       } else {
         renderCraftableItemsView(cachedItems, loadInventory(), loadFavourites());
+        viewToggleBtn.dataset.view = 'craftable';
         viewToggleBtn.textContent = 'All Items';
         if (itemsSectionTitle) itemsSectionTitle.textContent = 'Craftable Items';
       }
@@ -129,16 +131,17 @@ export function renderMaterialsGrid(materials, inventory) {
   const gridContainer = document.getElementById('materialsGrid');
   if (!gridContainer) return;
 
-  // The parent div for grid is already in the HTML structure provided by renderHome.
-  // So, we just set the innerHTML of materialsGrid itself.
+  // Render all material cards
   gridContainer.innerHTML = materials
-    .map((m, index) => {
+    .map(m => {
       const count = inventory[m.symbol] || 0;
-      // Using the new .card class
+      const rarityCls = rarityClass(m.rarity);
+      const rarityBorderCls = rarityBorderClass(m.rarity);
       return `
-        <div class="card fade-in flex flex-col items-center text-center p-2" style="animation-delay: ${index * 50}ms">
+        <div class="card flex flex-col items-center text-center p-2 ${rarityBorderCls}" data-material="${m.symbol}">
+          <span class="rarity-badge ${rarityCls}"></span>
           <div class="font-bold text-lg">${m.symbol}</div>
-          <div class="text-base my-1">${count}</div>
+          <div class="text-base my-1 count">${count}</div>
           <div class="mt-auto flex space-x-1">
             <button class="btn btn-sm" data-action="dec" data-symbol="${m.symbol}">–</button>
             <button class="btn btn-sm" data-action="inc" data-symbol="${m.symbol}">+</button>
@@ -147,34 +150,23 @@ export function renderMaterialsGrid(materials, inventory) {
     })
     .join('');
 
-  gridContainer.querySelectorAll('button[data-action="inc"]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const sym = btn.dataset.symbol;
-      const inv = updateInventory(sym, 1);
-      renderMaterialsGrid(cachedMaterials, inv);
-      // Update current view after inventory change
-      const viewToggleBtn = document.getElementById('viewToggleBtn');
-      if (viewToggleBtn.textContent === 'Craftable') { // This means "All Items" is active
-        renderAllItemsView(cachedItems, inv, loadFavourites());
-      } else { // This means "Craftable" is active
-        renderCraftableItemsView(cachedItems, inv, loadFavourites());
-      }
-    });
-  });
+  // Single handler using event delegation
+  gridContainer.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-action]');
+    if (!btn) return;
+    const sym = btn.dataset.symbol;
+    const delta = btn.dataset.action === 'inc' ? 1 : -1;
+    const inv = updateInventory(sym, delta);
 
-  gridContainer.querySelectorAll('button[data-action="dec"]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const sym = btn.dataset.symbol;
-      const inv = updateInventory(sym, -1);
-      renderMaterialsGrid(cachedMaterials, inv);
-      // Update current view after inventory change
-      const viewToggleBtn = document.getElementById('viewToggleBtn');
-      if (viewToggleBtn.textContent === 'Craftable') { // This means "All Items" is active
-        renderAllItemsView(cachedItems, inv, loadFavourites());
-      } else { // This means "Craftable" is active
-        renderCraftableItemsView(cachedItems, inv, loadFavourites());
-      }
-    });
+    const countEl = gridContainer.querySelector(`[data-material="${sym}"] .count`);
+    if (countEl) countEl.textContent = inv[sym] || 0;
+
+    const viewToggleBtn = document.getElementById('viewToggleBtn');
+    if (viewToggleBtn.dataset.view === 'all') {
+      renderAllItemsView(cachedItems, inv, loadFavourites());
+    } else {
+      renderCraftableItemsView(cachedItems, inv, loadFavourites());
+    }
   });
 }
 
