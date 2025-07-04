@@ -59,6 +59,16 @@ function calculateBuildCost(item, inventory) {
   return total;
 }
 
+function renderHeaderButtons() {
+  const headerNav = document.getElementById('headerNavLinks');
+  if (!headerNav) return;
+
+  headerNav.innerHTML = `
+    <button id="viewToggleBtn" class="btn mr-2" data-view="craftable">All Items</button>
+    <button id="settingsBtn" class="btn">⚙️ Settings</button>
+  `;
+}
+
 export function renderHome(materials, items) {
   cachedMaterials = materials;
   cachedItems = items;
@@ -70,19 +80,8 @@ export function renderHome(materials, items) {
   // Clear previous content
   app.innerHTML = '';
 
-  // Create Control Bar Section
-  const controlSection = document.createElement('section');
-  controlSection.id = 'controlsSection';
-  // Added fade-in to sections
-  controlSection.className = 'fade-in mb-6 p-4 rounded shadow-lg';
-  controlSection.innerHTML = `
-    <h2 class="text-xl font-heading mb-3 sr-only">Controls</h2> <!-- Screen-reader only title for now -->
-    <div class="flex flex-wrap gap-2 items-center">
-      <button id="viewToggleBtn" class="btn mr-2" data-view="craftable">All Items</button>
-      <button id="settingsBtn" class="btn">⚙️ Settings</button>
-    </div>
-  `;
-  app.appendChild(controlSection);
+  // Place header buttons
+  renderHeaderButtons();
 
   // Create Materials Section
   const materialsSection = document.createElement('section');
