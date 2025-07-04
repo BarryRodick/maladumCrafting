@@ -115,35 +115,61 @@ export function renderAllItemsView(items, inventory, favourites) {
     .map(item => {
       const starred = favourites.includes(item.name) ? '⭐' : '☆';
       const iconPath = `images/tokens/${item.resources.icon}`;
-      let missingResourcesHtml = '';
       const resourcesNeeded = Object.entries(item.resources).filter(([sym, qty]) => sym !== 'icon');
 
+      let requiredResourcesHtml = '';
       if (resourcesNeeded.length > 0) {
-        missingResourcesHtml += '<div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Missing: ';
-        let missingCount = 0;
+        requiredResourcesHtml = `
+          <div class="mt-2 text-xs">
+            <strong class="font-semibold text-gray-700 dark:text-gray-300">Requires:</strong>
+            <ul class="list-disc list-inside ml-2 mt-1 space-y-0.5">`;
+        resourcesNeeded.forEach(([sym, qty]) => {
+          requiredResourcesHtml += `<li class="text-gray-600 dark:text-gray-400">${sym}: ${qty}</li>`;
+        });
+        requiredResourcesHtml += '</ul></div>';
+      }
+
+      let missingResourcesHtml = '';
+      if (resourcesNeeded.length > 0) {
+        const missing = [];
         resourcesNeeded.forEach(([sym, qty]) => {
           const currentQty = inventory[sym] || 0;
           if (currentQty < qty) {
-            if (missingCount > 0) missingResourcesHtml += ', ';
-            missingResourcesHtml += `${sym} (${currentQty - qty})`;
-            missingCount++;
+            missing.push({ sym, needed: qty, has: currentQty });
           }
         });
-        if (missingCount === 0) {
-          missingResourcesHtml += 'None';
+
+        if (missing.length > 0) {
+          missingResourcesHtml = `
+            <div class="mt-1 text-xs">
+              <strong class="font-semibold text-red-600 dark:text-red-400">Missing:</strong>
+              <ul class="list-disc list-inside ml-2 mt-1 space-y-0.5">`;
+          missing.forEach(m => {
+            missingResourcesHtml += `<li class="text-red-500 dark:text-red-400">${m.sym}: ${m.needed - m.has} (You have ${m.has})</li>`;
+          });
+          missingResourcesHtml += '</ul></div>';
+        } else {
+          missingResourcesHtml = `
+            <div class="mt-1 text-xs">
+              <strong class="font-semibold text-green-600 dark:text-green-400">Missing:</strong>
+              <span class="ml-1 text-green-500 dark:text-green-400">None</span>
+            </div>`;
         }
-        missingResourcesHtml += '</div>';
       }
 
-
       return `
-        <div class="item-card border-b py-2">
+        <div class="item-card border-b py-3">
           <div class="flex justify-between items-center">
-            <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-8 h-8 mr-2 cursor-pointer">
-            <span class="flex-grow font-semibold">${item.name}</span>
-            <button data-fav="${item.name}" data-view="all" class="text-xl">${starred}</button>
+            <div class="flex items-center">
+              <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-10 h-10 mr-3 cursor-pointer">
+              <span class="font-semibold text-base">${item.name}</span>
+            </div>
+            <button data-fav="${item.name}" data-view="all" class="text-2xl p-1">${starred}</button>
           </div>
-          ${missingResourcesHtml}
+          <div class="pl-13 pr-1"> <!-- Indent resource details to align with item name -->
+            ${requiredResourcesHtml}
+            ${missingResourcesHtml}
+          </div>
         </div>`;
     })
     .join('');
