@@ -72,7 +72,7 @@
     "resources": {
       "W": 1,
       "G": 1,
-      "icon": "hawkeye_arrows.png"
+      "icon": "homing_arrows.png"
     },
     "total_cost": 18,
     "relic": 0
