@@ -146,10 +146,12 @@ export function renderMaterialsGrid(materials, inventory) {
           </div>
           <div class="text-sm font-semibold mb-2 text-center">${m.name}</div>
           <div class="text-sm my-1">Cost: ${m.base_cost}</div>
-          <div class="text-base my-1 count">${count}</div>
-          <div class="mt-auto flex space-x-1">
-            <button class="btn btn-sm" data-action="dec" data-symbol="${m.symbol}">–</button>
-            <button class="btn btn-sm" data-action="inc" data-symbol="${m.symbol}">+</button>
+          <div class="mt-auto flex flex-col items-center">
+            <div class="text-base my-1 font-bold count">${count}</div>
+            <div class="flex space-x-1">
+              <button class="btn btn-sm" data-action="dec" data-symbol="${m.symbol}">–</button>
+              <button class="btn btn-sm" data-action="inc" data-symbol="${m.symbol}">+</button>
+            </div>
           </div>
         </div>`;
     })
