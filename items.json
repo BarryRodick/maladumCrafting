@@ -6,7 +6,8 @@
     "size": "XS",
     "resources": {
       "W": 1,
-      "T": 1
+      "T": 1,
+      "icon": "entangling_arrows.png"
     },
     "total_cost": 2,
     "relic": 0
@@ -18,7 +19,8 @@
     "size": "XS",
     "resources": {
       "W": 1,
-      "S": 1
+      "S": 1,
+      "icon": "barbed_arrows.png"
     },
     "total_cost": 3,
     "relic": 0
@@ -30,7 +32,8 @@
     "size": "XS",
     "resources": {
       "W": 1,
-      "V": 1
+      "V": 1,
+      "icon": "poison_arrows.png"
     },
     "total_cost": 2,
     "relic": 0
@@ -42,7 +45,8 @@
     "size": "XS",
     "resources": {
       "H": 1,
-      "F": 2
+      "F": 2,
+      "icon": "magic_potion.png"
     },
     "total_cost": 14,
     "relic": 0
@@ -54,7 +58,8 @@
     "size": "XS",
     "resources": {
       "H": 2,
-      "F": 1
+      "F": 1,
+      "icon": "health_potion.png"
     },
     "total_cost": 15,
     "relic": 0
@@ -66,7 +71,8 @@
     "size": "XS",
     "resources": {
       "W": 1,
-      "G": 1
+      "G": 1,
+      "icon": "hawkeye_arrows.png"
     },
     "total_cost": 18,
     "relic": 0
@@ -79,7 +85,8 @@
     "resources": {
       "H": 1,
       "F": 1,
-      "M": 1
+      "M": 1,
+      "icon": "skill_potion.png"
     },
     "total_cost": 11,
     "relic": 0
@@ -92,7 +99,8 @@
     "resources": {
       "S": 1,
       "R": 1,
-      "N": 2
+      "N": 2,
+      "icon": "ethereal_edge.png"
     },
     "total_cost": 10,
     "relic": 0
@@ -104,7 +112,8 @@
     "size": "M",
     "resources": {
       "W": 2,
-      "M": 1
+      "M": 1,
+      "icon": "shilielagh.png"
     },
     "total_cost": 15,
     "relic": 0
@@ -117,7 +126,8 @@
     "resources": {
       "H": 1,
       "M": 1,
-      "V": 1
+      "V": 1,
+      "icon": "mighty_brew.png"
     },
     "total_cost": 5,
     "relic": 0
@@ -129,7 +139,8 @@
     "size": "S",
     "resources": {
       "M": 2,
-      "R": 1
+      "R": 1,
+      "icon": "cordial_of_cognisance.png"
     },
     "total_cost": 14,
     "relic": 0
@@ -141,7 +152,8 @@
     "size": "XS",
     "resources": {
       "S": 1,
-      "I": 1
+      "I": 1,
+      "icon": "burning_bullet.png"
     },
     "total_cost": 3,
     "relic": 0
@@ -153,7 +165,8 @@
     "size": "S",
     "resources": {
       "T": 2,
-      "R": 1
+      "R": 1,
+      "icon": "honed_leather_armour.png"
     },
     "total_cost": 12,
     "relic": 0
@@ -165,7 +178,8 @@
     "size": "XS",
     "resources": {
       "T": 1,
-      "A": 1
+      "A": 1,
+      "icon": "hat.png"
     },
     "total_cost": 25,
     "relic": 0
@@ -178,7 +192,8 @@
     "resources": {
       "H": 1,
       "M": 1,
-      "B": 1
+      "B": 1,
+      "icon": "action_potion.png"
     },
     "total_cost": 19,
     "relic": 0
@@ -192,7 +207,8 @@
       "H": 1,
       "F": 2,
       "V": 1,
-      "N": 1
+      "N": 1,
+      "icon": "dreamers_draught.png"
     },
     "total_cost": 18,
     "relic": 0
@@ -205,7 +221,8 @@
     "resources": {
       "W": 1,
       "S": 1,
-      "K": 1
+      "K": 1,
+      "icon": "horned_war_axe.png"
     },
     "total_cost": 24,
     "relic": 0
@@ -217,7 +234,8 @@
     "size": "M",
     "resources": {
       "S": 3,
-      "T": 1
+      "T": 1,
+      "icon": "spiked_armour.png"
     },
     "total_cost": 14,
     "relic": 0
@@ -230,7 +248,8 @@
     "resources": {
       "S": 1,
       "R": 1,
-      "K": 1
+      "K": 1,
+      "icon": "honed_long_sword.png"
     },
     "total_cost": 21,
     "relic": 0
@@ -243,7 +262,8 @@
     "resources": {
       "W": 1,
       "S": 1,
-      "G": 1
+      "G": 1,
+      "icon": "eld_short_bow.png"
     },
     "total_cost": 25,
     "relic": 0
@@ -256,7 +276,8 @@
     "resources": {
       "H": 1,
       "R": 1,
-      "G": 1
+      "G": 1,
+      "icon": "potion_of_finesse.png"
     },
     "total_cost": 22,
     "relic": 0
@@ -269,7 +290,8 @@
     "resources": {
       "W": 1,
       "S": 2,
-      "R": 1
+      "R": 1,
+      "icon": "starstrike_flail.png"
     },
     "total_cost": 14,
     "relic": 0
@@ -283,7 +305,8 @@
       "T": 2,
       "H": 1,
       "F": 1,
-      "V": 1
+      "V": 1,
+      "icon": "herbalists_cloak.png"
     },
     "total_cost": 12,
     "relic": 0
@@ -296,7 +319,8 @@
     "resources": {
       "W": 2,
       "T": 1,
-      "R": 1
+      "R": 1,
+      "icon": "mastercrafted_box.png"
     },
     "total_cost": 21,
     "relic": 0
@@ -309,7 +333,8 @@
     "resources": {
       "W": 2,
       "T": 1,
-      "R": 1
+      "R": 1,
+      "icon": "mastercrafted_bow.png"
     },
     "total_cost": 21,
     "relic": 0
@@ -322,7 +347,8 @@
     "resources": {
       "S": 1,
       "T": 1,
-      "H": 2
+      "H": 2,
+      "icon": "curative_cuirass.png"
     },
     "total_cost": 23,
     "relic": 0
@@ -334,7 +360,8 @@
     "size": "S",
     "resources": {
       "F": 2,
-      "E": 1
+      "E": 1,
+      "icon": "wardweavers_nip.png"
     },
     "total_cost": 40,
     "relic": 0
@@ -348,7 +375,8 @@
       "W": 1,
       "S": 2,
       "T": 1,
-      "R": 1
+      "R": 1,
+      "icon": "crafted_great_axe.png"
     },
     "total_cost": 14,
     "relic": 0
@@ -360,7 +388,8 @@
     "size": "XL",
     "resources": {
       "S": 4,
-      "R": 1
+      "R": 1,
+      "icon": "crafted_great_sword.png"
     },
     "total_cost": 13,
     "relic": 0
@@ -373,7 +402,8 @@
     "resources": {
       "S": 1,
       "R": 1,
-      "V": 2
+      "V": 2,
+      "icon": "viperfang.png"
     },
     "total_cost": 20,
     "relic": 0
@@ -386,7 +416,8 @@
     "resources": {
       "W": 2,
       "K": 1,
-      "B": 1
+      "B": 1,
+      "icon": "disarming_staff.png"
     },
     "total_cost": 38,
     "relic": 0
@@ -399,7 +430,8 @@
     "resources": {
       "F": 1,
       "M": 1,
-      "A": 1
+      "A": 1,
+      "icon": "destinys_tincture.png"
     },
     "total_cost": 36,
     "relic": 0
@@ -412,7 +444,8 @@
     "resources": {
       "S": 2,
       "R": 1,
-      "K": 1
+      "K": 1,
+      "icon": "keltic_falchion.png"
     },
     "total_cost": 26,
     "relic": 0
@@ -426,7 +459,8 @@
       "W": 1,
       "S": 2,
       "R": 1,
-      "B": 1
+      "B": 1,
+      "icon": "blitz_hammer.png"
     },
     "total_cost": 23,
     "relic": 0
@@ -439,7 +473,8 @@
     "resources": {
       "W": 1,
       "T": 2,
-      "A": 1
+      "A": 1,
+      "icon": "makeshift_wings.png"
     },
     "total_cost": 31,
     "relic": 0
@@ -452,7 +487,8 @@
     "resources": {
       "S": 2,
       "R": 1,
-      "G": 1
+      "G": 1,
+      "icon": "sentient_scimitar.png"
     },
     "total_cost": 30,
     "relic": 0
@@ -466,7 +502,8 @@
       "W": 1,
       "M": 1,
       "R": 1,
-      "I": 1
+      "I": 1,
+      "icon": "warrior_totem.png"
     },
     "total_cost": 8,
     "relic": 0
@@ -480,7 +517,8 @@
       "H": 2,
       "R": 1,
       "E": 1,
-      "N": 1
+      "N": 1,
+      "icon": "sacrificium.png"
     },
     "total_cost": 35,
     "relic": 0
@@ -493,7 +531,8 @@
     "resources": {
       "T": 1,
       "R": 1,
-      "K": 2
+      "K": 2,
+      "icon": "keltmail_armour.png"
     },
     "total_cost": 36,
     "relic": 0
@@ -506,7 +545,8 @@
     "resources": {
       "S": 2,
       "K": 1,
-      "G": 1
+      "G": 1,
+      "icon": "arcane_steel.png"
     },
     "total_cost": 39,
     "relic": 0
@@ -519,7 +559,8 @@
     "resources": {
       "S": 4,
       "T": 1,
-      "R": 1
+      "R": 1,
+      "icon": "crafted_breastplate_armour.png"
     },
     "total_cost": 17,
     "relic": 0
@@ -532,7 +573,8 @@
     "resources": {
       "S": 2,
       "R": 1,
-      "G": 1
+      "G": 1,
+      "icon": "bewitched_blade.png"
     },
     "total_cost": 32,
     "relic": 0
@@ -545,7 +587,8 @@
     "resources": {
       "W": 3,
       "M": 1,
-      "A": 1
+      "A": 1,
+      "icon": "calamitous_caber.png"
     },
     "total_cost": 41,
     "relic": 0
@@ -558,7 +601,8 @@
     "resources": {
       "S": 2,
       "R": 1,
-      "A": 1
+      "A": 1,
+      "icon": "reapers_riposte.png"
     },
     "total_cost": 35,
     "relic": 0
@@ -572,7 +616,8 @@
       "W": 1,
       "S": 2,
       "K": 1,
-      "B": 1
+      "B": 1,
+      "icon": "bladed_shield.png"
     },
     "total_cost": 41,
     "relic": 0
@@ -585,7 +630,8 @@
     "resources": {
       "R": 2,
       "K": 1,
-      "G": 1
+      "G": 1,
+      "icon": "spelleater.png"
     },
     "total_cost": 47,
     "relic": 0
@@ -600,7 +646,8 @@
       "M": 1,
       "R": 1,
       "V": 1,
-      "G": 1
+      "G": 1,
+      "icon": "necrotic_censor.png"
     },
     "total_cost": 27,
     "relic": 0
@@ -614,7 +661,8 @@
       "W": 1,
       "G": 1,
       "A": 1,
-      "N": 2
+      "N": 2,
+      "icon": "liberator_of_souls.png"
     },
     "total_cost": 52,
     "relic": 0
@@ -629,7 +677,8 @@
       "S": 1,
       "M": 1,
       "R": 1,
-      "G": 1
+      "G": 1,
+      "icon": "mechanical_musket.png"
     },
     "total_cost": 34,
     "relic": 0
@@ -643,7 +692,8 @@
       "S": 1,
       "R": 1,
       "B": 1,
-      "G": 1
+      "G": 1,
+      "icon": "blade_of_momentum.png"
     },
     "total_cost": 46,
     "relic": 0
@@ -657,7 +707,8 @@
       "M": 1,
       "V": 1,
       "B": 1,
-      "I": 1
+      "I": 1,
+      "icon": "adamantine_elixir.png"
     },
     "total_cost": 24,
     "relic": 0
@@ -672,7 +723,8 @@
       "V": 1,
       "B": 1,
       "G": 1,
-      "N": 1
+      "N": 1,
+      "icon": "vampiric_blade.png"
     },
     "total_cost": 46,
     "relic": 0
@@ -686,7 +738,8 @@
       "T": 2,
       "M": 1,
       "B": 1,
-      "A": 1
+      "A": 1,
+      "icon": "robes_of_invulnerability.png"
     },
     "total_cost": 53,
     "relic": 0
@@ -700,7 +753,8 @@
       "T": 2,
       "F": 1,
       "I": 1,
-      "E": 1
+      "E": 1,
+      "icon": "cloak_of_cloning.png"
     },
     "total_cost": 39,
     "relic": 0
@@ -714,7 +768,8 @@
       "F": 1,
       "B": 1,
       "A": 1,
-      "N": 1
+      "N": 1,
+      "icon": "anyssal_trophy.png"
     },
     "total_cost": 71,
     "relic": 7
@@ -728,7 +783,8 @@
       "R": 1,
       "B": 1,
       "G": 1,
-      "E": 1
+      "E": 1,
+      "icon": "protection_orb.png"
     },
     "total_cost": 68,
     "relic": 0
@@ -742,7 +798,8 @@
       "T": 1,
       "F": 1,
       "V": 1,
-      "B": 2
+      "B": 2,
+      "icon": "daemon_mantle.png"
     },
     "total_cost": 63,
     "relic": 5
@@ -756,7 +813,8 @@
       "S": 1,
       "R": 1,
       "K": 1,
-      "I": 2
+      "I": 2,
+      "icon": "hellfire_blade.png"
     },
     "total_cost": 46,
     "relic": 0
@@ -770,7 +828,8 @@
       "S": 1,
       "R": 1,
       "K": 2,
-      "B": 1
+      "B": 1,
+      "icon": "sword_of_tephysus.png"
     },
     "total_cost": 69,
     "relic": 1
@@ -785,7 +844,8 @@
       "R": 1,
       "V": 1,
       "G": 1,
-      "I": 1
+      "I": 1,
+      "icon": "soul_siphon.png"
     },
     "total_cost": 44,
     "relic": 3
@@ -800,7 +860,8 @@
       "M": 1,
       "K": 1,
       "G": 1,
-      "E": 1
+      "E": 1,
+      "icon": "astral_arbiter.png"
     },
     "total_cost": 77,
     "relic": 0
@@ -814,7 +875,8 @@
       "M": 2,
       "V": 1,
       "B": 1,
-      "A": 1
+      "A": 1,
+      "icon": "natures_fury.png"
     },
     "total_cost": 73,
     "relic": 6
@@ -827,7 +889,8 @@
     "resources": {
       "R": 3,
       "G": 1,
-      "A": 1
+      "A": 1,
+      "icon": "sceptre_of_domion.png"
     },
     "total_cost": 83,
     "relic": 4
@@ -841,7 +904,8 @@
       "T": 1,
       "F": 1,
       "R": 1,
-      "E": 2
+      "E": 2,
+      "icon": "refined_robes.png"
     },
     "total_cost": 79,
     "relic": 0
@@ -856,7 +920,8 @@
       "M": 1,
       "K": 1,
       "I": 1,
-      "E": 1
+      "E": 1,
+      "icon": "acendant_blades.png"
     },
     "total_cost": 66,
     "relic": 10
@@ -871,7 +936,8 @@
       "G": 1,
       "I": 1,
       "E": 1,
-      "N": 1
+      "N": 1,
+      "icon": "uncanny_oculus.png"
     },
     "total_cost": 69,
     "relic": 8
@@ -886,7 +952,8 @@
       "G": 1,
       "A": 1,
       "E": 1,
-      "N": 1
+      "N": 1,
+      "icon": "light_in_the_darkness.png"
     },
     "total_cost": 92,
     "relic": 9
@@ -901,7 +968,8 @@
       "R": 1,
       "G": 1,
       "I": 1,
-      "E": 1
+      "E": 1,
+      "icon": "grail_of_the_gods.png"
     },
     "total_cost": 69,
     "relic": 2
