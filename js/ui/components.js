@@ -158,7 +158,7 @@ export function renderAllItemsView(items, inventory, favourites) {
 
   const sortedItems = [...favoriteItems, ...otherItems];
 
-  const rowsHtml = sortedItems
+  const cardsHtml = sortedItems
     .map((item, index) => { // Added index for animation delay
       const starred = favourites.includes(item.name) ? '⭐' : '☆'; // Still need this for the star icon
       const iconPath = `images/tokens/${item.resources.icon}`;
@@ -183,24 +183,13 @@ export function renderAllItemsView(items, inventory, favourites) {
       }
 
       return `
-        <tr class="border-b">
-          <td class="p-2">
-            <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-8 h-8 cursor-pointer">
-          </td>
-          <td class="p-2">${item.name}</td>
-          <td class="p-2 text-sm">${required}</td>
-          <td class="p-2 text-sm">${missingText}</td>
-          <td class="p-2 text-center">
-            <button data-fav="${item.name}" data-view="all" class="text-xl p-1">${starred}</button>
-          </td>
-        return `
-          <div class="card fade-in flex flex-col" style="animation-delay: ${index * 75}ms"> {/* Added fade-in and stagger */}
-            <div class="p-3"> {/* Card body */}
-              <div class="flex items-start mb-2">
-                <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-10 h-10 mr-3 cursor-pointer rounded">
-                <h3 class="font-heading text-lg flex-grow">${item.name}</h3>
-                <button data-fav="${item.name}" data-view="all" class="text-2xl p-1 hover:text-yellow-400 transition-colors">${starred}</button>
-              </div>
+        <div class="card fade-in flex flex-col" style="animation-delay: ${index * 75}ms"> {/* Added fade-in and stagger */}
+          <div class="p-3"> {/* Card body */}
+            <div class="flex items-start mb-2">
+              <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-10 h-10 mr-3 cursor-pointer rounded">
+              <h3 class="font-heading text-lg flex-grow">${item.name}</h3>
+              <button data-fav="${item.name}" data-view="all" class="text-2xl p-1 hover:text-yellow-400 transition-colors">${starred}</button>
+            </div>
               <div class="text-sm space-y-1">
                 <p><strong class="font-semibold">Requires:</strong> ${required || 'None'}</p>
                 <p><strong class="font-semibold">Missing:</strong> <span class="${missingText === 'None' ? '' : 'text-red-500'}">${missingText}</span></p>
@@ -375,19 +364,4 @@ export function renderSettings() {
       }
     });
   }
-}
-    renderHome(cachedMaterials, cachedItems);
-  });
-
-  document.getElementById('darkModeToggle').addEventListener('change', (e) => {
-    const newSettings = { ...settings, darkMode: e.target.checked };
-    saveSettings(newSettings);
-    applyTheme(newSettings.darkMode);
-  });
-
-  document.getElementById('clearInventoryBtn').addEventListener('click', () => {
-    if (confirm('Clear all inventory?')) {
-      localStorage.removeItem('maladum_inventory');
-    }
-  });
 }
