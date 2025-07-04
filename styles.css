@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
+
+:root {
+  --maladum-red: #8b1a1a;
+  --accent-green: #2f855a;
+  --bg-light: #f9fafb;
+  --bg-dark: #111827;
+  --text-light: #1a202c;
+  --text-dark: #f7fafc;
+  --header-gradient: linear-gradient(90deg, var(--maladum-red), var(--accent-green));
+  --button-bg: var(--maladum-red);
+  --button-text: #ffffff;
+}
+
+.dark {
+  --button-bg: var(--accent-green);
+  --header-gradient: linear-gradient(90deg, #5b1212, #1f4f37);
+}
+
+body {
+  font-family: 'Cinzel', serif;
+  background-color: var(--bg-light);
+  color: var(--text-light);
+}
+
+.dark body {
+  background-color: var(--bg-dark);
+  color: var(--text-dark);
+}
+
+.app-header {
+  background: var(--header-gradient);
+  color: white;
+  padding: 1rem;
+  font-weight: bold;
+}
+
+.app-main {
+  padding: 1rem;
+}
+
+.btn {
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.material-card {
+  border: 1px solid #d1d5db;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.dark .material-card {
+  background: rgba(17, 24, 39, 0.8);
+}

@@ -17,11 +17,11 @@ export function renderHome(materials, items) {
 
   const app = document.getElementById('app');
   app.innerHTML = `
-    <header class="p-4 flex justify-between items-center">
-      <h1 class="text-xl font-bold">Maladum Crafting</h1>
-      <button id="settingsBtn" class="text-sm">⚙️</button>
+    <header class="app-header flex justify-between items-center">
+      <h1 class="app-title">Maladum Crafting</h1>
+      <button id="settingsBtn" class="btn">⚙️</button>
     </header>
-    <main class="p-4">
+    <main class="app-main">
       <div id="materialsGrid" class="mb-4"></div>
       <div id="craftableList"></div>
     </main>
@@ -48,12 +48,12 @@ export function renderMaterialsGrid(materials, inventory) {
       .map(m => {
         const count = inventory[m.symbol] || 0;
         return `
-          <div class="border rounded p-2 flex flex-col items-center text-center">
+          <div class="material-card flex flex-col items-center text-center">
             <div class="font-bold">${m.symbol}</div>
             <div class="text-sm">${count}</div>
             <div class="mt-1 flex space-x-1">
-              <button class="px-2 border rounded" data-action="dec" data-symbol="${m.symbol}">–</button>
-              <button class="px-2 border rounded" data-action="inc" data-symbol="${m.symbol}">+</button>
+              <button class="btn" data-action="dec" data-symbol="${m.symbol}">–</button>
+              <button class="btn" data-action="inc" data-symbol="${m.symbol}">+</button>
             </div>
           </div>`;
       })
@@ -118,17 +118,17 @@ export function renderSettings() {
   const settings = loadSettings();
 
   app.innerHTML = `
-    <header class="p-4 flex justify-between items-center">
-      <button id="backBtn" class="text-sm">← Back</button>
-      <h1 class="text-xl font-bold flex-1 text-center">Settings</h1>
+    <header class="app-header flex justify-between items-center">
+      <button id="backBtn" class="btn">← Back</button>
+      <h1 class="app-title flex-1 text-center">Settings</h1>
       <span class="w-6"></span>
     </header>
-    <main class="p-4 space-y-4">
+    <main class="app-main space-y-4">
       <label class="flex items-center space-x-2">
         <input type="checkbox" id="darkModeToggle" ${settings.darkMode ? 'checked' : ''}>
         <span>Dark mode</span>
       </label>
-      <button id="clearInventoryBtn" class="px-4 py-2 border rounded">Clear inventory</button>
+      <button id="clearInventoryBtn" class="btn">Clear inventory</button>
     </main>
   `;
 
