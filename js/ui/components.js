@@ -96,7 +96,7 @@ export function renderMaterialsGrid(materials, inventory) {
   // The parent div for grid is already in the HTML structure provided by renderHome.
   // So, we just set the innerHTML of materialsGrid itself.
   gridContainer.innerHTML = materials
-    .map(m => {
+    .map((m, index) => {
       const count = inventory[m.symbol] || 0;
       // Using the new .card class
       return `
@@ -126,7 +126,7 @@ export function renderMaterialsGrid(materials, inventory) {
     });
   });
 
-  grid.querySelectorAll('button[data-action="dec"]').forEach(btn => {
+  gridContainer.querySelectorAll('button[data-action="dec"]').forEach(btn => {
     btn.addEventListener('click', () => {
       const sym = btn.dataset.symbol;
       const inv = updateInventory(sym, -1);
