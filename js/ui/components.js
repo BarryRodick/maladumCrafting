@@ -141,6 +141,7 @@ export function renderMaterialsGrid(materials, inventory) {
         <div class="card flex flex-col items-center text-center p-2 ${rarityBorderCls}" data-material="${m.symbol}">
           <span class="rarity-badge ${rarityCls}"></span>
           <div class="font-bold text-lg">${m.symbol}</div>
+          <div class="text-sm my-1">Cost: ${m.base_cost}</div>
           <div class="text-base my-1 count">${count}</div>
           <div class="mt-auto flex space-x-1">
             <button class="btn btn-sm" data-action="dec" data-symbol="${m.symbol}">–</button>
@@ -228,6 +229,7 @@ export function renderAllItemsView(items, inventory, favourites) {
               <p><strong class="font-semibold">Requires:</strong> ${required || 'None'}</p>
               <p><strong class="font-semibold">Missing:</strong> <span class="${missingText === 'None' ? '' : 'text-red-500'}">${missingText}</span></p>
               <p><strong class="font-semibold">Cost:</strong> ${item.total_cost}</p>
+              <p><strong class="font-semibold">Expansion:</strong> ${item.expansion}</p>
             </div>
           </div>
         </div>
@@ -275,18 +277,33 @@ export function renderCraftableItemsView(items, inventory, favourites) {
   displayGrid.innerHTML = ''; // Clear previous content
 
   const craftableItems = getCraftableItems(inventory, items);
+  const allFavouriteItems = items.filter(item => favourites.includes(item.name));
 
-  if (craftableItems.length === 0) {
-    displayGrid.innerHTML = '<p class="italic text-center col-span-full">No craftable items currently.</p>'; // Added col-span-full for grid context
+  // Combine favourited items and craftable items, ensuring favourites are listed first
+  // and removing duplicates.
+  let combinedItems = [];
+  const itemNames = new Set();
+
+  allFavouriteItems.forEach(item => {
+    if (!itemNames.has(item.name)) {
+      combinedItems.push(item);
+      itemNames.add(item.name);
+    }
+  });
+
+  craftableItems.forEach(item => {
+    if (!itemNames.has(item.name)) {
+      combinedItems.push(item);
+      itemNames.add(item.name);
+    }
+  });
+
+  if (combinedItems.length === 0) {
+    displayGrid.innerHTML = '<p class="italic text-center col-span-full">No craftable or favourited items to display.</p>'; // Added col-span-full for grid context
     return;
   }
 
-  // Separate and sort items
-  const favoriteCraftableItems = craftableItems.filter(item => favourites.includes(item.name));
-  const otherCraftableItems = craftableItems.filter(item => !favourites.includes(item.name));
-  const sortedCraftableItems = [...favoriteCraftableItems, ...otherCraftableItems];
-
-  const cardsHtml = sortedCraftableItems
+  const cardsHtml = combinedItems
     .map((item, index) => { // Added index for animation delay
       const starred = favourites.includes(item.name) ? '⭐' : '☆';
       const iconPath = `images/tokens/${item.resources.icon}`;
@@ -295,11 +312,32 @@ export function renderCraftableItemsView(items, inventory, favourites) {
         .map(([sym, qty]) => `${sym}: ${qty}`)
         .join(', ');
 
+      // Determine if item is craftable for styling or additional info if needed
+      const isCraftable = craftableItems.some(craftableItem => craftableItem.name === item.name);
+      // We can use `isCraftable` to add visual cues, but for now, the logic focuses on display.
+
+      let missingText = 'None'; // Default for items that might not be craftable but are favourited
+      if (resourcesNeeded.length > 0) {
+        const missing = [];
+        resourcesNeeded.forEach(([sym, qty]) => {
+          const currentQty = inventory[sym] || 0;
+          if (currentQty < qty) {
+            missing.push(`${sym}: ${qty - currentQty}`);
+          }
+        });
+        if (missing.length > 0) {
+          missingText = missing.join(', ');
+        }
+      }
+
       const rarity = calculateItemRarity(item);
       const rarityCls = rarityClass(rarity);
       const rarityBorderCls = rarityBorderClass(rarity);
+      // Add a class if the item is not craftable but shown because it's a favourite
+      const notCraftableFavouriteClass = !isCraftable && favourites.includes(item.name) ? 'opacity-75' : '';
+
       return `
-        <div class="card fade-in flex flex-col ${rarityBorderCls}" style="animation-delay: ${index * 75}ms">
+        <div class="card fade-in flex flex-col ${rarityBorderCls} ${notCraftableFavouriteClass}" style="animation-delay: ${index * 75}ms">
           <div class="p-3">
             <div class="flex items-start mb-2">
               <h3 class="font-heading text-lg flex-grow text-black">${item.name}</h3>
@@ -311,7 +349,9 @@ export function renderCraftableItemsView(items, inventory, favourites) {
             </div>
             <div class="text-sm space-y-1">
               <p><strong class="font-semibold">Requires:</strong> ${required || 'None'}</p>
+              ${!isCraftable && favourites.includes(item.name) ? `<p><strong class="font-semibold">Missing:</strong> <span class="text-red-500">${missingText}</span></p>` : ''}
               <p><strong class="font-semibold">Cost:</strong> ${item.total_cost}</p>
+              <p><strong class="font-semibold">Expansion:</strong> ${item.expansion}</p>
             </div>
           </div>
         </div>
@@ -325,6 +365,8 @@ export function renderCraftableItemsView(items, inventory, favourites) {
     btn.addEventListener('click', () => {
       const name = btn.dataset.fav;
       toggleFavourite(name);
+      // When a favourite is toggled, we need to re-render using the updated favourites list
+      // and current inventory to correctly display craftable/favourited items.
       renderCraftableItemsView(cachedItems, loadInventory(), loadFavourites());
     });
   });
