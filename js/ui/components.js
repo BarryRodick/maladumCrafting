@@ -95,9 +95,11 @@ export function renderCraftableList(items, inventory, favourites) {
   list.innerHTML = craftable
     .map(item => {
       const starred = favourites.includes(item.name) ? '⭐' : '☆';
+      const iconPath = `images/tokens/${item.resources.icon}`;
       return `
         <div class="flex justify-between items-center border-b py-1">
-          <span>${item.name}</span>
+          <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-8 h-8 mr-2 cursor-pointer">
+          <span class="flex-grow">${item.name}</span>
           <button data-fav="${item.name}" class="text-xl">${starred}</button>
         </div>`;
     })
@@ -109,6 +111,29 @@ export function renderCraftableList(items, inventory, favourites) {
       const favs = toggleFavourite(name);
       const inv = loadInventory();
       renderCraftableList(cachedItems, inv, favs);
+    });
+  });
+
+  list.querySelectorAll('.item-icon').forEach(icon => {
+    icon.addEventListener('click', () => {
+      const modal = document.createElement('div');
+      modal.classList.add('icon-modal');
+      modal.innerHTML = `
+        <div class="icon-modal-content">
+          <span class="icon-modal-close">&times;</span>
+          <img src="${icon.src}" alt="${icon.alt}" class="zoomed-icon">
+        </div>
+      `;
+      document.body.appendChild(modal);
+
+      modal.querySelector('.icon-modal-close').addEventListener('click', () => {
+        document.body.removeChild(modal);
+      });
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) { // Only close if clicking on the background
+          document.body.removeChild(modal);
+        }
+      });
     });
   });
 }

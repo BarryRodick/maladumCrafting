@@ -56,3 +56,58 @@ body {
 .dark .material-card {
   background: rgba(17, 24, 39, 0.8);
 }
+
+/* Styles for item icons in the list */
+.item-icon {
+  /* Tailwind classes w-8 h-8 mr-2 are already applied for basic sizing */
+  /* Add any additional specific styles if needed, e.g., border */
+  border: 1px solid #ccc; /* Example border */
+  border-radius: 4px;
+  object-fit: contain; /* Ensure icon aspect ratio is maintained */
+}
+
+/* Styles for the icon zoom modal */
+.icon-modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it's on top */
+}
+
+.icon-modal-content {
+  position: relative;
+  background-color: var(--bg-light);
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.dark .icon-modal-content {
+  background-color: var(--bg-dark);
+}
+
+.icon-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  color: var(--text-light);
+}
+
+.dark .icon-modal-close {
+  color: var(--text-dark);
+}
+
+.zoomed-icon {
+  max-width: 80vw;
+  max-height: 80vh;
+  border-radius: 4px;
+}
