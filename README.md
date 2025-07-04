@@ -21,6 +21,7 @@ A simple, mobile-first tool for tracking crafting materials and items in the Mal
 ## Features
 
 - Offline-first PWA with a service worker and web manifest.
+- JSON data uses a network-first strategy so updates are fetched when online.
 - Dark‑mode toggle available from the **Settings** screen.
 - Instant filtering of craftable items as you adjust inventory counts.
 
