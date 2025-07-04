@@ -232,7 +232,7 @@ export function renderAllItemsView(items, inventory, favourites) {
             <div class="text-sm space-y-1">
               <p><strong class="font-semibold">Requires:</strong> ${required || 'None'}</p>
               <p><strong class="font-semibold">Missing:</strong> <span class="${missingText === 'None' ? '' : 'text-red-500'}">${missingText}</span></p>
-              <p><strong class="font-semibold">Cost:</strong> ${item.total_cost}</p>
+              <p><strong class="font-semibold">Price:</strong> ${item.price}</p>
               <p><strong class="font-semibold">Expansion:</strong> ${item.expansion}</p>
             </div>
           </div>
@@ -354,7 +354,7 @@ export function renderCraftableItemsView(items, inventory, favourites) {
             <div class="text-sm space-y-1">
               <p><strong class="font-semibold">Requires:</strong> ${required || 'None'}</p>
               ${!isCraftable && favourites.includes(item.name) ? `<p><strong class="font-semibold">Missing:</strong> <span class="text-red-500">${missingText}</span></p>` : ''}
-              <p><strong class="font-semibold">Cost:</strong> ${item.total_cost}</p>
+              <p><strong class="font-semibold">Price:</strong> ${item.price}</p>
               <p><strong class="font-semibold">Expansion:</strong> ${item.expansion}</p>
             </div>
           </div>
