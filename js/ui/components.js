@@ -100,10 +100,10 @@ export function renderMaterialsGrid(materials, inventory) {
       const count = inventory[m.symbol] || 0;
       // Using the new .card class
       return `
-        <div class="card fade-in flex flex-col items-center text-center p-2" style="animation-delay: ${index * 50}ms"> {/* Added fade-in and stagger */}
+        <div class="card fade-in flex flex-col items-center text-center p-2" style="animation-delay: ${index * 50}ms">
           <div class="font-bold text-lg">${m.symbol}</div>
           <div class="text-base my-1">${count}</div>
-          <div class="mt-auto flex space-x-1"> {/* mt-auto to push buttons to bottom if card height is fixed */}
+          <div class="mt-auto flex space-x-1">
             <button class="btn btn-sm" data-action="dec" data-symbol="${m.symbol}">–</button>
             <button class="btn btn-sm" data-action="inc" data-symbol="${m.symbol}">+</button>
           </div>
@@ -183,8 +183,8 @@ export function renderAllItemsView(items, inventory, favourites) {
       }
 
       return `
-        <div class="card fade-in flex flex-col" style="animation-delay: ${index * 75}ms"> {/* Added fade-in and stagger */}
-          <div class="p-3"> {/* Card body */}
+        <div class="card fade-in flex flex-col" style="animation-delay: ${index * 75}ms">
+          <div class="p-3">
             <div class="flex items-start mb-2">
               <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-10 h-10 mr-3 cursor-pointer rounded">
               <h3 class="font-heading text-lg flex-grow">${item.name}</h3>
@@ -195,7 +195,6 @@ export function renderAllItemsView(items, inventory, favourites) {
                 <p><strong class="font-semibold">Missing:</strong> <span class="${missingText === 'None' ? '' : 'text-red-500'}">${missingText}</span></p>
               </div>
             </div>
-            {/* Add actions or more details in a card footer if needed */}
           </div>
         `;
     })
@@ -262,8 +261,8 @@ export function renderCraftableItemsView(items, inventory, favourites) {
         .join(', ');
 
       return `
-        <div class="card fade-in flex flex-col" style="animation-delay: ${index * 75}ms"> {/* Added fade-in and stagger */}
-          <div class="p-3"> {/* Card body */}
+        <div class="card fade-in flex flex-col" style="animation-delay: ${index * 75}ms">
+          <div class="p-3">
             <div class="flex items-start mb-2">
               <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-10 h-10 mr-3 cursor-pointer rounded">
               <h3 class="font-heading text-lg flex-grow">${item.name}</h3>
@@ -271,14 +270,8 @@ export function renderCraftableItemsView(items, inventory, favourites) {
             </div>
             <div class="text-sm space-y-1">
               <p><strong class="font-semibold">Requires:</strong> ${required || 'None'}</p>
-              {/* Craftable view doesn't typically show 'missing' since they are by definition craftable */}
-              {/* If you want to show it for consistency:
-                 let missingText = 'None'; // Calculate missingText as in renderAllItemsView
-                 <p><strong class="font-semibold">Missing:</strong> <span class="${missingText === 'None' ? '' : 'text-red-500'}">${missingText}</span></p>
-              */}
             </div>
           </div>
-          {/* Add actions or more details in a card footer if needed */}
         </div>
       `;
     })
@@ -330,10 +323,9 @@ export function renderSettings() {
       <header class="flex items-center mb-4">
         <button id="backBtn" class="btn mr-4">← Back</button>
         <h1 class="text-2xl font-heading flex-grow text-center">Settings</h1>
-        <div style="width: 60px;"></div> {/* Spacer to balance back button */}
+        <div style="width: 60px;"></div>
       </header>
       <main class="space-y-6 max-w-md mx-auto">
-        {/* Dark mode toggle removed as theme is now consistently dark */}
         <div class="card p-4">
           <h2 class="font-heading text-lg mb-2">Data Management</h2>
           <button id="clearInventoryBtn" class="btn btn-danger">Clear Inventory</button>
