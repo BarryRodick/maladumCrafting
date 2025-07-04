@@ -120,62 +120,62 @@ export function renderAllItemsView(items, inventory, favourites) {
       let requiredResourcesHtml = '';
       if (resourcesNeeded.length > 0) {
         requiredResourcesHtml = `
-          <div class="mt-2 text-xs">
-            <strong class="font-semibold text-gray-700 dark:text-gray-300">Requires:</strong>
-            <ul class="list-disc list-inside ml-2 mt-1 space-y-0.5">`;
+          <div class="requirements">
+            <strong>Requires:</strong>
+            <ul>`;
         resourcesNeeded.forEach(([sym, qty]) => {
-          requiredResourcesHtml += `<li class="text-gray-600 dark:text-gray-400">${sym}: ${qty}</li>`;
+          requiredResourcesHtml += `<li>${sym}: ${qty}</li>`;
         });
         requiredResourcesHtml += '</ul></div>';
       }
 
       let missingResourcesHtml = '';
       if (resourcesNeeded.length > 0) {
-        const missing = [];
+        const missingResources = []; // Renamed to avoid conflict with class name
         resourcesNeeded.forEach(([sym, qty]) => {
           const currentQty = inventory[sym] || 0;
           if (currentQty < qty) {
-            missing.push({ sym, needed: qty, has: currentQty });
+            missingResources.push({ sym, needed: qty, has: currentQty });
           }
         });
 
-        if (missing.length > 0) {
+        if (missingResources.length > 0) {
           missingResourcesHtml = `
-            <div class="mt-1 text-xs">
-              <strong class="font-semibold text-red-600 dark:text-red-400">Missing:</strong>
-              <ul class="list-disc list-inside ml-2 mt-1 space-y-0.5">`;
-          missing.forEach(m => {
-            missingResourcesHtml += `<li class="text-red-500 dark:text-red-400">${m.sym}: ${m.needed - m.has} (You have ${m.has})</li>`;
+            <div class="missing">
+              <strong>Missing:</strong>
+              <ul>`;
+          missingResources.forEach(m => {
+            missingResourcesHtml += `<li>${m.sym}: ${m.needed - m.has} (You have ${m.has})</li>`;
           });
           missingResourcesHtml += '</ul></div>';
         } else {
+          // Optionally, display a "None missing" message if desired, or leave empty
+          // For now, let's keep it consistent with having a .missing div, but it could be styled differently
           missingResourcesHtml = `
-            <div class="mt-1 text-xs">
-              <strong class="font-semibold text-green-600 dark:text-green-400">Missing:</strong>
-              <span class="ml-1 text-green-500 dark:text-green-400">None</span>
+            <div class="missing">
+              <strong>Missing:</strong>
+              <span>None</span>
             </div>`;
         }
       }
 
       return `
-        <div class="item-card border-b py-3 flex items-start">
-          {/* Left Column: Icon */}
-          <div class="w-12 mr-3 flex-shrink-0">
-            <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-10 h-10 cursor-pointer">
+        <div class="item-card"> {/* Apply new item-card class */}
+          {/* Left Section: Item Icon */}
+          <div class="item-icon-container"> {/* Container for icon styling */}
+            <img src="${iconPath}" alt="${item.name} icon" class="item-icon cursor-pointer"> {/* Apply new item-icon class */}
           </div>
 
-          {/* Middle Column: Item Name, Requirements */}
-          <div class="flex-grow mr-3">
-            <div class="font-semibold text-base mb-1">${item.name}</div>
-            <div class="text-xs">
-              ${requiredResourcesHtml}
-              ${missingResourcesHtml}
-            </div>
+          {/* Middle Section: Item Details */}
+          <div class="item-details">
+            <h3>${item.name}</h3>
+            ${requiredResourcesHtml}
+            ${missingResourcesHtml}
           </div>
 
-          {/* Right Column: Favourite Button */}
-          <div class="w-10 flex-shrink-0 flex justify-center items-start pt-1">
-            <button data-fav="${item.name}" data-view="all" class="text-2xl p-1">${starred}</button>
+          {/* Right Section: Favorite button/icon */}
+          <div class="favorite-button-container"> {/* Container for button styling */}
+            <button data-fav="${item.name}" data-view="all" class="favorite-icon">${starred}</button> {/* Apply new favorite-icon class */}
           </div>
         </div>`;
     })
@@ -231,20 +231,21 @@ export function renderCraftableItemsView(items, inventory, favourites) {
       const starred = favourites.includes(item.name) ? '⭐' : '☆';
       const iconPath = `images/tokens/${item.resources.icon}`;
       return `
-        <div class="item-card border-b py-2 flex items-center">
-          {/* Left Column: Icon */}
-          <div class="w-10 mr-2 flex-shrink-0">
-            <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-8 h-8 cursor-pointer">
+        <div class="item-card"> {/* Apply new item-card class */}
+          {/* Left Section: Item Icon */}
+          <div class="item-icon-container">  {/* Container for icon styling */}
+            <img src="${iconPath}" alt="${item.name} icon" class="item-icon cursor-pointer"> {/* Apply new item-icon class */}
           </div>
 
-          {/* Middle Column: Item Name */}
-          <div class="flex-grow mr-2">
-            <span class="text-sm">${item.name}</span>
+          {/* Middle Section: Item Details (simpler for craftable view) */}
+          <div class="item-details">
+            <h3>${item.name}</h3>
+            {/* No requirements/missing needed here as items are craftable */}
           </div>
 
-          {/* Right Column: Favourite Button */}
-          <div class="w-8 flex-shrink-0 flex justify-center">
-            <button data-fav="${item.name}" data-view="craftable" class="text-xl p-1">${starred}</button>
+          {/* Right Section: Favorite button/icon */}
+          <div class="favorite-button-container"> {/* Container for button styling */}
+            <button data-fav="${item.name}" data-view="craftable" class="favorite-icon">${starred}</button> {/* Apply new favorite-icon class */}
           </div>
         </div>`;
     })
@@ -259,7 +260,7 @@ export function renderCraftableItemsView(items, inventory, favourites) {
     });
   });
 
-  list.querySelectorAll('.item-icon').forEach(icon => {
+  listContainer.querySelectorAll('.item-icon').forEach(icon => {
     icon.addEventListener('click', () => {
       const modal = document.createElement('div');
       modal.classList.add('icon-modal');

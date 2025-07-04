@@ -111,3 +111,87 @@ body {
   max-height: 80vh;
   border-radius: 4px;
 }
+
+/* New Item Card Styles */
+.item-card {
+  display: flex;
+  align-items: center; /* Vertically center items in the card */
+  justify-content: space-between;
+  padding: 12px;
+  border-bottom: 1px solid #e0e0e0; /* Subtle border for separation */
+  gap: 16px; /* Space between icon, details, and favorite button */
+}
+
+.dark .item-card {
+  border-bottom: 1px solid #374151; /* Dark mode border */
+}
+
+.item-icon-container {
+  display: flex; /* For centering image if needed */
+  align-items: center;
+  justify-content: center;
+}
+
+.item-icon-container img { /* Targets img inside item-icon-container */
+  width: 50px;
+  height: auto; /* Maintain aspect ratio */
+  /* item-icon class from original styles.css already has border and border-radius */
+}
+
+.item-details {
+  flex-grow: 1; /* Allows this section to take up available space */
+  /* Text alignment to the left is default for block elements */
+}
+
+.item-details h3 {
+  margin: 0 0 4px 0; /* Adjusted margin for spacing */
+  font-size: 1.1rem; /* Larger font for item name */
+  font-weight: bold; /* Bold item name */
+}
+
+.item-details .requirements,
+.item-details .missing {
+  margin: 4px 0;
+  font-size: 0.9rem; /* Slightly smaller font for details */
+}
+
+.item-details .requirements ul,
+.item-details .missing ul {
+  list-style-type: disc; /* Use bullets */
+  margin-left: 20px; /* Indent list */
+  padding-left: 0;
+}
+
+.item-details .requirements li,
+.item-details .missing li {
+  margin-bottom: 2px; /* Space between list items */
+}
+
+.item-details .missing {
+  color: red; /* Distinct color for missing items */
+}
+
+.dark .item-details .missing {
+  color: #f87171; /* Lighter red for dark mode */
+}
+
+
+.favorite-button-container {
+  display: flex; /* For centering button if needed */
+  align-items: center;
+  justify-content: center;
+}
+
+.favorite-icon {
+  font-size: 24px; /* Size of the favorite icon (star) */
+  cursor: pointer;
+  padding: 4px; /* Make it easier to click */
+  background: none;
+  border: none;
+  color: inherit; /* Inherit text color, can be overridden by dark/light mode */
+}
+
+/* Ensure favorite icon color is appropriate for dark mode if needed */
+.dark .favorite-icon {
+   /* color: var(--text-dark); if specific color needed */
+}
