@@ -13,6 +13,7 @@
   --maladum-red: #8B0000;
   --accent-gold: #c5a572; /* Spec name for --maladum-gold */
   --accent-green: #1b5e20;
+  --relic-bg: #EBD9BF; /* light parchment-gold blend */
 
   /* Additional useful variables from Event Cards styles.css */
   --dark-bg: #121212; /* Main body background in Event Cards */
