@@ -158,17 +158,24 @@ export function renderAllItemsView(items, inventory, favourites) {
       }
 
       return `
-        <div class="item-card border-b py-3">
-          <div class="flex justify-between items-center">
-            <div class="flex items-center">
-              <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-10 h-10 mr-3 cursor-pointer">
-              <span class="font-semibold text-base">${item.name}</span>
-            </div>
-            <button data-fav="${item.name}" data-view="all" class="text-2xl p-1">${starred}</button>
+        <div class="item-card border-b py-3 flex items-start">
+          {/* Left Column: Icon */}
+          <div class="w-12 mr-3 flex-shrink-0">
+            <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-10 h-10 cursor-pointer">
           </div>
-          <div class="pl-13 pr-1"> <!-- Indent resource details to align with item name -->
-            ${requiredResourcesHtml}
-            ${missingResourcesHtml}
+
+          {/* Middle Column: Item Name, Requirements */}
+          <div class="flex-grow mr-3">
+            <div class="font-semibold text-base mb-1">${item.name}</div>
+            <div class="text-xs">
+              ${requiredResourcesHtml}
+              ${missingResourcesHtml}
+            </div>
+          </div>
+
+          {/* Right Column: Favourite Button */}
+          <div class="w-10 flex-shrink-0 flex justify-center items-start pt-1">
+            <button data-fav="${item.name}" data-view="all" class="text-2xl p-1">${starred}</button>
           </div>
         </div>`;
     })
@@ -224,15 +231,26 @@ export function renderCraftableItemsView(items, inventory, favourites) {
       const starred = favourites.includes(item.name) ? '⭐' : '☆';
       const iconPath = `images/tokens/${item.resources.icon}`;
       return `
-        <div class="flex justify-between items-center border-b py-1">
-          <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-8 h-8 mr-2 cursor-pointer">
-          <span class="flex-grow">${item.name}</span>
-          <button data-fav="${item.name}" data-view="craftable" class="text-xl">${starred}</button>
+        <div class="item-card border-b py-2 flex items-center">
+          {/* Left Column: Icon */}
+          <div class="w-10 mr-2 flex-shrink-0">
+            <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-8 h-8 cursor-pointer">
+          </div>
+
+          {/* Middle Column: Item Name */}
+          <div class="flex-grow mr-2">
+            <span class="text-sm">${item.name}</span>
+          </div>
+
+          {/* Right Column: Favourite Button */}
+          <div class="w-8 flex-shrink-0 flex justify-center">
+            <button data-fav="${item.name}" data-view="craftable" class="text-xl p-1">${starred}</button>
+          </div>
         </div>`;
     })
     .join('');
 
-  list.querySelectorAll('button[data-fav]').forEach(btn => {
+  listContainer.querySelectorAll('button[data-fav]').forEach(btn => {
     btn.addEventListener('click', () => {
       const name = btn.dataset.fav;
       toggleFavourite(name); // favs are reloaded by the render function
