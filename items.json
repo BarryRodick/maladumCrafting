@@ -9,8 +9,8 @@
       "T": 1,
       "icon": "net_arrows.png"
     },
-    "total_cost": 2,
-    "relic": 0
+    "relic": 0,
+    "price": 2
   },
   {
     "name": "Arrow - Viscous/Sharp",
@@ -22,8 +22,8 @@
       "S": 1,
       "icon": "barbed_arrows.png"
     },
-    "total_cost": 3,
-    "relic": 0
+    "relic": 0,
+    "price": 3
   },
   {
     "name": "Arrow - Poison/Sharp",
@@ -35,8 +35,8 @@
       "V": 1,
       "icon": "poison_arrows.png"
     },
-    "total_cost": 2,
-    "relic": 0
+    "relic": 0,
+    "price": 2
   },
   {
     "name": "Magic Potion",
@@ -48,8 +48,8 @@
       "F": 2,
       "icon": "potion_of_acuity_crafted.png"
     },
-    "total_cost": 14,
-    "relic": 0
+    "relic": 0,
+    "price": 4
   },
   {
     "name": "Health Potion",
@@ -61,8 +61,8 @@
       "F": 1,
       "icon": "healing_elixir_crafted.png"
     },
-    "total_cost": 15,
-    "relic": 0
+    "relic": 0,
+    "price": 5
   },
   {
     "name": "Arrow - Hawkeye/Sharp",
@@ -74,8 +74,8 @@
       "G": 1,
       "icon": "homing_arrows.png"
     },
-    "total_cost": 18,
-    "relic": 0
+    "relic": 0,
+    "price": 2
   },
   {
     "name": "Skill Potion",
@@ -88,8 +88,8 @@
       "M": 1,
       "icon": "tonic_of_furor_crafted.png"
     },
-    "total_cost": 11,
-    "relic": 0
+    "relic": 0,
+    "price": 6
   },
   {
     "name": "Ethereal Edge",
@@ -102,8 +102,8 @@
       "N": 2,
       "icon": "ethereal_edge.png"
     },
-    "total_cost": 10,
-    "relic": 0
+    "relic": 0,
+    "price": 10
   },
   {
     "name": "Shilielagh",
@@ -115,8 +115,8 @@
       "M": 1,
       "icon": "shillelagh.png"
     },
-    "total_cost": 15,
-    "relic": 0
+    "relic": 0,
+    "price": 11
   },
   {
     "name": "Mighty Brew",
@@ -129,8 +129,8 @@
       "V": 1,
       "icon": "mighty_brew.png"
     },
-    "total_cost": 5,
-    "relic": 0
+    "relic": 0,
+    "price": 5
   },
   {
     "name": "Cordial of Cognisance",
@@ -142,8 +142,8 @@
       "R": 1,
       "icon": "cordial_of_cognisance.png"
     },
-    "total_cost": 14,
-    "relic": 0
+    "relic": 0,
+    "price": 7
   },
   {
     "name": "Bullet - Burning",
@@ -155,8 +155,8 @@
       "I": 1,
       "icon": "explosive_bullets.png"
     },
-    "total_cost": 3,
-    "relic": 0
+    "relic": 0,
+    "price": 3
   },
   {
     "name": "Honed Leather Armour",
@@ -168,8 +168,8 @@
       "R": 1,
       "icon": "honed_leather_armour.png"
     },
-    "total_cost": 12,
-    "relic": 0
+    "relic": 0,
+    "price": 12
   },
   {
     "name": "Hat of Cunning",
@@ -181,8 +181,8 @@
       "A": 1,
       "icon": "hat_of_cunning.png"
     },
-    "total_cost": 25,
-    "relic": 0
+    "relic": 0,
+    "price": 2
   },
   {
     "name": "Action Poition",
@@ -195,8 +195,8 @@
       "B": 1,
       "icon": "action_potion.png"
     },
-    "total_cost": 19,
-    "relic": 0
+    "relic": 0,
+    "price": 4
   },
   {
     "name": "Dreamers Draught",
@@ -210,8 +210,8 @@
       "N": 1,
       "icon": "dreamers_draught.png"
     },
-    "total_cost": 18,
-    "relic": 0
+    "relic": 0,
+    "price": 8
   },
   {
     "name": "Horned War Axe",
@@ -224,8 +224,8 @@
       "K": 1,
       "icon": "honed_war_axe.png"
     },
-    "total_cost": 24,
-    "relic": 0
+    "relic": 0,
+    "price": 11
   },
   {
     "name": "Spiked Armour",
@@ -237,8 +237,8 @@
       "T": 1,
       "icon": "spiked_armour.png"
     },
-    "total_cost": 14,
-    "relic": 0
+    "relic": 0,
+    "price": 14
   },
   {
     "name": "Honed Long Sword",
@@ -251,8 +251,8 @@
       "K": 1,
       "icon": "honed_long_sword.png"
     },
-    "total_cost": 21,
-    "relic": 0
+    "relic": 0,
+    "price": 8
   },
   {
     "name": "Eld Short Bow",
@@ -265,8 +265,8 @@
       "G": 1,
       "icon": "eld_short_bow.png"
     },
-    "total_cost": 25,
-    "relic": 0
+    "relic": 0,
+    "price": 9
   },
   {
     "name": "Potion of Finesse",
@@ -279,8 +279,8 @@
       "G": 1,
       "icon": "potion_of_finesse.png"
     },
-    "total_cost": 22,
-    "relic": 0
+    "relic": 0,
+    "price": 6
   },
   {
     "name": "Starstrike Flail",
@@ -293,8 +293,8 @@
       "R": 1,
       "icon": "starstrike_flail.png"
     },
-    "total_cost": 14,
-    "relic": 0
+    "relic": 0,
+    "price": 14
   },
   {
     "name": "Herbalist's Cloak",
@@ -308,8 +308,8 @@
       "V": 1,
       "icon": "herbalists_cloak.png"
     },
-    "total_cost": 12,
-    "relic": 0
+    "relic": 0,
+    "price": 7
   },
   {
     "name": "Mastercrafted Bow",
@@ -322,8 +322,8 @@
       "R": 1,
       "icon": "mastercrafted_bow.png"
     },
-    "total_cost": 21,
-    "relic": 0
+    "relic": 0,
+    "price": 17
   },
   {
     "name": "Curative Cuirass",
@@ -336,8 +336,8 @@
       "H": 2,
       "icon": "curative_cuirass.png"
     },
-    "total_cost": 23,
-    "relic": 0
+    "relic": 0,
+    "price": 18
   },
   {
     "name": "Wardweaver's Nip",
@@ -349,8 +349,8 @@
       "E": 1,
       "icon": "wardweavers_nip.png"
     },
-    "total_cost": 40,
-    "relic": 0
+    "relic": 0,
+    "price": 5
   },
   {
     "name": "Crafted Great Axe",
@@ -364,8 +364,8 @@
       "R": 1,
       "icon": "crafted_great_axe.png"
     },
-    "total_cost": 14,
-    "relic": 0
+    "relic": 0,
+    "price": 14
   },
   {
     "name": "Crafted Great Sword",
@@ -377,8 +377,8 @@
       "R": 1,
       "icon": "crafted_great_sword.png"
     },
-    "total_cost": 13,
-    "relic": 0
+    "relic": 0,
+    "price": 13
   },
   {
     "name": "Viperfang",
@@ -391,8 +391,8 @@
       "V": 2,
       "icon": "viperfang.png"
     },
-    "total_cost": 20,
-    "relic": 0
+    "relic": 0,
+    "price": 11
   },
   {
     "name": "Disarming Staff",
@@ -405,8 +405,8 @@
       "B": 1,
       "icon": "disarming_staff.png"
     },
-    "total_cost": 38,
-    "relic": 0
+    "relic": 0,
+    "price": 6
   },
   {
     "name": "Destiny's Tincture",
@@ -419,8 +419,8 @@
       "A": 1,
       "icon": "destinys_tincture.png"
     },
-    "total_cost": 36,
-    "relic": 0
+    "relic": 0,
+    "price": 8
   },
   {
     "name": "Keltic Falchion",
@@ -433,8 +433,8 @@
       "K": 1,
       "icon": "keltic_falchion.png"
     },
-    "total_cost": 26,
-    "relic": 0
+    "relic": 0,
+    "price": 13
   },
   {
     "name": "Blitz-Hammer",
@@ -448,8 +448,8 @@
       "B": 1,
       "icon": "blitz_hammer.png"
     },
-    "total_cost": 23,
-    "relic": 0
+    "relic": 0,
+    "price": 8
   },
   {
     "name": "Makeshift Wings",
@@ -462,8 +462,8 @@
       "A": 1,
       "icon": "makeshift_wings.png"
     },
-    "total_cost": 31,
-    "relic": 0
+    "relic": 0,
+    "price": 8
   },
   {
     "name": "Sentient Scimitar",
@@ -476,8 +476,8 @@
       "G": 1,
       "icon": "sentient_scimitar.png"
     },
-    "total_cost": 30,
-    "relic": 0
+    "relic": 0,
+    "price": 14
   },
   {
     "name": "Warrior Totem",
@@ -491,8 +491,8 @@
       "I": 1,
       "icon": "warrior_totem.png"
     },
-    "total_cost": 8,
-    "relic": 0
+    "relic": 0,
+    "price": 8
   },
   {
     "name": "Sacrificium",
@@ -506,8 +506,8 @@
       "N": 1,
       "icon": "sacrificium.png"
     },
-    "total_cost": 35,
-    "relic": 0
+    "relic": 0,
+    "price": 5
   },
   {
     "name": "Keltmail Armour",
@@ -520,8 +520,8 @@
       "K": 2,
       "icon": "keltmail_armour.png"
     },
-    "total_cost": 36,
-    "relic": 0
+    "relic": 0,
+    "price": 10
   },
   {
     "name": "Arcane Steel",
@@ -534,8 +534,8 @@
       "G": 1,
       "icon": "arcane_steel.png"
     },
-    "total_cost": 39,
-    "relic": 0
+    "relic": 0,
+    "price": 10
   },
   {
     "name": "Crafted Breastplate Amour",
@@ -548,8 +548,8 @@
       "R": 1,
       "icon": "crafted_breastplate_armour.png"
     },
-    "total_cost": 17,
-    "relic": 0
+    "relic": 0,
+    "price": 17
   },
   {
     "name": "Bewitched Blade",
@@ -562,8 +562,8 @@
       "G": 1,
       "icon": "bewitched_blade.png"
     },
-    "total_cost": 32,
-    "relic": 0
+    "relic": 0,
+    "price": 16
   },
   {
     "name": "Calamitous Caber",
@@ -576,8 +576,8 @@
       "A": 1,
       "icon": "calamitous_caber.png"
     },
-    "total_cost": 41,
-    "relic": 0
+    "relic": 0,
+    "price": 10
   },
   {
     "name": "Reaper's Riposte",
@@ -590,8 +590,8 @@
       "A": 1,
       "icon": "reapers_riposte.png"
     },
-    "total_cost": 35,
-    "relic": 0
+    "relic": 0,
+    "price": 12
   },
   {
     "name": "Bladed Shield",
@@ -605,8 +605,8 @@
       "B": 1,
       "icon": "bladed_shield.png"
     },
-    "total_cost": 41,
-    "relic": 0
+    "relic": 0,
+    "price": 13
   },
   {
     "name": "Spelleater",
@@ -619,8 +619,8 @@
       "G": 1,
       "icon": "spelleater.png"
     },
-    "total_cost": 47,
-    "relic": 0
+    "relic": 0,
+    "price": 10
   },
   {
     "name": "Necrotic Censor",
@@ -635,8 +635,8 @@
       "G": 1,
       "icon": "necrotic_censor.png"
     },
-    "total_cost": 27,
-    "relic": 0
+    "relic": 0,
+    "price": 11
   },
   {
     "name": "Liberator Of Souls",
@@ -650,8 +650,8 @@
       "N": 2,
       "icon": "liberator_of_souls.png"
     },
-    "total_cost": 52,
-    "relic": 0
+    "relic": 0,
+    "price": 13
   },
   {
     "name": "Mechanical Musket",
@@ -666,8 +666,8 @@
       "G": 1,
       "icon": "mechanical_musket.png"
     },
-    "total_cost": 34,
-    "relic": 0
+    "relic": 0,
+    "price": 18
   },
   {
     "name": "Blade of Momentum",
@@ -681,8 +681,8 @@
       "G": 1,
       "icon": "blade_of_momentum.png"
     },
-    "total_cost": 46,
-    "relic": 0
+    "relic": 0,
+    "price": 15
   },
   {
     "name": "Adamantine Elixir",
@@ -696,8 +696,8 @@
       "I": 1,
       "icon": "adamantine_elixir.png"
     },
-    "total_cost": 24,
-    "relic": 0
+    "relic": 0,
+    "price": 9
   },
   {
     "name": "Vampiric Blade",
@@ -712,8 +712,8 @@
       "N": 1,
       "icon": "vampiric_blade.png"
     },
-    "total_cost": 46,
-    "relic": 0
+    "relic": 0,
+    "price": 15
   },
   {
     "name": "Robes Of Invulnerability",
@@ -727,8 +727,8 @@
       "A": 1,
       "icon": "robes_of_invulnerability.png"
     },
-    "total_cost": 53,
-    "relic": 0
+    "relic": 0,
+    "price": 15
   },
   {
     "name": "Cloak Of Cloning",
@@ -742,8 +742,8 @@
       "E": 1,
       "icon": "cloak_of_cloning.png"
     },
-    "total_cost": 39,
-    "relic": 0
+    "relic": 0,
+    "price": 9
   },
   {
     "name": "Anyssal Trophy",
@@ -757,8 +757,8 @@
       "N": 1,
       "icon": "anyssal_trophy.png"
     },
-    "total_cost": 71,
-    "relic": 7
+    "relic": 7,
+    "price": 28
   },
   {
     "name": "Protection Orb",
@@ -772,8 +772,8 @@
       "E": 1,
       "icon": "protection_orb.png"
     },
-    "total_cost": 68,
-    "relic": 0
+    "relic": 0,
+    "price": 12
   },
   {
     "name": "Daemon Mantle",
@@ -787,8 +787,8 @@
       "B": 2,
       "icon": "daemon_mantle.png"
     },
-    "total_cost": 63,
-    "relic": 5
+    "relic": 5,
+    "price": 28
   },
   {
     "name": "Hellfire Blade",
@@ -802,8 +802,8 @@
       "I": 2,
       "icon": "hellfire_blade.png"
     },
-    "total_cost": 46,
-    "relic": 0
+    "relic": 0,
+    "price": 12
   },
   {
     "name": "Sword Of Tephysus",
@@ -817,8 +817,8 @@
       "B": 1,
       "icon": "sword_of_tephysus.png"
     },
-    "total_cost": 69,
-    "relic": 1
+    "relic": 1,
+    "price": 28
   },
   {
     "name": "Soul Siphon",
@@ -833,8 +833,8 @@
       "I": 1,
       "icon": "soul_siphon.png"
     },
-    "total_cost": 44,
-    "relic": 3
+    "relic": 3,
+    "price": 28
   },
   {
     "name": "Astral Arbiter",
@@ -849,8 +849,8 @@
       "E": 1,
       "icon": "astral_arbiter.png"
     },
-    "total_cost": 77,
-    "relic": 0
+    "relic": 0,
+    "price": 19
   },
   {
     "name": "Natures Fury",
@@ -864,8 +864,8 @@
       "A": 1,
       "icon": "nature_s_fury.png"
     },
-    "total_cost": 73,
-    "relic": 6
+    "relic": 6,
+    "price": 28
   },
   {
     "name": "Sceptre of Domion",
@@ -878,8 +878,8 @@
       "A": 1,
       "icon": "sceptre_of_dominion.png"
     },
-    "total_cost": 83,
-    "relic": 4
+    "relic": 4,
+    "price": 28
   },
   {
     "name": "Refined Robes",
@@ -893,8 +893,8 @@
       "E": 2,
       "icon": "refined_robes.png"
     },
-    "total_cost": 79,
-    "relic": 0
+    "relic": 0,
+    "price": 24
   },
   {
     "name": "Acendant Blades",
@@ -909,8 +909,8 @@
       "E": 1,
       "icon": "acendant_blades.png"
     },
-    "total_cost": 66,
-    "relic": 10
+    "relic": 10,
+    "price": 28
   },
   {
     "name": "Uncanny Oculus",
@@ -925,8 +925,8 @@
       "N": 1,
       "icon": "uncanny_oculus.png"
     },
-    "total_cost": 69,
-    "relic": 8
+    "relic": 8,
+    "price": 28
   },
   {
     "name": "Light In The Darkness",
@@ -941,8 +941,8 @@
       "N": 1,
       "icon": "light_in_the_darkness.png"
     },
-    "total_cost": 92,
-    "relic": 9
+    "relic": 9,
+    "price": 28
   },
   {
     "name": "Grail of the Gods",
@@ -957,7 +957,7 @@
       "E": 1,
       "icon": "grail_of_the_gods.png"
     },
-    "total_cost": 69,
-    "relic": 2
+    "relic": 2,
+    "price": 28
   }
 ]
