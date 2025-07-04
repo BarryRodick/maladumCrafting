@@ -288,6 +288,20 @@ input[type="number"] {
   object-fit: contain; /* Ensure icon aspect ratio is maintained */
 }
 
+.rarity-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid #333;
+}
+
+.rarity-common { background-color: green; }
+.rarity-uncommon { background-color: yellow; }
+.rarity-rare { background-color: lightblue; }
+
 /* Styles for the icon zoom modal */
 .icon-modal {
   position: fixed;

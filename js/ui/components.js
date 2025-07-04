@@ -8,6 +8,31 @@ import { applyTheme } from './theme.js';
 let cachedMaterials = [];
 let cachedItems = [];
 
+const rarityOrder = { Common: 1, Uncommon: 2, Rare: 3 };
+
+function calculateItemRarity(item) {
+  let current = 'Common';
+  Object.entries(item.resources).forEach(([sym]) => {
+    if (sym === 'icon') return;
+    const mat = cachedMaterials.find(m => m.symbol === sym);
+    if (mat && rarityOrder[mat.rarity] > rarityOrder[current]) {
+      current = mat.rarity;
+    }
+  });
+  return current;
+}
+
+function rarityClass(rarity) {
+  switch (rarity) {
+    case 'Rare':
+      return 'rarity-rare';
+    case 'Uncommon':
+      return 'rarity-uncommon';
+    default:
+      return 'rarity-common';
+  }
+}
+
 export function renderHome(materials, items) {
   cachedMaterials = materials;
   cachedItems = items;
@@ -182,21 +207,25 @@ export function renderAllItemsView(items, inventory, favourites) {
         }
       }
 
+      const rarityCls = rarityClass(calculateItemRarity(item));
       return `
         <div class="card fade-in flex flex-col" style="animation-delay: ${index * 75}ms">
           <div class="p-3">
             <div class="flex items-start mb-2">
-              <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-10 h-10 mr-3 cursor-pointer rounded">
-              <h3 class="font-heading text-lg flex-grow">${item.name}</h3>
-              <button data-fav="${item.name}" data-view="all" class="text-2xl p-1 hover:text-yellow-400 transition-colors">${starred}</button>
-            </div>
-              <div class="text-sm space-y-1">
-                <p><strong class="font-semibold">Requires:</strong> ${required || 'None'}</p>
-                <p><strong class="font-semibold">Missing:</strong> <span class="${missingText === 'None' ? '' : 'text-red-500'}">${missingText}</span></p>
+              <h3 class="font-heading text-lg flex-grow text-black">${item.name}</h3>
+              <button data-fav="${item.name}" data-view="all" class="text-2xl p-1 hover:text-yellow-400 transition-colors mr-2">${starred}</button>
+              <div class="relative">
+                <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-12 h-12 cursor-pointer rounded">
+                <span class="rarity-badge ${rarityCls}"></span>
               </div>
             </div>
+            <div class="text-sm space-y-1">
+              <p><strong class="font-semibold">Requires:</strong> ${required || 'None'}</p>
+              <p><strong class="font-semibold">Missing:</strong> <span class="${missingText === 'None' ? '' : 'text-red-500'}">${missingText}</span></p>
+            </div>
           </div>
-        `;
+        </div>
+      `;
     })
     .join('');
 
@@ -260,13 +289,17 @@ export function renderCraftableItemsView(items, inventory, favourites) {
         .map(([sym, qty]) => `${sym}: ${qty}`)
         .join(', ');
 
+      const rarityCls = rarityClass(calculateItemRarity(item));
       return `
         <div class="card fade-in flex flex-col" style="animation-delay: ${index * 75}ms">
           <div class="p-3">
             <div class="flex items-start mb-2">
-              <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-10 h-10 mr-3 cursor-pointer rounded">
-              <h3 class="font-heading text-lg flex-grow">${item.name}</h3>
-              <button data-fav="${item.name}" data-view="craftable" class="text-2xl p-1 hover:text-yellow-400 transition-colors">${starred}</button>
+              <h3 class="font-heading text-lg flex-grow text-black">${item.name}</h3>
+              <button data-fav="${item.name}" data-view="craftable" class="text-2xl p-1 hover:text-yellow-400 transition-colors mr-2">${starred}</button>
+              <div class="relative">
+                <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-12 h-12 cursor-pointer rounded">
+                <span class="rarity-badge ${rarityCls}"></span>
+              </div>
             </div>
             <div class="text-sm space-y-1">
               <p><strong class="font-semibold">Requires:</strong> ${required || 'None'}</p>
