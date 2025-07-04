@@ -46,7 +46,7 @@
     "resources": {
       "H": 1,
       "F": 2,
-      "icon": "magic_potion.png"
+      "icon": "potion_of_acuity_crafted.png"
     },
     "total_cost": 14,
     "relic": 0
@@ -59,7 +59,7 @@
     "resources": {
       "H": 2,
       "F": 1,
-      "icon": "health_potion.png"
+      "icon": "healing_elixir_crafted.png"
     },
     "total_cost": 15,
     "relic": 0
@@ -86,7 +86,7 @@
       "H": 1,
       "F": 1,
       "M": 1,
-      "icon": "skill_potion.png"
+      "icon": "tonic_of_furor_crafted.png"
     },
     "total_cost": 11,
     "relic": 0
@@ -172,14 +172,14 @@
     "relic": 0
   },
   {
-    "name": "Hat*",
+    "name": "Hat of Cunning",
     "expansion": "Of Ale and Adventure",
     "type": "Armour",
     "size": "XS",
     "resources": {
       "T": 1,
       "A": 1,
-      "icon": "hat.png"
+      "icon": "hat_of_cunning.png"
     },
     "total_cost": 25,
     "relic": 0
