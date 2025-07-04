@@ -10,14 +10,14 @@ A **mobile‑first**, completely **static** web tool (deployed via **GitHub Pag
 | ------------------- | ----------------------------------------------------------------- |
 | **Solo skirmisher** | Track a single hero’s growing stash on a phone during game nights |
 | **Campaign host**   | Keep party‑wide stock on a tablet and share the screen            |
-| **Collector**       | Explore “what‑if” builds, bookmark dream gear and calculate costs |
+| **Collector**       | Explore “what‑if” builds, bookmark dream gear and calculate prices |
 
 ## 3 Core Feature List
 
 * **Inventory manager** – add/remove material counts
 * **Craftable list** – live filter of all items you can currently build
 * **Favourites / wish‑list** – star items and highlight deficits
-* **Missing‑material breakdown** – consolidated shopping list with rarity & estimated cost
+* **Missing‑material breakdown** – consolidated shopping list with rarity & estimated price
 * **Advanced filters** – by expansion, item type, size, relic requirement, rarity
 * **Item detail panel** – art, description, full recipe, alternative recipes if variants exist
 * **Relic & token tracking** – show token needs distinctly from normal materials
@@ -35,7 +35,7 @@ A **mobile‑first**, completely **static** web tool (deployed via **GitHub Pag
 ### 4.2 Crafting Suggestions
 
 * Re‑computes instantly on every inventory change
-* Sort presets: *Alphabetical*, *Fewest materials left*, *Highest relic value*, *Cost ascending*
+* Sort presets: *Alphabetical*, *Fewest materials left*, *Highest relic value*, *Price ascending*
 
 ### 4.3 Favourites & Wish‑List
 
@@ -51,12 +51,12 @@ A **mobile‑first**, completely **static** web tool (deployed via **GitHub Pag
 | Name   | rarity colour dot                          |
 | Needed | aggregated shortfall across favourites     |
 | In Bag | current inventory count                    |
-| Cost   | `needed × base_cost` from `materials.json` |
+| Price  | `needed × base_cost` from `materials.json` |
 
-### 4.5 Item Detail & Costs
+### 4.5 Item Detail & Prices
 
 * Pulls recipe from `items.json` fileciteturn0file1 and material metadata from `materials.json` fileciteturn0file0
-* Shows **total\_cost** for reference; optional *dynamic cost* if house‑rules allow variable pricing
+* Shows **price** for reference; optional *dynamic pricing* if house‑rules allow variable pricing
 
 ### 4.6 Filters & Sorting
 
@@ -82,7 +82,7 @@ Separate counters for **relics** and **tokens** used by rare materials/items.
 ### 4.10 Settings / Preferences
 
 * Toggle dark‑mode
-* Choose currency symbol / region cost formatting
+* Choose currency symbol / region price formatting
 * Confirm before clearing inventory
 
 ## 5 Data Model
@@ -102,7 +102,7 @@ classDiagram
     string type
     string size
     Map<String,int> resources  // symbol→qty
-    number total_cost
+    number price
     int relic
   }
   class UserInventory {
