@@ -312,20 +312,6 @@
     "relic": 0
   },
   {
-    "name": "Mastercrafted Box",
-    "expansion": "Of Ale and Adventure",
-    "type": "Weapon",
-    "size": "L",
-    "resources": {
-      "W": 2,
-      "T": 1,
-      "R": 1,
-      "icon": "mastercrafted_box.png"
-    },
-    "total_cost": 21,
-    "relic": 0
-  },
-  {
     "name": "Mastercrafted Bow",
     "expansion": "Of Ale and Adventure",
     "type": "Weapon",
