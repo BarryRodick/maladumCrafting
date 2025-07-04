@@ -111,75 +111,60 @@ export function renderAllItemsView(items, inventory, favourites) {
   const listContainer = document.getElementById('itemsListContainer');
   if (!listContainer) return;
 
-  listContainer.innerHTML = items
+  const rowsHtml = items
     .map(item => {
       const starred = favourites.includes(item.name) ? '⭐' : '☆';
       const iconPath = `images/tokens/${item.resources.icon}`;
-      const resourcesNeeded = Object.entries(item.resources).filter(([sym, qty]) => sym !== 'icon');
+      const resourcesNeeded = Object.entries(item.resources).filter(([sym]) => sym !== 'icon');
 
-      let requiredResourcesHtml = '';
-      if (resourcesNeeded.length > 0) {
-        requiredResourcesHtml = `
-          <div class="mt-2 text-xs">
-            <strong class="font-semibold text-gray-700 dark:text-gray-300">Requires:</strong>
-            <ul class="list-disc list-inside ml-2 mt-1 space-y-0.5">`;
-        resourcesNeeded.forEach(([sym, qty]) => {
-          requiredResourcesHtml += `<li class="text-gray-600 dark:text-gray-400">${sym}: ${qty}</li>`;
-        });
-        requiredResourcesHtml += '</ul></div>';
-      }
+      const required = resourcesNeeded
+        .map(([sym, qty]) => `${sym}: ${qty}`)
+        .join(', ');
 
-      let missingResourcesHtml = '';
+      let missingText = 'None';
       if (resourcesNeeded.length > 0) {
         const missing = [];
         resourcesNeeded.forEach(([sym, qty]) => {
           const currentQty = inventory[sym] || 0;
           if (currentQty < qty) {
-            missing.push({ sym, needed: qty, has: currentQty });
+            missing.push(`${sym}: ${qty - currentQty}`);
           }
         });
-
         if (missing.length > 0) {
-          missingResourcesHtml = `
-            <div class="mt-1 text-xs">
-              <strong class="font-semibold text-red-600 dark:text-red-400">Missing:</strong>
-              <ul class="list-disc list-inside ml-2 mt-1 space-y-0.5">`;
-          missing.forEach(m => {
-            missingResourcesHtml += `<li class="text-red-500 dark:text-red-400">${m.sym}: ${m.needed - m.has} (You have ${m.has})</li>`;
-          });
-          missingResourcesHtml += '</ul></div>';
-        } else {
-          missingResourcesHtml = `
-            <div class="mt-1 text-xs">
-              <strong class="font-semibold text-green-600 dark:text-green-400">Missing:</strong>
-              <span class="ml-1 text-green-500 dark:text-green-400">None</span>
-            </div>`;
+          missingText = missing.join(', ');
         }
       }
 
       return `
-        <div class="item-card border-b py-3 flex items-start">
-          {/* Left Column: Icon */}
-          <div class="w-12 mr-3 flex-shrink-0">
-            <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-10 h-10 cursor-pointer">
-          </div>
-
-          {/* Middle Column: Item Name, Requirements */}
-          <div class="flex-grow mr-3">
-            <div class="font-semibold text-base mb-1">${item.name}</div>
-            <div class="text-xs">
-              ${requiredResourcesHtml}
-              ${missingResourcesHtml}
-            </div>
-          </div>
-
-          {/* Right Column: Favourite Button */}
-          <div class="w-10 flex-shrink-0 flex justify-center items-start pt-1">
-            <button data-fav="${item.name}" data-view="all" class="text-2xl p-1">${starred}</button>
-          </div>
-        </div>`;
+        <tr class="border-b">
+          <td class="p-2">
+            <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-8 h-8 cursor-pointer">
+          </td>
+          <td class="p-2">${item.name}</td>
+          <td class="p-2 text-sm">${required}</td>
+          <td class="p-2 text-sm">${missingText}</td>
+          <td class="p-2 text-center">
+            <button data-fav="${item.name}" data-view="all" class="text-xl p-1">${starred}</button>
+          </td>
+        </tr>`;
     })
     .join('');
+
+  listContainer.innerHTML = `
+    <table class="item-table min-w-full text-left text-sm">
+      <thead class="border-b font-semibold">
+        <tr>
+          <th class="p-2">Icon</th>
+          <th class="p-2">Item</th>
+          <th class="p-2">Requires</th>
+          <th class="p-2">Missing</th>
+          <th class="p-2 text-center">Fav</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rowsHtml}
+      </tbody>
+    </table>`;
 
   listContainer.querySelectorAll('button[data-fav]').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -259,7 +244,7 @@ export function renderCraftableItemsView(items, inventory, favourites) {
     });
   });
 
-  list.querySelectorAll('.item-icon').forEach(icon => {
+  listContainer.querySelectorAll('.item-icon').forEach(icon => {
     icon.addEventListener('click', () => {
       const modal = document.createElement('div');
       modal.classList.add('icon-modal');
