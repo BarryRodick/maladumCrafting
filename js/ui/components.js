@@ -19,16 +19,32 @@ export function renderHome(materials, items) {
   app.innerHTML = `
     <header class="app-header flex justify-between items-center">
       <h1 class="app-title">Maladum Crafting</h1>
-      <button id="settingsBtn" class="btn">⚙️</button>
+      <div>
+        <button id="viewToggleBtn" class="btn mr-2">All Items</button>
+        <button id="settingsBtn" class="btn">⚙️</button>
+      </div>
     </header>
     <main class="app-main">
       <div id="materialsGrid" class="mb-4"></div>
-      <div id="craftableList"></div>
+      <div id="itemsListContainer"></div> {/* Container for both lists */}
     </main>
   `;
 
   renderMaterialsGrid(cachedMaterials, inventory);
-  renderCraftableList(cachedItems, inventory, favourites);
+  // Default to showing craftable items
+  renderCraftableItemsView(cachedItems, inventory, favourites);
+
+  const viewToggleBtn = document.getElementById('viewToggleBtn');
+  viewToggleBtn.addEventListener('click', () => {
+    const currentView = viewToggleBtn.textContent;
+    if (currentView === 'All Items') {
+      renderAllItemsView(cachedItems, loadInventory(), loadFavourites());
+      viewToggleBtn.textContent = 'Craftable';
+    } else {
+      renderCraftableItemsView(cachedItems, loadInventory(), loadFavourites());
+      viewToggleBtn.textContent = 'All Items';
+    }
+  });
 
   const settingsBtn = document.getElementById('settingsBtn');
   if (settingsBtn) {
@@ -65,8 +81,13 @@ export function renderMaterialsGrid(materials, inventory) {
       const sym = btn.dataset.symbol;
       const inv = updateInventory(sym, 1);
       renderMaterialsGrid(cachedMaterials, inv);
-      const favs = loadFavourites();
-      renderCraftableList(cachedItems, inv, favs);
+      // Update current view after inventory change
+      const viewToggleBtn = document.getElementById('viewToggleBtn');
+      if (viewToggleBtn.textContent === 'Craftable') { // This means "All Items" is active
+        renderAllItemsView(cachedItems, inv, loadFavourites());
+      } else { // This means "Craftable" is active
+        renderCraftableItemsView(cachedItems, inv, loadFavourites());
+      }
     });
   });
 
@@ -75,24 +96,104 @@ export function renderMaterialsGrid(materials, inventory) {
       const sym = btn.dataset.symbol;
       const inv = updateInventory(sym, -1);
       renderMaterialsGrid(cachedMaterials, inv);
-      const favs = loadFavourites();
-      renderCraftableList(cachedItems, inv, favs);
+      // Update current view after inventory change
+      const viewToggleBtn = document.getElementById('viewToggleBtn');
+      if (viewToggleBtn.textContent === 'Craftable') { // This means "All Items" is active
+        renderAllItemsView(cachedItems, inv, loadFavourites());
+      } else { // This means "Craftable" is active
+        renderCraftableItemsView(cachedItems, inv, loadFavourites());
+      }
     });
   });
 }
 
-export function renderCraftableList(items, inventory, favourites) {
-  const list = document.getElementById('craftableList');
-  if (!list) return;
+export function renderAllItemsView(items, inventory, favourites) {
+  const listContainer = document.getElementById('itemsListContainer');
+  if (!listContainer) return;
+
+  listContainer.innerHTML = items
+    .map(item => {
+      const starred = favourites.includes(item.name) ? '⭐' : '☆';
+      const iconPath = `images/tokens/${item.resources.icon}`;
+      let missingResourcesHtml = '';
+      const resourcesNeeded = Object.entries(item.resources).filter(([sym, qty]) => sym !== 'icon');
+
+      if (resourcesNeeded.length > 0) {
+        missingResourcesHtml += '<div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Missing: ';
+        let missingCount = 0;
+        resourcesNeeded.forEach(([sym, qty]) => {
+          const currentQty = inventory[sym] || 0;
+          if (currentQty < qty) {
+            if (missingCount > 0) missingResourcesHtml += ', ';
+            missingResourcesHtml += `${sym} (${currentQty - qty})`;
+            missingCount++;
+          }
+        });
+        if (missingCount === 0) {
+          missingResourcesHtml += 'None';
+        }
+        missingResourcesHtml += '</div>';
+      }
+
+
+      return `
+        <div class="item-card border-b py-2">
+          <div class="flex justify-between items-center">
+            <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-8 h-8 mr-2 cursor-pointer">
+            <span class="flex-grow font-semibold">${item.name}</span>
+            <button data-fav="${item.name}" data-view="all" class="text-xl">${starred}</button>
+          </div>
+          ${missingResourcesHtml}
+        </div>`;
+    })
+    .join('');
+
+  listContainer.querySelectorAll('button[data-fav]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const name = btn.dataset.fav;
+      toggleFavourite(name);
+      // Re-render the current view
+      renderAllItemsView(cachedItems, loadInventory(), loadFavourites());
+    });
+  });
+
+  listContainer.querySelectorAll('.item-icon').forEach(icon => {
+    icon.addEventListener('click', () => {
+      const modal = document.createElement('div');
+      modal.classList.add('icon-modal');
+      modal.innerHTML = `
+        <div class="icon-modal-content">
+          <span class="icon-modal-close">&times;</span>
+          <img src="${icon.src}" alt="${icon.alt}" class="zoomed-icon">
+        </div>
+      `;
+      document.body.appendChild(modal);
+
+      modal.querySelector('.icon-modal-close').addEventListener('click', () => {
+        document.body.removeChild(modal);
+      });
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) { // Only close if clicking on the background
+          document.body.removeChild(modal);
+        }
+      });
+    });
+  });
+}
+
+// Renamed from renderCraftableList
+export function renderCraftableItemsView(items, inventory, favourites) {
+  const listContainer = document.getElementById('itemsListContainer');
+  if (!listContainer) return;
 
   const craftable = getCraftableItems(inventory, items);
 
   if (craftable.length === 0) {
-    list.innerHTML = '<p class="italic text-sm">No craftable items.</p>';
+    listContainer.innerHTML = '<p class="italic text-sm">No craftable items.</p>';
     return;
   }
 
-  list.innerHTML = craftable
+  listContainer.innerHTML = craftable
     .map(item => {
       const starred = favourites.includes(item.name) ? '⭐' : '☆';
       const iconPath = `images/tokens/${item.resources.icon}`;
@@ -100,7 +201,7 @@ export function renderCraftableList(items, inventory, favourites) {
         <div class="flex justify-between items-center border-b py-1">
           <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-8 h-8 mr-2 cursor-pointer">
           <span class="flex-grow">${item.name}</span>
-          <button data-fav="${item.name}" class="text-xl">${starred}</button>
+          <button data-fav="${item.name}" data-view="craftable" class="text-xl">${starred}</button>
         </div>`;
     })
     .join('');
@@ -108,9 +209,9 @@ export function renderCraftableList(items, inventory, favourites) {
   list.querySelectorAll('button[data-fav]').forEach(btn => {
     btn.addEventListener('click', () => {
       const name = btn.dataset.fav;
-      const favs = toggleFavourite(name);
-      const inv = loadInventory();
-      renderCraftableList(cachedItems, inv, favs);
+      toggleFavourite(name); // favs are reloaded by the render function
+      // Re-render the current view
+      renderCraftableItemsView(cachedItems, loadInventory(), loadFavourites());
     });
   });
 
