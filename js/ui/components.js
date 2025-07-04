@@ -45,7 +45,7 @@ function rarityBorderClass(rarity) {
 }
 
 function calculateBuildCost(item, inventory) {
-  let total = 0;
+  let total = item.price || 0;
   Object.entries(item.resources).forEach(([sym, qty]) => {
     if (sym === 'icon') return;
     const have = inventory[sym] || 0;
