@@ -64,7 +64,7 @@ function renderHeaderButtons() {
   if (!headerNav) return;
 
   headerNav.innerHTML = `
-    <button id="viewToggleBtn" class="btn mr-2" data-view="craftable">All Items</button>
+    <button id="viewToggleBtn" class="btn mr-2" data-view="craftable">All Craftable</button>
     <a href="tokens.html" class="btn mr-2">Tokens</a>
     <button id="settingsBtn" class="btn">⚙️ Settings</button>
   `;
@@ -126,7 +126,7 @@ export function renderHome(materials, items) {
       } else {
         renderCraftableItemsView(cachedItems, loadInventory(), loadFavourites());
         viewToggleBtn.dataset.view = 'craftable';
-        viewToggleBtn.textContent = 'All Items';
+        viewToggleBtn.textContent = 'All Craftable';
         if (itemsSectionTitle) itemsSectionTitle.textContent = 'Craftable Items';
       }
     });
