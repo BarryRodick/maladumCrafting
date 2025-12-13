@@ -9,10 +9,69 @@ body {
 }
 
 .app-header {
-  /* background: var(--header-gradient); /* This will be updated later to match Event Cards */
+  padding: 0; /* Removed default padding */
+  background: transparent;
   color: white; /* Or var(--text-primary) */
-  padding: 1rem;
   font-weight: bold; /* Consider using var(--font-heading) if it's a main title */
+  border-bottom: 2px solid var(--accent-gold);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+  position: relative;
+  z-index: 10;
+}
+
+.header-banner {
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), /* Overlay */
+    url("images/parchment-texture.png"), /* Texture */
+    linear-gradient(to bottom, #1a0505, #3a0e0e); /* Dark Red Base */
+  background-blend-mode: overlay, multiply, normal;
+  background-size: cover;
+  padding: 2.5rem 1rem 2rem 1rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Add a gold border at the top of the banner for extra flair */
+.header-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+  opacity: 0.8;
+}
+
+.app-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--accent-gold);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.9), 0 0 10px rgba(197, 165, 114, 0.3);
+  margin: 0;
+  line-height: 1.1;
+}
+
+.app-subtitle {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  color: #e2d1b3; /* Light parchment color */
+  letter-spacing: 0.05em;
+  text-shadow: 0 2px 3px rgba(0,0,0,0.9);
+  margin-top: 0.5rem;
+  opacity: 0.9;
+}
+
+.header-nav-bar {
+  background-color: rgba(20, 20, 20, 0.95);
+  backdrop-filter: blur(4px);
+  padding: 0.75rem 0.5rem;
+  border-top: 1px solid rgba(197, 165, 114, 0.4); /* Low opacity gold */
+  display: flex;
+  justify-content: center;
 }
 
 .app-main {
