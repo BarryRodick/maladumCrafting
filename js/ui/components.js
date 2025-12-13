@@ -364,8 +364,8 @@ export function renderMaterialsGrid(materials, inventory) {
           <div class="mt-auto flex flex-col items-center">
             <div class="text-base my-1 font-bold count">${count}</div>
             <div class="flex space-x-1">
-              <button class="btn btn-sm" data-action="dec" data-symbol="${m.symbol}">–</button>
-              <button class="btn btn-sm" data-action="inc" data-symbol="${m.symbol}">+</button>
+              <button class="btn btn-sm" data-action="dec" data-symbol="${m.symbol}" aria-label="Decrease ${m.name} count">–</button>
+              <button class="btn btn-sm" data-action="inc" data-symbol="${m.symbol}" aria-label="Increase ${m.name} count">+</button>
             </div>
           </div>
         </div>`;
