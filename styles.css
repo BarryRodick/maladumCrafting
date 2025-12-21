@@ -3,16 +3,21 @@
 /* Ensure body takes full height and uses theme variables */
 body {
   min-height: 100vh;
-  background-color: var(--dark-bg); /* From theme.css */
-  color: var(--text-primary); /* From theme.css */
-  font-family: var(--font-body); /* From theme.css */
+  background-color: var(--dark-bg);
+  /* From theme.css */
+  color: var(--text-primary);
+  /* From theme.css */
+  font-family: var(--font-body);
+  /* From theme.css */
 }
 
 .app-header {
   /* background: var(--header-gradient); /* This will be updated later to match Event Cards */
-  color: white; /* Or var(--text-primary) */
+  color: white;
+  /* Or var(--text-primary) */
   padding: 1rem;
-  font-weight: bold; /* Consider using var(--font-heading) if it's a main title */
+  font-weight: bold;
+  /* Consider using var(--font-heading) if it's a main title */
 }
 
 .app-main {
@@ -22,24 +27,32 @@ body {
 /* --- Button Styles --- */
 /* Base .btn (inspired by Event Cards general button, adapted for primary action feel) */
 .btn {
-  display: inline-flex; /* Aligns icon and text nicely */
+  display: inline-flex;
+  /* Aligns icon and text nicely */
   align-items: center;
   justify-content: center;
-  padding: 0.5rem 1rem; /* Default padding */
-  font-family: var(--font-body); /* Default to body font */
+  padding: 0.5rem 1rem;
+  /* Default padding */
+  font-family: var(--font-body);
+  /* Default to body font */
   font-weight: 600;
   text-align: center;
   text-decoration: none;
-  color: var(--text-primary); /* Default white text */
-  background: linear-gradient(135deg, #013801, #001300); /* Darker Green, can be var(--accent-green) based */
-  border: 1px solid var(--accent-gold); /* Gold border for definition */
+  color: var(--text-primary);
+  /* Default white text */
+  background: linear-gradient(135deg, #013801, #001300);
+  /* Darker Green, can be var(--accent-green) based */
+  border: 1px solid var(--accent-gold);
+  /* Gold border for definition */
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.3), inset 0 -1px 1px rgba(255,255,255,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), inset 0 -1px 1px rgba(255, 255, 255, 0.1);
   position: relative;
-  overflow: hidden; /* For ripple if added via JS */
+  overflow: hidden;
+  /* For ripple if added via JS */
   cursor: pointer;
   transition: all 0.2s ease-out;
-  user-select: none; /* Prevent text selection */
+  user-select: none;
+  /* Prevent text selection */
 }
 
 .btn-ghost {
@@ -55,16 +68,20 @@ body {
 }
 
 .btn:hover {
-  background: linear-gradient(135deg, #015701, #002f00); /* Slightly lighter green */
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 -1px 1px rgba(255,255,255,0.05);
+  background: linear-gradient(135deg, #015701, #002f00);
+  /* Slightly lighter green */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), inset 0 -1px 1px rgba(255, 255, 255, 0.05);
   transform: translateY(-1px);
-  color: var(--accent-gold); /* Gold text on hover */
+  color: var(--accent-gold);
+  /* Gold text on hover */
 }
 
-.btn:active, .btn.button-pressed {
+.btn:active,
+.btn.button-pressed {
   transform: translateY(0px) scale(0.98);
-  box-shadow: 0 1px 2px rgba(0,0,0,0.4), inset 0 1px 2px rgba(0,0,0,0.2);
-  background: linear-gradient(135deg, #001300, #013801); /* Inverted gradient on press */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, #001300, #013801);
+  /* Inverted gradient on press */
 }
 
 /* Primary Button (Maladum Red) */
@@ -72,7 +89,8 @@ body {
   background: linear-gradient(135deg, var(--maladum-red), #4a0000);
   border: 1px solid var(--accent-gold);
   color: var(--accent-gold);
-  font-family: var(--font-heading); /* Cinzel for primary CTAs */
+  font-family: var(--font-heading);
+  /* Cinzel for primary CTAs */
   text-transform: uppercase;
   letter-spacing: 1px;
 }
@@ -80,25 +98,30 @@ body {
 .btn-primary:hover {
   background: linear-gradient(135deg, #4a0000, var(--maladum-red));
   border-color: var(--accent-gold);
-  color: #fff; /* Brighter text on hover for primary */
+  color: #fff;
+  /* Brighter text on hover for primary */
   transform: translateY(-1px);
 }
 
-.btn-primary:active, .btn-primary.button-pressed {
+.btn-primary:active,
+.btn-primary.button-pressed {
   background: linear-gradient(135deg, #4a0000, #6b0000);
 }
 
 /* Small Button Variant */
 .btn-sm {
   padding: 0.25rem 0.5rem;
-  font-size: 0.875rem; /* text-sm */
-  border-radius: 6px; /* Slightly smaller radius */
+  font-size: 0.875rem;
+  /* text-sm */
+  border-radius: 6px;
+  /* Slightly smaller radius */
 }
 
 /* Danger Button Variant (e.g., for Clear Inventory) */
 .btn-danger {
   background: linear-gradient(135deg, var(--maladum-red), #5c0000);
-  border-color: #a87732; /* Darker gold/bronze border for danger */
+  border-color: #a87732;
+  /* Darker gold/bronze border for danger */
   color: var(--text-primary);
 }
 
@@ -108,7 +131,8 @@ body {
   border-color: var(--accent-gold);
 }
 
-.btn:disabled, .btn[disabled] {
+.btn:disabled,
+.btn[disabled] {
   background: #555;
   color: #999;
   border-color: #777;
@@ -154,9 +178,11 @@ input[type="email"],
 input[type="password"],
 select,
 textarea {
-  background-color: rgba(0, 0, 0, 0.3); /* Dark, slightly transparent */
+  background-color: rgba(0, 0, 0, 0.3);
+  /* Dark, slightly transparent */
   color: var(--text-primary);
-  border: 1px solid var(--border-ornate, #444); /* Using var from theme if available */
+  border: 1px solid var(--border-ornate, #444);
+  /* Using var from theme if available */
   border-radius: 6px;
   padding: 0.5rem 0.75rem;
   font-family: var(--font-body);
@@ -175,13 +201,16 @@ select:focus,
 textarea:focus {
   outline: none;
   border-color: var(--accent-gold);
-  box-shadow: 0 0 0 2px rgba(197, 165, 114, 0.5); /* accent-gold with transparency */
+  box-shadow: 0 0 0 2px rgba(197, 165, 114, 0.5);
+  /* accent-gold with transparency */
 }
 
 /* Input Error Styling */
 .input-error {
-  border-color: var(--maladum-red) !important; /* Important to override focus */
-  box-shadow: 0 0 0 2px rgba(139, 0, 0, 0.5) !important; /* maladum-red with transparency */
+  border-color: var(--maladum-red) !important;
+  /* Important to override focus */
+  box-shadow: 0 0 0 2px rgba(139, 0, 0, 0.5) !important;
+  /* maladum-red with transparency */
 }
 
 /* Checkbox styling (basic, can be enhanced) */
@@ -194,7 +223,8 @@ textarea:focus {
   background-color: transparent;
   position: relative;
   cursor: pointer;
-  vertical-align: middle; /* Align with label text */
+  vertical-align: middle;
+  /* Align with label text */
 }
 
 .form-checkbox:checked {
@@ -205,7 +235,8 @@ textarea:focus {
 .form-checkbox:checked::after {
   content: '✓';
   font-size: 14px;
-  color: var(--bg-dark); /* Checkmark color against gold background */
+  color: var(--bg-dark);
+  /* Checkmark color against gold background */
   position: absolute;
   top: 50%;
   left: 50%;
@@ -219,44 +250,76 @@ input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
 input[type="number"] {
-  -moz-appearance: textfield; /* Firefox */
+  -moz-appearance: textfield;
+  /* Firefox */
+  appearance: textfield;
 }
 
 /* --- Animations & Interactivity --- */
 /* Fade In */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
+
 .fade-in {
   animation: fadeIn 0.4s ease-out forwards;
 }
 
 /* Flip Animations (from Event Cards) */
 @keyframes flipInForward {
-  from { transform: perspective(1000px) rotateY(90deg); opacity: 0; }
-  to { transform: perspective(1000px) rotateY(0deg); opacity: 1; }
-}
-.flip-forward {
-  animation: flipInForward 0.5s ease-out forwards;
-  backface-visibility: hidden; /* Improves rendering during flip */
+  from {
+    transform: perspective(1000px) rotateY(90deg);
+    opacity: 0;
+  }
+
+  to {
+    transform: perspective(1000px) rotateY(0deg);
+    opacity: 1;
+  }
 }
 
-@keyframes flipInBackward { /* If needed */
-  from { transform: perspective(1000px) rotateY(-90deg); opacity: 0; }
-  to { transform: perspective(1000px) rotateY(0deg); opacity: 1; }
+.flip-forward {
+  animation: flipInForward 0.5s ease-out forwards;
+  backface-visibility: hidden;
+  /* Improves rendering during flip */
 }
+
+@keyframes flipInBackward {
+
+  /* If needed */
+  from {
+    transform: perspective(1000px) rotateY(-90deg);
+    opacity: 0;
+  }
+
+  to {
+    transform: perspective(1000px) rotateY(0deg);
+    opacity: 1;
+  }
+}
+
 .flip-backward {
   animation: flipInBackward 0.5s ease-out forwards;
   backface-visibility: hidden;
 }
 
 /* Button Ripple Effect (CSS part) */
-.btn .ripple-element { /* Renamed from .ripple to avoid conflict if .ripple class is used elsewhere */
+.btn .ripple-element {
+  /* Renamed from .ripple to avoid conflict if .ripple class is used elsewhere */
   position: absolute;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.5); /* Slightly less opaque */
+  background: rgba(255, 255, 255, 0.5);
+  /* Slightly less opaque */
   transform: scale(0);
   animation: ripple-animation 0.6s linear forwards;
   pointer-events: none;
@@ -287,13 +350,19 @@ input[type="number"] {
 /* Card Styling from Spec */
 .card {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.75));
-  border: 2px solid #333; /* Spec */
-  border-radius: 10px; /* Spec */
-  box-shadow: 0 4px 10px rgba(0,0,0,.45); /* Spec */
-  position: relative; /* For ::before pseudo-element */
-  overflow: hidden; /* Ensures ::before respects border-radius */
-  color: var(--text-light, #1a202c); /* Default dark text for parchment. Fallback if --text-light is removed. */
-  padding: 1rem; /* Added default padding for cards */
+  border: 2px solid #333;
+  /* Spec */
+  border-radius: 10px;
+  /* Spec */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, .45);
+  /* Spec */
+  position: relative;
+  /* For ::before pseudo-element */
+  overflow: hidden;
+  /* Ensures ::before respects border-radius */
+  color: var(--text-light, #1a202c);
+  /* Default dark text for parchment. Fallback if --text-light is removed. */
+  /* padding: 1rem; Removed to let Tailwind control padding */
   backdrop-filter: blur(4px);
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
 }
@@ -301,16 +370,19 @@ input[type="number"] {
 .card::before {
   content: "";
   position: absolute;
-  inset: 0; /* Replaces top:0, left:0, right:0, bottom:0 */
+  inset: 0;
+  /* Replaces top:0, left:0, right:0, bottom:0 */
   background: url("images/parchment-texture.png") center/cover no-repeat;
-  opacity: .15; /* Spec */
-  mix-blend-mode: overlay; /* Spec */
+  opacity: .15;
+  /* Spec */
+  mix-blend-mode: overlay;
+  /* Spec */
   pointer-events: none;
 }
 
 .card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.45);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.45);
   border-color: var(--accent-gold);
 }
 
@@ -336,27 +408,48 @@ input[type="number"] {
 .item-icon {
   /* Tailwind classes w-24 h-24 mr-2 are applied for sizing */
   /* Add any additional specific styles if needed, e.g., border */
-  border: 1px solid #ccc; /* Example border */
+  border: 1px solid #ccc;
+  /* Example border */
   border-radius: 4px;
-  object-fit: contain; /* Ensure icon aspect ratio is maintained */
+  object-fit: contain;
+  /* Ensure icon aspect ratio is maintained */
 }
 
 .rarity-badge {
   position: absolute;
-  top: -2px;
-  right: -2px;
+  top: 4px;
+  right: 4px;
+  z-index: 10;
   width: 12px;
   height: 12px;
   border-radius: 50%;
   border: 1px solid #333;
 }
 
-.rarity-common { background-color: green; }
-.rarity-uncommon { background-color: yellow; }
-.rarity-rare { background-color: lightblue; }
-.rarity-border-common { border-color: green; }
-.rarity-border-uncommon { border-color: yellow; }
-.rarity-border-rare { border-color: lightblue; }
+.rarity-common {
+  background-color: green;
+}
+
+.rarity-uncommon {
+  background-color: yellow;
+}
+
+.rarity-rare {
+  background-color: lightblue;
+}
+
+.rarity-border-common {
+  border-color: green;
+}
+
+.rarity-border-uncommon {
+  border-color: yellow;
+}
+
+.rarity-border-rare {
+  border-color: lightblue;
+}
+
 .relic-border {
   border-color: var(--accent-gold);
   background-color: var(--relic-bg);
@@ -378,7 +471,9 @@ input[type="number"] {
 .items-toolbar {
   display: flex;
   align-items: flex-end;
-  justify-content: space-between;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
   flex-wrap: wrap;
   gap: 0.75rem;
   margin-bottom: 0.5rem;
@@ -446,9 +541,9 @@ input[type="number"] {
 }
 
 .inventory-empty .inventory-state {
-  background: #7f1d1d;
   color: #fff;
   border-color: #ef4444;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 .inventory-low {
@@ -457,9 +552,9 @@ input[type="number"] {
 }
 
 .inventory-low .inventory-state {
-  background: #b45309;
   color: #fff;
   border-color: #f59e0b;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 .inventory-surplus {
@@ -470,6 +565,7 @@ input[type="number"] {
   background: #166534;
   color: #dcfce7;
   border-color: #22c55e;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 .favourite-toggle {
@@ -507,12 +603,20 @@ input[type="number"] {
   letter-spacing: 0.06em;
   border-radius: 6px;
   border: 2px solid currentColor;
-  box-shadow: 0 8px 12px rgba(0,0,0,0.35);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.35);
 }
 
-.deficit-ribbon.rarity-border-common { color: green; }
-.deficit-ribbon.rarity-border-uncommon { color: goldenrod; }
-.deficit-ribbon.rarity-border-rare { color: lightblue; }
+.deficit-ribbon.rarity-border-common {
+  color: green;
+}
+
+.deficit-ribbon.rarity-border-uncommon {
+  color: goldenrod;
+}
+
+.deficit-ribbon.rarity-border-rare {
+  color: lightblue;
+}
 
 /* Styles for the icon zoom modal */
 .icon-modal {
@@ -525,7 +629,8 @@ input[type="number"] {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* Ensure it's on top */
+  z-index: 1000;
+  /* Ensure it's on top */
 }
 
 .icon-modal-content {

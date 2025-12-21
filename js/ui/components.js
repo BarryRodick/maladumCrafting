@@ -292,7 +292,7 @@ export function renderHome(materials, items) {
   itemsSection.innerHTML = `
     <div class="items-toolbar">
       <h2 class="text-2xl font-heading" id="itemsSectionTitle">Craftable Items</h2>
-      <div id="itemsControls" class="mt-3"></div>
+      <div id="itemsControls"></div>
     </div>
     <div id="itemsDisplayGrid" class="grid gap-4" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
       <!-- item cards will be rendered here -->
@@ -352,7 +352,7 @@ export function renderMaterialsGrid(materials, inventory) {
       const inventoryStateCls = getInventoryStateClass(count);
       const inventoryLabel = getInventoryLabel(count);
       return `
-        <div class="card flex flex-col items-center text-center p-2 ${rarityBorderCls} ${inventoryStateCls}" data-material="${m.symbol}">
+        <div class="card flex flex-col items-center text-center p-3 ${rarityBorderCls} ${inventoryStateCls}" data-material="${m.symbol}">
           <span class="rarity-badge ${rarityCls}"></span>
           <span class="inventory-state badge">${inventoryLabel}</span>
           <div class="relative w-24 h-24 mb-1">
