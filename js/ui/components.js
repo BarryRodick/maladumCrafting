@@ -7,6 +7,7 @@ import { applyTheme } from './theme.js';
 
 let cachedMaterials = [];
 let cachedItems = [];
+let cachedVersion = '';
 let currentView = 'craftable';
 let currentFilters = {
   type: 'all',
@@ -258,9 +259,10 @@ function renderItemsControls() {
   });
 }
 
-export function renderHome(materials, items) {
+export function renderHome(materials, items, version = '') {
   cachedMaterials = materials;
   cachedItems = items;
+  cachedVersion = version;
   currentView = 'craftable';
 
   const inventory = loadInventory();
@@ -324,6 +326,14 @@ export function renderHome(materials, items) {
       // For now, ensure it's called.
       renderSettings();
     });
+  }
+
+  // Add Footer with Version
+  if (cachedVersion) {
+    const footer = document.createElement('footer');
+    footer.className = 'text-center text-xs text-white mt-8 mb-4 opacity-40';
+    footer.textContent = `Maladum Crafting Companion ${cachedVersion}`;
+    app.appendChild(footer);
   }
 }
 
@@ -548,6 +558,9 @@ export function renderSettings() {
           <h2 class="font-heading text-lg mb-2">Data Management</h2>
           <button id="clearInventoryBtn" class="btn btn-danger">Clear Inventory</button>
           <p class="text-xs text-gray-500 mt-1">This will reset your tracked materials.</p>
+        </div>
+        <div class="text-center text-xs text-gray-500">
+          Version: ${cachedVersion}
         </div>
       </main>
     </section>

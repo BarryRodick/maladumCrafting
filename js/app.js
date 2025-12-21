@@ -7,6 +7,8 @@ import { setupTheme } from './ui/theme.js';
 import { applyRippleEffect } from './ui/effects.js'; // Import ripple effect
 import './pwa.js';
 
+const APP_VERSION = 'v1.3.0';
+
 window.addEventListener('DOMContentLoaded', async () => {
   initializeFavourites();
   setupTheme();
@@ -16,5 +18,5 @@ window.addEventListener('DOMContentLoaded', async () => {
     loadMaterials(),
     loadItems()
   ]);
-  renderHome(materials, items); // This will render buttons that will now get the ripple
+  renderHome(materials, items, APP_VERSION); // This will render buttons that will now get the ripple
 });
