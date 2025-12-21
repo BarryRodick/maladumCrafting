@@ -11,32 +11,54 @@
   /* Core Palette from Spec */
   --bg-dark: #1e1e1e;
   --maladum-red: #8B0000;
-  --accent-gold: #c5a572; /* Spec name for --maladum-gold */
+  --accent-gold: #c5a572;
+  /* Spec name for --maladum-gold */
   --accent-green: #1b5e20;
-  --relic-bg: #EBD9BF; /* light parchment-gold blend */
+  --relic-bg: #EBD9BF;
+  /* light parchment-gold blend */
 
   /* Additional useful variables from Event Cards styles.css */
-  --dark-bg: #121212; /* Main body background in Event Cards */
-  --dark-surface: #1e1e1e; /* Same as --bg-dark */
+  --dark-bg: #121212;
+  /* Main body background in Event Cards */
+  --dark-surface: #1e1e1e;
+  /* Same as --bg-dark */
   --dark-surface-lighter: #2d2d2d;
   --accent-green-hover: #2e7d32;
   --text-primary: rgba(255, 255, 255, 0.87);
   --text-secondary: rgba(255, 255, 255, 0.6);
+  --text-light: #1a202c;
+  /* Dark text for light backgrounds like cards */
   --parchment: #F5E6D3;
-  --border-ornate: #2a2a2a; /* Used for card borders in Event Cards */
+  --border-ornate: #2a2a2a;
+  /* Used for card borders in Event Cards */
 }
 
-h1, h2, h3, h4, h5, h6,
-.h1, .h2, .h3, .h4, .h5, .h6 { /* Added h4-h6 and class versions for robustness */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  /* Added h4-h6 and class versions for robustness */
   font-family: var(--font-heading);
-  font-weight: 700; /* Cinzel looks better with a defined weight for headings */
-  color: var(--text-primary); /* Default heading color for dark theme */
+  font-weight: 700;
+  /* Cinzel looks better with a defined weight for headings */
+  color: var(--text-primary);
+  /* Default heading color for dark theme */
 }
 
 body {
   font-family: var(--font-body);
-  background-color: var(--dark-bg); /* Default background */
-  color: var(--text-primary); /* Default text color */
+  background-color: var(--dark-bg);
+  /* Default background */
+  color: var(--text-primary);
+  /* Default text color */
   margin: 0;
   line-height: 1.6;
 }
