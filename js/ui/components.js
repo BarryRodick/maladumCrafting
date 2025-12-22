@@ -127,8 +127,8 @@ function buildItemCard(item, index, inventory, favourites, viewContext) {
     const have = inventory[sym] || 0;
     const isMissing = have < qty;
     return `
-      <div class="flex items-center gap-1" title="${mat ? mat.name : sym}: ${have}/${qty}">
-        <div class="size-2 rounded-full ${dotColor.bg} ${isMissing ? 'opacity-40' : dotColor.shadow}"></div>
+      <div class="flex items-center gap-1 px-2 py-1 rounded-full ${isMissing ? 'bg-red-900/30' : 'bg-white/5'}" title="${mat ? mat.name : sym}: ${have}/${qty}">
+        <span class="size-5 rounded-full ${dotColor.bg} ${isMissing ? 'opacity-60' : dotColor.shadow} flex items-center justify-center text-[10px] font-bold text-white">${sym}</span>
         <span class="text-xs ${isMissing ? 'text-red-400' : 'text-white'} font-medium">x${qty}</span>
       </div>
     `;

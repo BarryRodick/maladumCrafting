@@ -7,7 +7,7 @@ import { setupTheme } from './ui/theme.js';
 import { applyRippleEffect } from './ui/effects.js'; // Import ripple effect
 import './pwa.js';
 
-const APP_VERSION = 'v2.0.0';
+const APP_VERSION = 'v2.0.1';
 
 window.addEventListener('DOMContentLoaded', async () => {
   initializeFavourites();
