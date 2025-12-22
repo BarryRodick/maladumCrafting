@@ -538,6 +538,8 @@ input[type="number"] {
 .inventory-empty {
   border-color: #7f1d1d;
   background: linear-gradient(180deg, rgba(127, 29, 29, 0.18), rgba(127, 29, 29, 0.05));
+  color: var(--text-primary);
+  /* Light text for dark background */
 }
 
 .inventory-empty .inventory-state {
@@ -549,6 +551,8 @@ input[type="number"] {
 .inventory-low {
   border-color: #b45309;
   background: linear-gradient(180deg, rgba(180, 83, 9, 0.15), rgba(180, 83, 9, 0.04));
+  color: var(--text-primary);
+  /* Light text for dark background */
 }
 
 .inventory-low .inventory-state {
