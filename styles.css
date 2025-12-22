@@ -551,8 +551,6 @@ input[type="number"] {
 .inventory-low {
   border-color: #b45309;
   background: linear-gradient(180deg, rgba(180, 83, 9, 0.15), rgba(180, 83, 9, 0.04));
-  color: var(--text-primary);
-  /* Light text for dark background */
 }
 
 .inventory-low .inventory-state {
