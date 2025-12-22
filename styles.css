@@ -683,3 +683,71 @@ input[type="number"] {
 .dark .item-table td {
   border-color: #374151;
 }
+
+/* ==========================================
+   NEW SIDEBAR LAYOUT STYLES (v2.0)
+   ========================================== */
+
+/* Filter chips for type selection */
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2.25rem;
+  padding: 0 1rem;
+  border-radius: 9999px;
+  background: #1a2e24;
+  color: #9db9a8;
+  border: 1px solid transparent;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-chip:hover {
+  border-color: #28392f;
+  color: white;
+}
+
+.filter-chip.active {
+  background: #13ec6d;
+  color: #0c1a12;
+  font-weight: 700;
+  box-shadow: 0 4px 15px rgba(19, 236, 109, 0.3);
+}
+
+/* Fade in animation for cards */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Surface dark background color */
+.bg-surface-dark {
+  background-color: #162e21;
+}
+
+/* Item icon styling for new cards */
+.item-icon {
+  border: none;
+  border-radius: 0;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+/* Scrollbar styling already handled in index.html inline styles */
+
+/* Mobile sidebar transitions */
+@media (max-width: 768px) {
+  .sidebar-hidden {
+    transform: translateX(-100%);
+  }
+}

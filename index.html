@@ -1,27 +1,150 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="dark" lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Maladum Crafting Companion</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="theme.css">
+  <!-- Google Fonts: Manrope -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+  <!-- Material Symbols -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#13ec6d",
+            "background-light": "#f6f8f7",
+            "background-dark": "#102218",
+            "surface-dark": "#162e21",
+            "maladum-red": "#8B0000",
+            "accent-gold": "#c5a572",
+            // Rarity colors
+            "rarity-common": "#22c55e",
+            "rarity-uncommon": "#eab308",
+            "rarity-rare": "#3b82f6",
+          },
+          fontFamily: {
+            "display": ["Manrope", "sans-serif"]
+          },
+          borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" },
+        },
+      },
+    }
+  </script>
   <link rel="stylesheet" href="styles.css">
   <link rel="manifest" href="manifest.webmanifest">
-  <!-- Prevent browser request for /favicon.ico -->
   <link rel="icon" href="data:,">
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      font-size: 24px;
+    }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #102218; }
+    ::-webkit-scrollbar-thumb { background: #13ec6d; border-radius: 4px; opacity: 0.5; }
+    /* Sidebar toggle for mobile */
+    .sidebar-hidden { transform: translateX(-100%); }
+    .sidebar-overlay { display: none; }
+    .sidebar-overlay.active { display: block; }
+  </style>
 </head>
-<body>
-  <header class="app-header">
-    <div class="container mx-auto flex items-center justify-between p-4">
-      <a href="index.html" class="app-logo-text text-xl sm:text-2xl">Maladum Crafting Companion</a>
-      <nav id="headerNavLinks" class="flex items-center gap-2">
-        <!-- Buttons will be injected here -->
-      </nav>
+<body class="bg-background-dark text-white font-display min-h-screen overflow-hidden flex">
+  
+  <!-- Mobile Sidebar Overlay -->
+  <div id="sidebarOverlay" class="sidebar-overlay fixed inset-0 bg-black/50 z-30 md:hidden" onclick="toggleSidebar()"></div>
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="w-72 fixed md:relative z-40 flex flex-col border-r border-[#28392f] bg-[#0c1a12] h-screen transition-transform duration-300 sidebar-hidden md:translate-x-0">
+    <!-- Logo -->
+    <div class="p-6 flex items-center gap-4 mb-2">
+      <div class="relative size-10 rounded-full overflow-hidden border border-primary/30 bg-surface-dark flex items-center justify-center">
+        <span class="material-symbols-outlined text-primary">construction</span>
+      </div>
+      <div class="flex flex-col">
+        <h1 class="text-white text-lg font-bold leading-tight tracking-tight">Maladum</h1>
+        <p class="text-primary text-xs font-medium tracking-wide uppercase">Crafting Companion</p>
+      </div>
     </div>
-  </header>
-  <main id="app" class="app-main pt-4"></main> <!-- Added app-main class and some padding -->
+
+    <!-- Materials Section (Scrollable) -->
+    <div class="flex-1 px-4 flex flex-col gap-2 overflow-y-auto">
+      <h2 class="text-[#9db9a8] text-xs font-bold uppercase tracking-widest px-2 mb-1">Materials</h2>
+      <div id="materialsList" class="flex flex-col gap-1">
+        <!-- Materials will be injected here -->
+      </div>
+      
+      <!-- Divider -->
+      <div class="my-3 border-t border-[#28392f]"></div>
+      
+      <!-- Navigation Links -->
+      <h2 class="text-[#9db9a8] text-xs font-bold uppercase tracking-widest px-2 mb-1">Views</h2>
+      <a href="tokens.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-[#9db9a8] hover:bg-white/5 hover:text-white transition-colors group">
+        <span class="material-symbols-outlined group-hover:scale-110 transition-transform" style="font-size: 20px;">toll</span>
+        <span class="text-sm font-semibold">Token Gallery</span>
+      </a>
+      <button id="settingsSidebarBtn" class="flex items-center gap-3 px-4 py-3 rounded-xl text-[#9db9a8] hover:bg-white/5 hover:text-white transition-colors group w-full text-left">
+        <span class="material-symbols-outlined group-hover:scale-110 transition-transform" style="font-size: 20px;">settings</span>
+        <span class="text-sm font-semibold">Settings</span>
+      </button>
+    </div>
+
+    <!-- Footer with Version -->
+    <div class="p-4 mt-auto border-t border-[#28392f]">
+      <p id="sidebarVersion" class="text-[#9db9a8] text-xs text-center opacity-60">v2.0.0</p>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 flex flex-col h-screen overflow-hidden bg-background-dark relative">
+    <!-- Top Bar -->
+    <header class="h-16 flex items-center justify-between px-4 md:px-8 border-b border-[#28392f] shrink-0 bg-[#102218]/95 backdrop-blur-sm z-10">
+      <!-- Mobile Menu Button -->
+      <button id="menuBtn" class="md:hidden text-white mr-4 p-2 hover:bg-white/10 rounded-lg" onclick="toggleSidebar()">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+      
+      <!-- Search Bar -->
+      <div class="flex-1 max-w-xl">
+        <div class="relative group">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <span class="material-symbols-outlined text-[#9db9a8] group-focus-within:text-primary transition-colors" style="font-size: 20px;">search</span>
+          </div>
+          <input id="searchInput" type="text" placeholder="Search items..." 
+            class="block w-full pl-10 pr-3 py-2 border-none rounded-full leading-5 bg-[#1a2e24] text-white placeholder-[#9db9a8] focus:outline-none focus:ring-1 focus:ring-primary focus:bg-[#1f362b] text-sm transition-all">
+        </div>
+      </div>
+
+      <!-- Header Actions -->
+      <div class="flex items-center gap-2 ml-4">
+        <div id="headerNavLinks" class="hidden sm:flex items-center gap-2">
+          <!-- View toggle buttons will be injected here -->
+        </div>
+      </div>
+    </header>
+
+    <!-- Scrollable Content Area -->
+    <div class="flex-1 overflow-y-auto p-4 md:p-8">
+      <div id="app" class="max-w-[1400px] mx-auto flex flex-col gap-6">
+        <!-- Content will be rendered here -->
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      sidebar.classList.toggle('sidebar-hidden');
+      overlay.classList.toggle('active');
+    }
+  </script>
   <script type="module" src="js/app.js"></script>
 </body>
 </html>

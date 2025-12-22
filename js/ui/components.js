@@ -16,8 +16,16 @@ let currentFilters = {
   relic: 'all',
   sort: 'name'
 };
+let searchQuery = '';
 
 const rarityOrder = { Common: 1, Uncommon: 2, Rare: 3 };
+
+// Rarity color classes for Tailwind
+const rarityColors = {
+  Common: { bg: 'bg-rarity-common', text: 'text-rarity-common', shadow: 'shadow-[0_0_8px_rgba(34,197,94,0.8)]' },
+  Uncommon: { bg: 'bg-rarity-uncommon', text: 'text-rarity-uncommon', shadow: 'shadow-[0_0_8px_rgba(234,179,8,0.8)]' },
+  Rare: { bg: 'bg-rarity-rare', text: 'text-rarity-rare', shadow: 'shadow-[0_0_8px_rgba(59,130,246,0.8)]' }
+};
 
 function calculateItemRarity(item) {
   let current = 'Common';
@@ -29,28 +37,6 @@ function calculateItemRarity(item) {
     }
   });
   return current;
-}
-
-function rarityClass(rarity) {
-  switch (rarity) {
-    case 'Rare':
-      return 'rarity-rare';
-    case 'Uncommon':
-      return 'rarity-uncommon';
-    default:
-      return 'rarity-common';
-  }
-}
-
-function rarityBorderClass(rarity) {
-  switch (rarity) {
-    case 'Rare':
-      return 'rarity-border-rare';
-    case 'Uncommon':
-      return 'rarity-border-uncommon';
-    default:
-      return 'rarity-border-common';
-  }
 }
 
 function calculateBuildCost(item, inventory) {
@@ -83,22 +69,21 @@ function getMissingSummary(item, inventory) {
   resourcesNeeded.forEach(([sym, qty]) => {
     const have = inventory[sym] || 0;
     if (have < qty) {
-      missing.push(`${sym}: ${qty - have}`);
+      missing.push({ sym, need: qty - have });
       missingTotal += qty - have;
     } else {
       metResources += 1;
     }
   });
 
-  const missingText = missing.length > 0 ? missing.join(', ') : 'None';
-  const ribbonText = resourcesNeeded.length === 0
-    ? ''
-    : `Missing ${resourcesNeeded.length - metResources}/${resourcesNeeded.length}`;
-
-  return { missingText, missingTotal, ribbonText };
+  return { missing, missingTotal, metResources, totalResources: resourcesNeeded.length };
 }
 
 function matchesFilters(item) {
+  // Search filter
+  if (searchQuery && !item.name.toLowerCase().includes(searchQuery.toLowerCase())) {
+    return false;
+  }
   if (currentFilters.type !== 'all' && item.type !== currentFilters.type) return false;
   if (currentFilters.expansion !== 'all' && item.expansion !== currentFilters.expansion) return false;
   if (currentFilters.size !== 'all' && item.size !== currentFilters.size) return false;
@@ -123,45 +108,154 @@ function filterAndSortItems(items) {
   return sortItems(items.filter(matchesFilters));
 }
 
+// Build the new item card design
 function buildItemCard(item, index, inventory, favourites, viewContext) {
   const starred = favourites.includes(item.name);
   const iconPath = `images/tokens/${item.resources.icon}`;
-  const resourcesNeeded = Object.entries(item.resources).filter(([sym]) => sym !== 'icon');
-  const required = resourcesNeeded.map(([sym, qty]) => `${sym}: ${qty}`).join(', ');
-
-  const { missingText, ribbonText } = getMissingSummary(item, inventory);
-  const buildCost = calculateBuildCost(item, inventory);
   const rarity = calculateItemRarity(item);
-  const rarityBorderCls = rarityBorderClass(rarity);
-  const borderCls = item.relic > 0 ? 'relic-border' : rarityBorderCls;
+  const rarityColor = rarityColors[rarity] || rarityColors.Common;
   const isCraftable = isItemCraftable(item, inventory);
-  const notCraftableFavouriteClass = !isCraftable && viewContext === 'craftable' && starred ? 'opacity-80' : '';
-  const deficitRibbon = !isCraftable && ribbonText
-    ? `<div class="deficit-ribbon ${rarityBorderCls}">${ribbonText}</div>`
-    : '';
+  const { missing } = getMissingSummary(item, inventory);
+  const buildCost = calculateBuildCost(item, inventory);
+
+  // Build resource dots
+  const resourcesNeeded = Object.entries(item.resources).filter(([sym]) => sym !== 'icon');
+  const resourceDots = resourcesNeeded.map(([sym, qty]) => {
+    const mat = cachedMaterials.find(m => m.symbol === sym);
+    const matRarity = mat ? mat.rarity : 'Common';
+    const dotColor = rarityColors[matRarity] || rarityColors.Common;
+    const have = inventory[sym] || 0;
+    const isMissing = have < qty;
+    return `
+      <div class="flex items-center gap-1" title="${mat ? mat.name : sym}: ${have}/${qty}">
+        <div class="size-2 rounded-full ${dotColor.bg} ${isMissing ? 'opacity-40' : dotColor.shadow}"></div>
+        <span class="text-xs ${isMissing ? 'text-red-400' : 'text-white'} font-medium">x${qty}</span>
+      </div>
+    `;
+  }).join('');
+
+  const craftableClass = isCraftable ? 'ring-2 ring-primary/50' : '';
+  const notCraftableClass = !isCraftable && viewContext === 'craftable' && starred ? 'opacity-70' : '';
 
   return `
-    <div class="card fade-in flex flex-col ${borderCls} ${notCraftableFavouriteClass}" style="animation-delay: ${index * 75}ms" data-item="${item.name}">
-      <button data-fav="${item.name}" data-view="${viewContext}" class="favourite-toggle" aria-label="${starred ? 'Unstar' : 'Star'} ${item.name}">${starred ? '★' : '☆'}</button>
-      ${deficitRibbon}
-      <div class="p-3">
-        <div class="flex items-start mb-2">
-          <h3 class="font-heading text-lg flex-grow">${item.name}</h3>
-          <div class="relative">
-            <img src="${iconPath}" alt="${item.name} icon" class="item-icon w-24 h-24 cursor-pointer rounded">
-          </div>
+    <div class="group relative bg-surface-dark rounded-[24px] p-3 hover:-translate-y-1 hover:shadow-[0_10px_30px_-10px_rgba(19,236,109,0.2)] transition-all duration-300 border border-transparent hover:border-primary/50 cursor-pointer overflow-hidden ${craftableClass} ${notCraftableClass}" 
+         style="animation: fadeIn 0.4s ease-out forwards; animation-delay: ${index * 50}ms; opacity: 0;"
+         data-item="${item.name}">
+      
+      <!-- Favourite Toggle -->
+      <button data-fav="${item.name}" data-view="${viewContext}" 
+        class="absolute top-5 left-5 z-20 size-8 rounded-full ${starred ? 'bg-primary text-[#0c1a12]' : 'bg-black/40 text-[#9db9a8]'} flex items-center justify-center hover:scale-110 transition-all backdrop-blur-sm"
+        aria-label="${starred ? 'Unstar' : 'Star'} ${item.name}">
+        <span class="material-symbols-outlined" style="font-size: 18px;">${starred ? 'star' : 'star_border'}</span>
+      </button>
+      
+      <!-- Image Container -->
+      <div class="aspect-[4/3] w-full rounded-2xl bg-black relative overflow-hidden">
+        <!-- Rarity Badge -->
+        <div class="absolute top-3 right-3 z-10 bg-black/60 backdrop-blur-md px-2 py-1 rounded-lg border border-white/10 flex items-center gap-1">
+          <div class="size-2 rounded-full ${rarityColor.bg} ${rarityColor.shadow}"></div>
+          <span class="text-[10px] font-bold text-white uppercase">${rarity}</span>
         </div>
-        <div class="text-sm space-y-1">
-          <p><strong class="font-semibold">Requires:</strong> ${required || 'None'}</p>
-          <p><strong class="font-semibold">Missing:</strong> <span class="${missingText === 'None' ? 'text-green-700' : 'text-red-500'}">${missingText}</span></p>
-          <p><strong class="font-semibold">Build Cost:</strong> <span class="text-red-500">${buildCost}</span></p>
-          <p><strong class="font-semibold">Craft Cost:</strong> ${item.price}</p>
-          ${item.relic > 0 ? `<p><strong class="font-semibold">Relic Token Required:</strong> ${item.relic}</p>` : ''}
-          <p><strong class="font-semibold">Expansion:</strong> ${item.expansion}</p>
+        
+        <!-- Item Icon -->
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+          <img src="${iconPath}" alt="${item.name}" class="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500 item-icon">
+        </div>
+        
+        <!-- Gradient overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-surface-dark via-transparent to-transparent opacity-80"></div>
+        
+        ${!isCraftable && missing.length > 0 ? `
+          <div class="absolute bottom-2 left-2 right-2 bg-black/70 backdrop-blur-sm rounded-lg px-2 py-1 text-center">
+            <span class="text-xs text-red-400 font-medium">Missing ${missing.length} material${missing.length > 1 ? 's' : ''}</span>
+          </div>
+        ` : ''}
+      </div>
+      
+      <!-- Content -->
+      <div class="px-2 pt-4 pb-2">
+        <h3 class="text-white text-lg font-bold mb-1 group-hover:text-primary transition-colors truncate">${item.name}</h3>
+        <p class="text-[#9db9a8] text-xs font-medium mb-3">
+          ${item.type || ''} ${item.size ? `• ${item.size}` : ''} ${item.relic > 0 ? '• Relic' : ''}
+        </p>
+        
+        <!-- Cost & Requirements -->
+        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+          <div class="flex items-center gap-2 flex-wrap">
+            ${resourceDots}
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs ${isCraftable ? 'text-primary' : 'text-[#9db9a8]'} font-bold">${buildCost}g</span>
+          </div>
         </div>
       </div>
     </div>
   `;
+}
+
+// Render materials list in sidebar
+function renderMaterialsList(materials, inventory) {
+  const listContainer = document.getElementById('materialsList');
+  if (!listContainer) return;
+
+  const getStateClass = (count) => {
+    if (count === 0) return { bg: 'bg-red-900/30', border: 'border-red-700/50', text: 'text-red-400' };
+    if (count < 2) return { bg: 'bg-amber-900/20', border: 'border-amber-700/50', text: 'text-amber-400' };
+    return { bg: 'bg-green-900/20', border: 'border-green-700/50', text: 'text-green-400' };
+  };
+
+  listContainer.innerHTML = materials.map(m => {
+    const count = inventory[m.symbol] || 0;
+    const rarityColor = rarityColors[m.rarity] || rarityColors.Common;
+    const stateClass = getStateClass(count);
+
+    return `
+      <div class="flex items-center gap-2 px-3 py-2 rounded-xl ${stateClass.bg} border ${stateClass.border} transition-all hover:bg-white/5" data-material="${m.symbol}">
+        <div class="size-6 rounded-full ${rarityColor.bg} ${rarityColor.shadow} flex items-center justify-center text-xs font-bold text-white">${m.symbol}</div>
+        <div class="flex-1 min-w-0">
+          <p class="text-white text-xs font-semibold truncate">${m.name}</p>
+        </div>
+        <div class="flex items-center gap-1">
+          <button class="size-6 rounded-full bg-[#1a2e24] text-white hover:bg-primary hover:text-[#0c1a12] transition-colors flex items-center justify-center text-sm font-bold" 
+                  data-action="dec" data-symbol="${m.symbol}" aria-label="Decrease ${m.name}">−</button>
+          <span class="w-6 text-center text-sm font-bold ${stateClass.text} count">${count}</span>
+          <button class="size-6 rounded-full bg-[#1a2e24] text-white hover:bg-primary hover:text-[#0c1a12] transition-colors flex items-center justify-center text-sm font-bold" 
+                  data-action="inc" data-symbol="${m.symbol}" aria-label="Increase ${m.name}">+</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  // Event delegation for inventory buttons
+  listContainer.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-action]');
+    if (!btn) return;
+    const sym = btn.dataset.symbol;
+    const delta = btn.dataset.action === 'inc' ? 1 : -1;
+    const inv = updateInventory(sym, delta);
+
+    // Update count display
+    const countEl = listContainer.querySelector(`[data-material="${sym}"] .count`);
+    if (countEl) countEl.textContent = inv[sym] || 0;
+
+    // Update item state class
+    const itemEl = listContainer.querySelector(`[data-material="${sym}"]`);
+    if (itemEl) {
+      const newState = getStateClass(inv[sym] || 0);
+      itemEl.className = `flex items-center gap-2 px-3 py-2 rounded-xl ${newState.bg} border ${newState.border} transition-all hover:bg-white/5`;
+      const countSpan = itemEl.querySelector('.count');
+      if (countSpan) {
+        countSpan.className = `w-6 text-center text-sm font-bold ${newState.text} count`;
+      }
+    }
+
+    // Refresh items view
+    if (currentView === 'all') {
+      renderAllItemsView(cachedItems, inv, loadFavourites());
+    } else {
+      renderCraftableItemsView(cachedItems, inv, loadFavourites());
+    }
+  });
 }
 
 function renderHeaderButtons() {
@@ -169,29 +263,24 @@ function renderHeaderButtons() {
   if (!headerNav) return;
 
   headerNav.innerHTML = `
-    <div class="segmented-control" role="group" aria-label="Item view">
-      <button id="craftableViewBtn" class="btn btn-ghost segmented active" data-view="craftable">Craftable</button>
-      <button id="allItemsViewBtn" class="btn btn-ghost segmented" data-view="all">All Items</button>
+    <div class="flex items-center bg-[#1a2e24] rounded-full p-1 border border-[#28392f]">
+      <button id="craftableViewBtn" class="px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${currentView === 'craftable' ? 'bg-primary text-[#0c1a12]' : 'text-[#9db9a8] hover:text-white'}" data-view="craftable">
+        Craftable
+      </button>
+      <button id="allItemsViewBtn" class="px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${currentView === 'all' ? 'bg-primary text-[#0c1a12]' : 'text-[#9db9a8] hover:text-white'}" data-view="all">
+        All Items
+      </button>
     </div>
-    <a href="tokens.html" class="btn btn-ghost icon-pill" aria-label="Token gallery">
-      <span class="pill-icon">🪙</span>
-      <span class="pill-label">Tokens</span>
-    </a>
-    <button id="settingsBtn" class="icon-btn" aria-label="Settings">
-      ⚙️
-    </button>
   `;
+
+  // Attach event listeners
+  document.getElementById('craftableViewBtn')?.addEventListener('click', () => setCurrentView('craftable'));
+  document.getElementById('allItemsViewBtn')?.addEventListener('click', () => setCurrentView('all'));
 }
 
 function setCurrentView(view) {
   currentView = view;
-  const itemsSectionTitle = document.getElementById('itemsSectionTitle');
-  const craftableBtn = document.getElementById('craftableViewBtn');
-  const allItemsBtn = document.getElementById('allItemsViewBtn');
-
-  if (craftableBtn) craftableBtn.classList.toggle('active', view === 'craftable');
-  if (allItemsBtn) allItemsBtn.classList.toggle('active', view === 'all');
-  if (itemsSectionTitle) itemsSectionTitle.textContent = view === 'craftable' ? 'Craftable Items' : 'All Items';
+  renderHeaderButtons(); // Re-render to update active state
 
   if (view === 'all') {
     renderAllItemsView(cachedItems, loadInventory(), loadFavourites());
@@ -208,52 +297,57 @@ function buildOptions(options, includeAll = true) {
   return opts.join('');
 }
 
-function renderItemsControls() {
-  const controlsContainer = document.getElementById('itemsControls');
-  if (!controlsContainer) return;
-
+function renderItemsControls(container) {
   const types = Array.from(new Set(cachedItems.map(item => item.type).filter(Boolean))).sort();
   const expansions = Array.from(new Set(cachedItems.map(item => item.expansion).filter(Boolean))).sort();
-  const sizes = Array.from(new Set(cachedItems.map(item => item.size).filter(Boolean))).sort();
 
-  controlsContainer.innerHTML = `
-    <div class="filter-bar grid gap-2 md:grid-cols-2 lg:grid-cols-5 items-end">
-      <label class="filter-field">
-        <span class="filter-label">Type</span>
-        <select data-filter="type" class="form-field">${buildOptions(types)}</select>
-      </label>
-      <label class="filter-field">
-        <span class="filter-label">Expansion</span>
-        <select data-filter="expansion" class="form-field">${buildOptions(expansions)}</select>
-      </label>
-      <label class="filter-field">
-        <span class="filter-label">Size</span>
-        <select data-filter="size" class="form-field">${buildOptions(sizes)}</select>
-      </label>
-      <label class="filter-field">
-        <span class="filter-label">Relic</span>
-        <select data-filter="relic" class="form-field">
-          <option value="all">All</option>
-          <option value="requires">Requires relic</option>
-          <option value="none">No relic</option>
-        </select>
-      </label>
-      <label class="filter-field">
-        <span class="filter-label">Sort by</span>
-        <select data-filter="sort" class="form-field">
-          <option value="name">Name (A-Z)</option>
-          <option value="rarity">Rarity</option>
-          <option value="price">Craft cost</option>
-        </select>
-      </label>
+  // Render filter chips
+  const filtersHtml = `
+    <div class="flex flex-wrap gap-2 mb-4">
+      <button class="filter-chip ${currentFilters.type === 'all' ? 'active' : ''}" data-filter="type" data-value="all">
+        <span class="material-symbols-outlined" style="font-size: 16px;">apps</span>
+        All Types
+      </button>
+      ${types.map(t => `
+        <button class="filter-chip ${currentFilters.type === t ? 'active' : ''}" data-filter="type" data-value="${t}">
+          ${t}
+        </button>
+      `).join('')}
+    </div>
+    <div class="flex flex-wrap items-center gap-3 mb-6">
+      <select data-filter="expansion" class="bg-[#1a2e24] text-white text-sm rounded-full px-4 py-2 border border-[#28392f] focus:border-primary focus:outline-none">
+        <option value="all">All Expansions</option>
+        ${expansions.map(e => `<option value="${e}" ${currentFilters.expansion === e ? 'selected' : ''}>${e}</option>`).join('')}
+      </select>
+      <select data-filter="relic" class="bg-[#1a2e24] text-white text-sm rounded-full px-4 py-2 border border-[#28392f] focus:border-primary focus:outline-none">
+        <option value="all" ${currentFilters.relic === 'all' ? 'selected' : ''}>All Items</option>
+        <option value="requires" ${currentFilters.relic === 'requires' ? 'selected' : ''}>Requires Relic</option>
+        <option value="none" ${currentFilters.relic === 'none' ? 'selected' : ''}>No Relic</option>
+      </select>
+      <select data-filter="sort" class="bg-[#1a2e24] text-white text-sm rounded-full px-4 py-2 border border-[#28392f] focus:border-primary focus:outline-none">
+        <option value="name" ${currentFilters.sort === 'name' ? 'selected' : ''}>Sort: Name</option>
+        <option value="rarity" ${currentFilters.sort === 'rarity' ? 'selected' : ''}>Sort: Rarity</option>
+        <option value="price" ${currentFilters.sort === 'price' ? 'selected' : ''}>Sort: Cost</option>
+      </select>
     </div>
   `;
 
-  controlsContainer.querySelectorAll('select[data-filter]').forEach(select => {
-    const key = select.dataset.filter;
-    select.value = currentFilters[key] || 'all';
+  container.innerHTML = filtersHtml;
+
+  // Filter chip click handlers
+  container.querySelectorAll('.filter-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const filter = chip.dataset.filter;
+      const value = chip.dataset.value;
+      currentFilters[filter] = value;
+      setCurrentView(currentView);
+    });
+  });
+
+  // Select change handlers
+  container.querySelectorAll('select[data-filter]').forEach(select => {
     select.addEventListener('change', (e) => {
-      currentFilters[key] = e.target.value;
+      currentFilters[e.target.dataset.filter] = e.target.value;
       setCurrentView(currentView);
     });
   });
@@ -268,215 +362,101 @@ export function renderHome(materials, items, version = '') {
   const inventory = loadInventory();
   const favourites = loadFavourites();
 
-  const app = document.getElementById('app');
-  // Clear previous content
-  app.innerHTML = '';
+  // Update version in sidebar
+  const versionEl = document.getElementById('sidebarVersion');
+  if (versionEl) versionEl.textContent = version;
 
-  // Place header buttons
+  // Render materials list in sidebar
+  renderMaterialsList(cachedMaterials, inventory);
+
+  // Render header buttons
   renderHeaderButtons();
 
-  // Create Materials Section
-  const materialsSection = document.createElement('section');
-  materialsSection.id = 'materialsSection';
-  materialsSection.className = 'fade-in mb-8'; // Added fade-in
-  materialsSection.innerHTML = `
-    <h2 class="text-2xl font-heading mb-4">Available Materials</h2>
-    <div id="materialsGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3" style="grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));">
-      <!-- materials grid will be rendered here by renderMaterialsGrid -->
+  // Render main content
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <div class="flex flex-col gap-4">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div>
+          <p class="text-primary text-sm font-semibold uppercase tracking-widest mb-1">Crafting Companion</p>
+          <h2 id="viewTitle" class="text-3xl md:text-4xl font-bold text-white tracking-tight">Craftable Items</h2>
+        </div>
+      </div>
+      <div id="filtersContainer"></div>
+    </div>
+    <div id="itemsDisplayGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
     </div>
   `;
-  app.appendChild(materialsSection);
 
-  // Create Items Section
-  const itemsSection = document.createElement('section');
-  itemsSection.id = 'itemsSection';
-  itemsSection.className = 'fade-in'; // Added fade-in
-  itemsSection.innerHTML = `
-    <div class="items-toolbar">
-      <h2 class="text-2xl font-heading" id="itemsSectionTitle">Craftable Items</h2>
-      <div id="itemsControls"></div>
-    </div>
-    <div id="itemsDisplayGrid" class="grid gap-4" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
-      <!-- item cards will be rendered here -->
-    </div>
-  `;
-  app.appendChild(itemsSection);
+  // Render filters
+  const filtersContainer = document.getElementById('filtersContainer');
+  renderItemsControls(filtersContainer);
 
-  // Initial renders
-  renderMaterialsGrid(cachedMaterials, inventory);
-  renderItemsControls();
-  renderCraftableItemsView(cachedItems, inventory, favourites); // Default view
+  // Render items
+  renderCraftableItemsView(cachedItems, inventory, favourites);
 
-  // Setup Event Listeners for controls
-  const craftableViewBtn = document.getElementById('craftableViewBtn');
-  const allItemsViewBtn = document.getElementById('allItemsViewBtn');
-
-  if (craftableViewBtn) {
-    craftableViewBtn.addEventListener('click', () => setCurrentView('craftable'));
-  }
-
-  if (allItemsViewBtn) {
-    allItemsViewBtn.addEventListener('click', () => setCurrentView('all'));
-  }
-
-  const settingsBtn = document.getElementById('settingsBtn');
-  if (settingsBtn) {
-    settingsBtn.addEventListener('click', () => {
-      // Settings rendering will inject into 'app' or a modal, replacing current content.
-      // For now, ensure it's called.
-      renderSettings();
+  // Setup search
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = e.target.value;
+      setCurrentView(currentView);
     });
   }
 
-  // Add Footer with Version
-  if (cachedVersion) {
-    const footer = document.createElement('footer');
-    footer.className = 'text-center text-xs text-white mt-8 mb-4 opacity-40';
-    footer.textContent = `Maladum Crafting Companion ${cachedVersion}`;
-    app.appendChild(footer);
+  // Setup settings button in sidebar
+  const settingsBtn = document.getElementById('settingsSidebarBtn');
+  if (settingsBtn) {
+    settingsBtn.addEventListener('click', () => {
+      renderSettings();
+    });
   }
 }
 
 export function renderMaterialsGrid(materials, inventory) {
-  const gridContainer = document.getElementById('materialsGrid');
-  if (!gridContainer) return;
-
-  const getInventoryStateClass = (count) => {
-    if (count === 0) return 'inventory-empty';
-    if (count < 2) return 'inventory-low';
-    return 'inventory-surplus';
-  };
-
-  const getInventoryLabel = (count) => {
-    if (count === 0) return 'Out';
-    if (count < 2) return 'Low';
-    return 'Stocked';
-  };
-
-  // Render all material cards
-  gridContainer.innerHTML = materials
-    .map(m => {
-      const count = inventory[m.symbol] || 0;
-      const rarityCls = rarityClass(m.rarity);
-      const rarityBorderCls = rarityBorderClass(m.rarity);
-      const inventoryStateCls = getInventoryStateClass(count);
-      const inventoryLabel = getInventoryLabel(count);
-      return `
-        <div class="card flex flex-col items-center text-center p-3 ${rarityBorderCls} ${inventoryStateCls}" data-material="${m.symbol}">
-          <span class="rarity-badge ${rarityCls}"></span>
-          <span class="inventory-state badge">${inventoryLabel}</span>
-          <div class="relative w-24 h-24 mb-1">
-            <img src="images/icons/crafting.png" alt="${m.name} icon" class="w-full h-full" />
-            <span class="absolute inset-0 flex items-center justify-center text-lg font-bold pointer-events-none">${m.symbol}</span>
-          </div>
-          <div class="text-sm font-semibold mb-2 text-center">${m.name}</div>
-          <div class="text-sm my-1">Cost: ${m.base_cost}</div>
-          <div class="mt-auto flex flex-col items-center">
-            <div class="text-base my-1 font-bold count">${count}</div>
-            <div class="flex space-x-1">
-              <button class="btn btn-sm" data-action="dec" data-symbol="${m.symbol}" aria-label="Decrease ${m.name} count">–</button>
-              <button class="btn btn-sm" data-action="inc" data-symbol="${m.symbol}" aria-label="Increase ${m.name} count">+</button>
-            </div>
-          </div>
-        </div>`;
-    })
-    .join('');
-
-  // Single handler using event delegation
-  gridContainer.addEventListener('click', (e) => {
-    const btn = e.target.closest('button[data-action]');
-    if (!btn) return;
-    const sym = btn.dataset.symbol;
-    const delta = btn.dataset.action === 'inc' ? 1 : -1;
-    const inv = updateInventory(sym, delta);
-
-    const countEl = gridContainer.querySelector(`[data-material="${sym}"] .count`);
-    if (countEl) countEl.textContent = inv[sym] || 0;
-
-    const cardEl = gridContainer.querySelector(`[data-material="${sym}"]`);
-    if (cardEl) {
-      cardEl.classList.remove('inventory-empty', 'inventory-low', 'inventory-surplus');
-      const newStateClass = getInventoryStateClass(inv[sym] || 0);
-      cardEl.classList.add(newStateClass);
-      const badge = cardEl.querySelector('.inventory-state');
-      if (badge) badge.textContent = getInventoryLabel(inv[sym] || 0);
-    }
-
-    if (currentView === 'all') {
-      renderAllItemsView(cachedItems, inv, loadFavourites());
-    } else {
-      renderCraftableItemsView(cachedItems, inv, loadFavourites());
-    }
-  });
+  // This function is now replaced by renderMaterialsList for the sidebar
+  renderMaterialsList(materials, inventory);
 }
 
 export function renderAllItemsView(items, inventory, favourites) {
   const displayGrid = document.getElementById('itemsDisplayGrid');
+  const viewTitle = document.getElementById('viewTitle');
   if (!displayGrid) return;
-  displayGrid.innerHTML = ''; // Clear previous content
+
+  if (viewTitle) viewTitle.textContent = 'All Items';
+  displayGrid.innerHTML = '';
 
   const filteredItems = filterAndSortItems(items);
 
-  // Separate and sort items
   const favoriteItems = filteredItems.filter(item => favourites.includes(item.name));
   const otherItems = filteredItems.filter(item => !favourites.includes(item.name));
-
-  // Assuming original order is desired for secondary sort, no explicit sort needed for subgroups yet.
-  // If specific sorting (e.g., by name) is needed for favoriteItems and otherItems:
-  // favoriteItems.sort((a, b) => a.name.localeCompare(b.name));
-  // otherItems.sort((a, b) => a.name.localeCompare(b.name));
-
   const sortedItems = [...favoriteItems, ...otherItems];
+
+  if (sortedItems.length === 0) {
+    displayGrid.innerHTML = '<p class="col-span-full text-center text-[#9db9a8] py-12">No items match your filters.</p>';
+    return;
+  }
 
   const cardsHtml = sortedItems
     .map((item, index) => buildItemCard(item, index, inventory, favourites, 'all'))
     .join('');
 
   displayGrid.innerHTML = cardsHtml;
-
-  displayGrid.querySelectorAll('button[data-fav]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const name = btn.dataset.fav;
-      toggleFavourite(name);
-      renderAllItemsView(cachedItems, loadInventory(), loadFavourites());
-    });
-  });
-
-  displayGrid.querySelectorAll('.item-icon').forEach(icon => {
-    icon.addEventListener('click', () => {
-      const modal = document.createElement('div');
-      modal.classList.add('icon-modal');
-      modal.innerHTML = `
-        <div class="icon-modal-content">
-          <span class="icon-modal-close">&times;</span>
-          <img src="${icon.src}" alt="${icon.alt}" class="zoomed-icon">
-        </div>
-      `;
-      document.body.appendChild(modal);
-
-      modal.querySelector('.icon-modal-close').addEventListener('click', () => {
-        document.body.removeChild(modal);
-      });
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) { // Only close if clicking on the background
-          document.body.removeChild(modal);
-        }
-      });
-    });
-  });
+  attachCardEventListeners(displayGrid, 'all');
 }
 
 export function renderCraftableItemsView(items, inventory, favourites) {
   const displayGrid = document.getElementById('itemsDisplayGrid');
+  const viewTitle = document.getElementById('viewTitle');
   if (!displayGrid) return;
-  displayGrid.innerHTML = ''; // Clear previous content
+
+  if (viewTitle) viewTitle.textContent = 'Craftable Items';
+  displayGrid.innerHTML = '';
 
   const filteredItems = filterAndSortItems(items);
   const craftableItems = getCraftableItems(inventory, filteredItems);
   const allFavouriteItems = filteredItems.filter(item => favourites.includes(item.name));
 
-  // Combine favourited items and craftable items, ensuring favourites are listed first
-  // and removing duplicates.
   let combinedItems = [];
   const itemNames = new Set();
 
@@ -495,7 +475,7 @@ export function renderCraftableItemsView(items, inventory, favourites) {
   });
 
   if (combinedItems.length === 0) {
-    displayGrid.innerHTML = '<p class="italic text-center col-span-full">No craftable or favourited items to display.</p>'; // Added col-span-full for grid context
+    displayGrid.innerHTML = '<p class="col-span-full text-center text-[#9db9a8] py-12">No craftable or favourited items to display. Add materials using the sidebar!</p>';
     return;
   }
 
@@ -504,34 +484,42 @@ export function renderCraftableItemsView(items, inventory, favourites) {
     .join('');
 
   displayGrid.innerHTML = cardsHtml;
+  attachCardEventListeners(displayGrid, 'craftable');
+}
 
-  displayGrid.querySelectorAll('button[data-fav]').forEach(btn => {
-    btn.addEventListener('click', () => {
+function attachCardEventListeners(container, viewContext) {
+  // Favourite toggle
+  container.querySelectorAll('button[data-fav]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
       const name = btn.dataset.fav;
       toggleFavourite(name);
-      // When a favourite is toggled, we need to re-render using the updated favourites list
-      // and current inventory to correctly display craftable/favourited items.
-      renderCraftableItemsView(cachedItems, loadInventory(), loadFavourites());
+      if (viewContext === 'all') {
+        renderAllItemsView(cachedItems, loadInventory(), loadFavourites());
+      } else {
+        renderCraftableItemsView(cachedItems, loadInventory(), loadFavourites());
+      }
     });
   });
 
-  displayGrid.querySelectorAll('.item-icon').forEach(icon => {
-    icon.addEventListener('click', () => {
+  // Icon zoom modal
+  container.querySelectorAll('.item-icon').forEach(icon => {
+    icon.addEventListener('click', (e) => {
+      e.stopPropagation();
       const modal = document.createElement('div');
-      modal.classList.add('icon-modal');
+      modal.className = 'fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4';
       modal.innerHTML = `
-        <div class="icon-modal-content">
-          <span class="icon-modal-close">&times;</span>
-          <img src="${icon.src}" alt="${icon.alt}" class="zoomed-icon">
+        <div class="relative max-w-lg w-full bg-surface-dark rounded-2xl p-4">
+          <button class="absolute top-4 right-4 text-white hover:text-primary">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+          <img src="${icon.src}" alt="${icon.alt}" class="w-full h-auto rounded-xl">
         </div>
       `;
       document.body.appendChild(modal);
 
-      modal.querySelector('.icon-modal-close').addEventListener('click', () => {
-        document.body.removeChild(modal);
-      });
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) { // Only close if clicking on the background
+      modal.addEventListener('click', (ev) => {
+        if (ev.target === modal || ev.target.closest('button')) {
           document.body.removeChild(modal);
         }
       });
@@ -540,51 +528,42 @@ export function renderCraftableItemsView(items, inventory, favourites) {
 }
 
 export function renderSettings() {
-  const appContainer = document.getElementById('app'); // Target the main app container
-  const settings = loadSettings();
+  const app = document.getElementById('app');
 
-  // Create a modal or a dedicated view for settings
-  // For simplicity, this example replaces the app content.
-  // A modal approach would be less disruptive.
-  appContainer.innerHTML = `
-    <section id="settingsView" class="p-4">
-      <header class="flex items-center mb-4">
-        <button id="backBtn" class="btn mr-4">← Back</button>
-        <h1 class="text-2xl font-heading flex-grow text-center">Settings</h1>
-        <div style="width: 60px;"></div>
+  app.innerHTML = `
+    <div class="max-w-md mx-auto">
+      <header class="flex items-center gap-4 mb-8">
+        <button id="backBtn" class="size-10 rounded-full bg-[#1a2e24] text-white hover:bg-primary hover:text-[#0c1a12] transition-colors flex items-center justify-center">
+          <span class="material-symbols-outlined">arrow_back</span>
+        </button>
+        <h1 class="text-2xl font-bold text-white">Settings</h1>
       </header>
-      <main class="space-y-6 max-w-md mx-auto">
-        <div class="card p-4">
-          <h2 class="font-heading text-lg mb-2">Data Management</h2>
-          <button id="clearInventoryBtn" class="btn btn-danger">Clear Inventory</button>
-          <p class="text-xs text-gray-500 mt-1">This will reset your tracked materials.</p>
+      
+      <div class="bg-surface-dark rounded-2xl p-6 border border-[#28392f] space-y-6">
+        <div>
+          <h2 class="text-white font-bold mb-2">Data Management</h2>
+          <button id="clearInventoryBtn" class="w-full bg-red-900/30 hover:bg-red-900/50 text-red-400 font-semibold py-3 px-4 rounded-xl border border-red-700/50 transition-colors">
+            Clear All Inventory
+          </button>
+          <p class="text-[#9db9a8] text-xs mt-2">This will reset all your tracked materials to zero.</p>
         </div>
-        <div class="text-center text-xs text-gray-500">
-          Version: ${cachedVersion}
+        
+        <div class="pt-4 border-t border-[#28392f]">
+          <p class="text-[#9db9a8] text-sm text-center">Version: ${cachedVersion}</p>
         </div>
-      </main>
-    </section>
+      </div>
+    </div>
   `;
 
-  // Re-attach event listeners
-  const backBtn = document.getElementById('backBtn');
-  if (backBtn) {
-    backBtn.addEventListener('click', () => {
-      renderHome(cachedMaterials, cachedItems); // Re-render the main home view
-    });
-  }
+  document.getElementById('backBtn')?.addEventListener('click', () => {
+    renderHome(cachedMaterials, cachedItems, cachedVersion);
+  });
 
-  // Event listener for darkModeToggle removed as the element is gone.
-
-  const clearInventoryBtn = document.getElementById('clearInventoryBtn');
-  if (clearInventoryBtn) {
-    clearInventoryBtn.addEventListener('click', () => {
-      if (confirm('Are you sure you want to clear all inventory? This cannot be undone.')) {
-        localStorage.removeItem('maladum_inventory');
-        // Optionally, re-render or give feedback
-        alert('Inventory cleared.');
-        renderHome(cachedMaterials, cachedItems); // Re-render to reflect change
-      }
-    });
-  }
+  document.getElementById('clearInventoryBtn')?.addEventListener('click', () => {
+    if (confirm('Are you sure you want to clear all inventory? This cannot be undone.')) {
+      localStorage.removeItem('maladum_inventory');
+      alert('Inventory cleared.');
+      renderHome(cachedMaterials, cachedItems, cachedVersion);
+    }
+  });
 }
