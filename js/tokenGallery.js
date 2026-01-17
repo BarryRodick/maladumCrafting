@@ -4,8 +4,14 @@ let allTokens = [];
 let searchQuery = '';
 
 async function loadTokens() {
-  const res = await fetch('tokens.json');
-  return res.json();
+  try {
+    const res = await fetch('tokens.json');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+  } catch (err) {
+    console.error('Failed to load tokens:', err);
+    return []; // Return empty array as fallback
+  }
 }
 
 function formatName(file) {

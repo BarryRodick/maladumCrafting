@@ -1,5 +1,5 @@
 // UI rendering helpers
-import { loadInventory, updateInventory } from '../inventory.js';
+import { loadInventory, updateInventory, clearInventory } from '../inventory.js';
 import { loadFavourites, toggleFavourite } from '../favourites.js';
 import { getCraftableItems } from '../crafting.js';
 import { loadSettings, saveSettings } from '../storage.js';
@@ -24,7 +24,8 @@ const rarityOrder = { Common: 1, Uncommon: 2, Rare: 3 };
 const rarityColors = {
   Common: { bg: 'bg-rarity-common', text: 'text-rarity-common', shadow: 'shadow-[0_0_8px_rgba(34,197,94,0.8)]' },
   Uncommon: { bg: 'bg-rarity-uncommon', text: 'text-rarity-uncommon', shadow: 'shadow-[0_0_8px_rgba(234,179,8,0.8)]' },
-  Rare: { bg: 'bg-rarity-rare', text: 'text-rarity-rare', shadow: 'shadow-[0_0_8px_rgba(59,130,246,0.8)]' }
+  Rare: { bg: 'bg-rarity-rare', text: 'text-rarity-rare', shadow: 'shadow-[0_0_8px_rgba(59,130,246,0.8)]' },
+  '*': { bg: 'bg-purple-500', text: 'text-purple-400', shadow: 'shadow-[0_0_8px_rgba(168,85,247,0.8)]' } // Special rarity
 };
 
 function calculateItemRarity(item) {
@@ -194,9 +195,17 @@ function buildItemCard(item, index, inventory, favourites, viewContext) {
 }
 
 // Render materials list in sidebar
+let materialsListController = null; // Track listener for cleanup
+
 function renderMaterialsList(materials, inventory) {
   const listContainer = document.getElementById('materialsList');
   if (!listContainer) return;
+
+  // Remove previous listener to prevent memory leak
+  if (materialsListController) {
+    materialsListController.abort();
+  }
+  materialsListController = new AbortController();
 
   const getStateClass = (count) => {
     if (count === 0) return { bg: 'bg-red-900/30', border: 'border-red-700/50', text: 'text-red-400' };
@@ -226,7 +235,7 @@ function renderMaterialsList(materials, inventory) {
     `;
   }).join('');
 
-  // Event delegation for inventory buttons
+  // Event delegation for inventory buttons with proper cleanup
   listContainer.addEventListener('click', (e) => {
     const btn = e.target.closest('button[data-action]');
     if (!btn) return;
@@ -255,7 +264,7 @@ function renderMaterialsList(materials, inventory) {
     } else {
       renderCraftableItemsView(cachedItems, inv, loadFavourites());
     }
-  });
+  }, { signal: materialsListController.signal });
 }
 
 function renderHeaderButtons() {
@@ -510,7 +519,7 @@ function attachCardEventListeners(container, viewContext) {
       modal.className = 'fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4';
       modal.innerHTML = `
         <div class="relative max-w-lg w-full bg-surface-dark rounded-2xl p-4">
-          <button class="absolute top-4 right-4 text-white hover:text-primary">
+          <button class="absolute top-4 right-4 text-white hover:text-primary" aria-label="Close modal">
             <span class="material-symbols-outlined">close</span>
           </button>
           <img src="${icon.src}" alt="${icon.alt}" class="w-full h-auto rounded-xl">
@@ -561,7 +570,7 @@ export function renderSettings() {
 
   document.getElementById('clearInventoryBtn')?.addEventListener('click', () => {
     if (confirm('Are you sure you want to clear all inventory? This cannot be undone.')) {
-      localStorage.removeItem('maladum_inventory');
+      clearInventory();
       alert('Inventory cleared.');
       renderHome(cachedMaterials, cachedItems, cachedVersion);
     }
