@@ -8,29 +8,33 @@
   --font-heading: 'Cinzel', serif;
   --font-body: system-ui, Roboto, sans-serif;
 
-  /* Core Palette from Spec */
-  --bg-dark: #1e1e1e;
+  /* Core Palette - Consolidated dark background values */
+  --bg-dark: #102218;
+  /* Main dark background - synced with Tailwind background-dark */
   --maladum-red: #8B0000;
   --accent-gold: #c5a572;
-  /* Spec name for --maladum-gold */
   --accent-green: #1b5e20;
   --relic-bg: #EBD9BF;
   /* light parchment-gold blend */
 
-  /* Additional useful variables from Event Cards styles.css */
-  --dark-bg: #121212;
-  /* Main body background in Event Cards */
-  --dark-surface: #1e1e1e;
-  /* Same as --bg-dark */
-  --dark-surface-lighter: #2d2d2d;
+  /* Surface colors for layering */
+  --dark-bg: #102218;
+  /* Synced with --bg-dark for consistency */
+  --dark-surface: #162e21;
+  /* Synced with Tailwind surface-dark */
+  --dark-surface-lighter: #1a2e24;
   --accent-green-hover: #2e7d32;
+
+  /* Text colors */
   --text-primary: rgba(255, 255, 255, 0.87);
   --text-secondary: rgba(255, 255, 255, 0.6);
   --text-light: #1a202c;
   /* Dark text for light backgrounds like cards */
+
+  /* Other */
   --parchment: #F5E6D3;
-  --border-ornate: #2a2a2a;
-  /* Used for card borders in Event Cards */
+  --border-ornate: #28392f;
+  /* Synced with Tailwind border colors */
 }
 
 h1,
@@ -45,20 +49,15 @@ h6,
 .h4,
 .h5,
 .h6 {
-  /* Added h4-h6 and class versions for robustness */
   font-family: var(--font-heading);
   font-weight: 700;
-  /* Cinzel looks better with a defined weight for headings */
   color: var(--text-primary);
-  /* Default heading color for dark theme */
 }
 
 body {
   font-family: var(--font-body);
   background-color: var(--dark-bg);
-  /* Default background */
   color: var(--text-primary);
-  /* Default text color */
   margin: 0;
   line-height: 1.6;
 }

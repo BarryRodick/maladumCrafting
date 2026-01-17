@@ -76,7 +76,7 @@ export async function loadMaterials() {
 - **Files**: `theme.css` and `index.html` tailwind config
 - **Issue**: Theme.css defines `--dark-bg: #121212` but Tailwind uses `background-dark: #102218`. There's also `--bg-dark: #1e1e1e` in theme.css. Three different "dark background" values.
 - **Fix**: Consolidate to a single source of truth for color definitions.
-- [ ] **FIXED**
+- [x] **FIXED** ✅ (Standardized to #102218 across theme.css and Tailwind config)
 
 ---
 
@@ -84,7 +84,7 @@ export async function loadMaterials() {
 - **File**: `js/storage.js`
 - **Issue**: `loadSettings()` and `saveSettings()` are imported in `components.js` but `saveSettings()` is never called. Settings are loaded but theme toggle doesn't exist in the UI.
 - **Fix**: Either implement the theme toggle UI or remove unused code.
-- [ ] **FIXED**
+- [x] **FIXED** ✅ (Implemented Theme Toggle in Settings using loadSettings/saveSettings)
 
 ---
 
@@ -100,7 +100,7 @@ export async function loadMaterials() {
 - **Files**: `index.html` line 141-146, `tokens.html` line 182-187
 - **Issue**: Same function is defined inline in both HTML files.
 - **Fix**: Move to a shared utility module and import in both pages.
-- [ ] **FIXED**
+- [x] **FIXED** ✅ (Created js/ui/utils.js with shared toggleSidebar)
 
 ---
 
@@ -108,7 +108,7 @@ export async function loadMaterials() {
 - **File**: `js/pwa.js` line 4
 - **Issue**: `navigator.serviceWorker.register('service-worker.js')` uses relative path.
 - **Fix**: Consider using absolute path or `./service-worker.js` with scope.
-- [ ] **FIXED**
+- [x] **FIXED** ✅ (Updated to './service-worker.js' with explicit scope)
 
 ---
 
@@ -134,7 +134,7 @@ export async function loadMaterials() {
 - **File**: `images/parchment-texture.png`
 - **Size**: 2.2MB – Very large for a texture.
 - **Fix**: Compress using WebP format or optimize PNG. Target: <200KB.
-- [ ] **FIXED**
+- [ ] **FIXED** (Pending manual optimization/tooling)
 
 ---
 
@@ -142,7 +142,7 @@ export async function loadMaterials() {
 - **Files**: `js/ui/components.js` line 401, `js/tokenGallery.js` line 142
 - **Issue**: Search triggers on every keystroke, re-rendering the entire grid.
 - **Fix**: Add debounce utility (300-500ms delay).
-- [ ] **FIXED**
+- [x] **FIXED** ✅ (Added 300ms debounce to search in both main app and gallery)
 
 ---
 
@@ -167,9 +167,9 @@ export async function loadMaterials() {
 | Priority | Total Issues | Fixed |
 |----------|-------------|-------|
 | 🔴 High | 5 | 5 |
-| 🟡 Medium | 8 | 4 |
-| 🟢 Low | 4 | 2 |
-| **Total** | **17** | **11** |
+| 🟡 Medium | 8 | 8 |
+| 🟢 Low | 4 | 3 |
+| **Total** | **17** | **16** |
 
 ---
 
@@ -179,6 +179,7 @@ export async function loadMaterials() {
 |------|-------------|-------|
 | 2026-01-17 | 0 | Initial audit completed |
 | 2026-01-17 | 11 | Fixed high priority issues #1-5, medium #6, #9, #12, #13, low #16, #17 |
+| 2026-01-17 | 5 | Fixed medium #7, #8, #10, #11, low #15 |
 
 ---
 

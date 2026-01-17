@@ -179,13 +179,9 @@
     </div>
   </main>
 
-  <script>
-    function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.getElementById('sidebarOverlay');
-      sidebar.classList.toggle('sidebar-hidden');
-      overlay.classList.toggle('active');
-    }
+  <script type="module">
+    import { toggleSidebar } from './js/ui/utils.js';
+    window.toggleSidebar = toggleSidebar;
   </script>
   <script type="module" src="js/tokenGallery.js"></script>
 </body>

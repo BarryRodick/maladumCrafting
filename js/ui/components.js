@@ -4,6 +4,7 @@ import { loadFavourites, toggleFavourite } from '../favourites.js';
 import { getCraftableItems } from '../crafting.js';
 import { loadSettings, saveSettings } from '../storage.js';
 import { applyTheme } from './theme.js';
+import { debounce } from './utils.js';
 
 let cachedMaterials = [];
 let cachedItems = [];
@@ -404,12 +405,15 @@ export function renderHome(materials, items, version = '') {
   // Render items
   renderCraftableItemsView(cachedItems, inventory, favourites);
 
-  // Setup search
+  // Setup search with debounce for better performance
   const searchInput = document.getElementById('searchInput');
   if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
-      searchQuery = e.target.value;
+    const debouncedSearch = debounce((value) => {
+      searchQuery = value;
       setCurrentView(currentView);
+    }, 300);
+    searchInput.addEventListener('input', (e) => {
+      debouncedSearch(e.target.value);
     });
   }
 
@@ -538,6 +542,7 @@ function attachCardEventListeners(container, viewContext) {
 
 export function renderSettings() {
   const app = document.getElementById('app');
+  const settings = loadSettings();
 
   app.innerHTML = `
     <div class="max-w-md mx-auto">
@@ -550,7 +555,21 @@ export function renderSettings() {
       
       <div class="bg-surface-dark rounded-2xl p-6 border border-[#28392f] space-y-6">
         <div>
-          <h2 class="text-white font-bold mb-2">Data Management</h2>
+          <h2 class="text-white font-bold mb-4">Appearance</h2>
+          <div class="flex items-center justify-between p-4 bg-black/20 rounded-xl border border-white/5">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-primary">dark_mode</span>
+              <span class="text-white font-medium">Dark Mode</span>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" id="darkModeToggle" class="sr-only peer" ${settings.darkMode ? 'checked' : ''}>
+              <div class="w-11 h-6 bg-[#1a2e24] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+            </label>
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <h2 class="text-white font-bold mb-3">Data Management</h2>
           <button id="clearInventoryBtn" class="w-full bg-red-900/30 hover:bg-red-900/50 text-red-400 font-semibold py-3 px-4 rounded-xl border border-red-700/50 transition-colors">
             Clear All Inventory
           </button>
@@ -566,6 +585,13 @@ export function renderSettings() {
 
   document.getElementById('backBtn')?.addEventListener('click', () => {
     renderHome(cachedMaterials, cachedItems, cachedVersion);
+  });
+
+  document.getElementById('darkModeToggle')?.addEventListener('change', (e) => {
+    const isDark = e.target.checked;
+    settings.darkMode = isDark;
+    saveSettings(settings);
+    applyTheme(isDark);
   });
 
   document.getElementById('clearInventoryBtn')?.addEventListener('click', () => {

@@ -1,4 +1,5 @@
 import { setupTheme } from './ui/theme.js';
+import { debounce } from './ui/utils.js';
 
 let allTokens = [];
 let searchQuery = '';
@@ -142,12 +143,15 @@ window.addEventListener('DOMContentLoaded', async () => {
   render();
   renderLetterNav();
 
-  // Setup search
+  // Setup search with debounce for better performance
   const searchInput = document.getElementById('searchInput');
   if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
-      searchQuery = e.target.value;
+    const debouncedSearch = debounce((value) => {
+      searchQuery = value;
       render();
+    }, 300);
+    searchInput.addEventListener('input', (e) => {
+      debouncedSearch(e.target.value);
     });
   }
 });
