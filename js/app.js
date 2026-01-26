@@ -5,9 +5,10 @@ import { renderHome } from './ui/components.js';
 import { initializeFavourites } from './favourites.js';
 import { setupTheme } from './ui/theme.js';
 import { applyRippleEffect } from './ui/effects.js'; // Import ripple effect
+import { initMobileNav } from './ui/mobileNav.js'; // Mobile bottom navigation
 import './pwa.js';
 
-const APP_VERSION = 'v2.0.1';
+const APP_VERSION = 'v2.1.0';
 
 window.addEventListener('DOMContentLoaded', async () => {
   initializeFavourites();
@@ -19,4 +20,5 @@ window.addEventListener('DOMContentLoaded', async () => {
     loadItems()
   ]);
   renderHome(materials, items, APP_VERSION); // This will render buttons that will now get the ripple
+  initMobileNav(materials, items); // Initialize mobile bottom navigation
 });
