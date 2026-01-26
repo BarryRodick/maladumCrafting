@@ -275,7 +275,7 @@ function renderHeaderButtons() {
   headerNav.innerHTML = `
     <div class="flex items-center bg-[#1a2e24] rounded-full p-1 border border-[#28392f]">
       <button id="craftableViewBtn" class="px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${currentView === 'craftable' ? 'bg-primary text-[#0c1a12]' : 'text-[#9db9a8] hover:text-white'}" data-view="craftable">
-        Craftable
+        Ready to Craft
       </button>
       <button id="allItemsViewBtn" class="px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${currentView === 'all' ? 'bg-primary text-[#0c1a12]' : 'text-[#9db9a8] hover:text-white'}" data-view="all">
         All Items
@@ -367,7 +367,7 @@ export function renderHome(materials, items, version = '') {
   cachedMaterials = materials;
   cachedItems = items;
   cachedVersion = version;
-  currentView = 'craftable';
+  currentView = 'all';
 
   const inventory = loadInventory();
   const favourites = loadFavourites();
@@ -389,7 +389,7 @@ export function renderHome(materials, items, version = '') {
       <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
           <p class="text-primary text-sm font-semibold uppercase tracking-widest mb-1">Crafting Companion</p>
-          <h2 id="viewTitle" class="text-3xl md:text-4xl font-bold text-white tracking-tight">Craftable Items</h2>
+          <h2 id="viewTitle" class="text-3xl md:text-4xl font-bold text-white tracking-tight">All Items</h2>
         </div>
       </div>
       <div id="filtersContainer"></div>
@@ -403,7 +403,7 @@ export function renderHome(materials, items, version = '') {
   renderItemsControls(filtersContainer);
 
   // Render items
-  renderCraftableItemsView(cachedItems, inventory, favourites);
+  renderAllItemsView(cachedItems, inventory, favourites);
 
   // Setup search with debounce for better performance
   const searchInput = document.getElementById('searchInput');
@@ -463,7 +463,7 @@ export function renderCraftableItemsView(items, inventory, favourites) {
   const viewTitle = document.getElementById('viewTitle');
   if (!displayGrid) return;
 
-  if (viewTitle) viewTitle.textContent = 'Craftable Items';
+  if (viewTitle) viewTitle.textContent = 'Ready to Craft';
   displayGrid.innerHTML = '';
 
   const filteredItems = filterAndSortItems(items);
