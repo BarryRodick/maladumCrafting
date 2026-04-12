@@ -13,6 +13,18 @@ export function isStorageAvailable() {
   }
 }
 
+function cloneDefaultValue(value) {
+  if (value === null || value === undefined || typeof value !== 'object') {
+    return value;
+  }
+
+  if (typeof structuredClone === 'function') {
+    return structuredClone(value);
+  }
+
+  return JSON.parse(JSON.stringify(value));
+}
+
 export function saveState(key, state) {
   if (!isStorageAvailable()) {
     // Optionally, could throw an error or return a status
@@ -29,17 +41,17 @@ export function saveState(key, state) {
 
 export function loadState(key, defaultValue = null) {
   if (!isStorageAvailable()) {
-    return defaultValue;
+    return cloneDefaultValue(defaultValue);
   }
   try {
     const saved = localStorage.getItem(key);
-    return saved ? JSON.parse(saved) : defaultValue;
+    return saved ? JSON.parse(saved) : cloneDefaultValue(defaultValue);
   } catch (e) {
     console.warn(`Error loading state for key "${key}":`, e.message);
     // Corrupted data could cause JSON.parse to fail
     // Depending on strategy, might want to remove the corrupted item:
     // localStorage.removeItem(key);
-    return defaultValue;
+    return cloneDefaultValue(defaultValue);
   }
 }
 

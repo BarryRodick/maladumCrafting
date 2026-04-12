@@ -1,5 +1,5 @@
 // Service worker for offline caching
-const CACHE_NAME = 'maladum-crafting-cache-v3'; // Updated cache name
+const CACHE_NAME = 'maladum-crafting-cache-v4'; // Updated cache name
 const PRECACHE_ASSETS = [
   './', // Alias for index.html
   'index.html',
@@ -19,8 +19,10 @@ const PRECACHE_ASSETS = [
   'js/storage.js',
   'js/localStorageUtil.js', // Added
   'js/ui/components.js',
+  'js/ui/mobileNav.js',
   'js/ui/theme.js',
   'js/ui/effects.js', // Added
+  'js/ui/utils.js',
   'js/tokenGallery.js',
   'tokens.html',
   'tokens.json',

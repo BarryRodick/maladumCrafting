@@ -39,6 +39,7 @@ export function toggleFavourite(itemName) {
 }
 
 export function clearFavourites() {
-  saveFavourites(DEFAULT_FAVOURITES);
-  return DEFAULT_FAVOURITES;
+  const clearedFavourites = [];
+  saveFavourites(clearedFavourites);
+  return clearedFavourites;
 }

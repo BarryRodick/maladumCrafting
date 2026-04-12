@@ -1,3 +1,5 @@
+import { loadSettings } from '../storage.js';
+
 // Dark mode and theming
 export function applyTheme(isDark) {
   if (isDark) {
@@ -8,6 +10,6 @@ export function applyTheme(isDark) {
 }
 
 export function setupTheme() {
-  const settings = JSON.parse(localStorage.getItem('maladum_settings') || '{}');
+  const settings = loadSettings();
   applyTheme(settings.darkMode);
 }

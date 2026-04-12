@@ -8,8 +8,11 @@ const DEFAULT_SETTINGS = {
 };
 
 export function loadSettings() {
-  // Provide default settings if nothing is stored or loading fails
-  return loadState(SETTINGS_KEY, DEFAULT_SETTINGS);
+  const savedSettings = loadState(SETTINGS_KEY, DEFAULT_SETTINGS);
+  return {
+    ...DEFAULT_SETTINGS,
+    ...(savedSettings && typeof savedSettings === 'object' ? savedSettings : {})
+  };
 }
 
 export function saveSettings(settings) {

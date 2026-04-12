@@ -26,7 +26,7 @@ export function updateInventory(symbol, delta) {
 
 // Function to clear inventory might be useful here too, or can be handled by removeItem in localStorageUtil
 export function clearInventory() {
-  saveInventory(DEFAULT_INVENTORY); // Or use removeItem(INVENTORY_KEY) from localStorageUtil.js
-                                  // For consistency with how loadInventory expects an object, saving default is safer.
-  return DEFAULT_INVENTORY;
+  const clearedInventory = {};
+  saveInventory(clearedInventory);
+  return clearedInventory;
 }

@@ -18,6 +18,11 @@ let currentFilters = {
   sort: 'name'
 };
 let searchQuery = '';
+let shellControlsBound = false;
+const debouncedSearch = debounce((value) => {
+  searchQuery = value;
+  setCurrentView(currentView);
+}, 300);
 
 const rarityOrder = { Common: 1, Uncommon: 2, Rare: 3 };
 
@@ -110,6 +115,43 @@ function filterAndSortItems(items) {
   return sortItems(items.filter(matchesFilters));
 }
 
+function showItemArtFallback(icon) {
+  if (!(icon instanceof HTMLImageElement) || icon.dataset.broken === 'true') {
+    return;
+  }
+
+  icon.dataset.broken = 'true';
+  icon.classList.add('hidden');
+
+  const fallback = icon.parentElement?.querySelector('[data-missing-art]');
+  if (fallback) {
+    fallback.classList.remove('hidden');
+    fallback.classList.add('flex');
+  }
+}
+
+function bindPersistentShellControls() {
+  if (shellControlsBound) {
+    return;
+  }
+
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      debouncedSearch(e.target.value);
+    });
+  }
+
+  const settingsBtn = document.getElementById('settingsSidebarBtn');
+  if (settingsBtn) {
+    settingsBtn.addEventListener('click', () => {
+      renderSettings();
+    });
+  }
+
+  shellControlsBound = true;
+}
+
 // Build the new item card design
 function buildItemCard(item, index, inventory, favourites, viewContext) {
   const starred = favourites.includes(item.name);
@@ -162,6 +204,13 @@ function buildItemCard(item, index, inventory, favourites, viewContext) {
         <!-- Item Icon -->
         <div class="absolute inset-0 flex items-center justify-center p-4">
           <img src="${iconPath}" alt="${item.name}" class="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500 item-icon">
+          <div data-missing-art class="hidden absolute inset-4 rounded-2xl border border-dashed border-amber-300/40 bg-gradient-to-br from-[#162e21] via-[#13251a] to-black/70 items-center justify-center p-4 text-center">
+            <div class="flex flex-col items-center gap-2">
+              <span class="material-symbols-outlined text-amber-300" style="font-size: 32px;">image_not_supported</span>
+              <span class="text-[11px] font-bold uppercase tracking-[0.3em] text-amber-100">Art Pending</span>
+              <span class="text-xs font-medium text-[#d5dfd8] leading-relaxed">${item.name}</span>
+            </div>
+          </div>
         </div>
         
         <!-- Gradient overlay -->
@@ -381,6 +430,12 @@ export function renderHome(materials, items, version = '') {
 
   // Render header buttons
   renderHeaderButtons();
+  bindPersistentShellControls();
+
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) {
+    searchInput.value = searchQuery;
+  }
 
   // Render main content
   const app = document.getElementById('app');
@@ -404,26 +459,6 @@ export function renderHome(materials, items, version = '') {
 
   // Render items
   renderAllItemsView(cachedItems, inventory, favourites);
-
-  // Setup search with debounce for better performance
-  const searchInput = document.getElementById('searchInput');
-  if (searchInput) {
-    const debouncedSearch = debounce((value) => {
-      searchQuery = value;
-      setCurrentView(currentView);
-    }, 300);
-    searchInput.addEventListener('input', (e) => {
-      debouncedSearch(e.target.value);
-    });
-  }
-
-  // Setup settings button in sidebar
-  const settingsBtn = document.getElementById('settingsSidebarBtn');
-  if (settingsBtn) {
-    settingsBtn.addEventListener('click', () => {
-      renderSettings();
-    });
-  }
 }
 
 export function renderMaterialsGrid(materials, inventory) {
@@ -501,6 +536,15 @@ export function renderCraftableItemsView(items, inventory, favourites) {
 }
 
 function attachCardEventListeners(container, viewContext) {
+  container.querySelectorAll('.item-icon').forEach(icon => {
+    const handleMissingArt = () => showItemArtFallback(icon);
+    icon.addEventListener('error', handleMissingArt, { once: true });
+
+    if (icon.complete && icon.naturalWidth === 0) {
+      handleMissingArt();
+    }
+  });
+
   // Favourite toggle
   container.querySelectorAll('button[data-fav]').forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -518,6 +562,10 @@ function attachCardEventListeners(container, viewContext) {
   // Icon zoom modal
   container.querySelectorAll('.item-icon').forEach(icon => {
     icon.addEventListener('click', (e) => {
+      if (icon.dataset.broken === 'true') {
+        return;
+      }
+
       e.stopPropagation();
       const modal = document.createElement('div');
       modal.className = 'fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4';
