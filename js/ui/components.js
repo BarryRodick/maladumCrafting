@@ -115,6 +115,10 @@ function filterAndSortItems(items) {
   return sortItems(items.filter(matchesFilters));
 }
 
+function getMaterialMeta(symbol) {
+  return cachedMaterials.find(material => material.symbol === symbol) || null;
+}
+
 function showItemArtFallback(icon) {
   if (!(icon instanceof HTMLImageElement) || icon.dataset.broken === 'true') {
     return;
@@ -128,6 +132,186 @@ function showItemArtFallback(icon) {
     fallback.classList.remove('hidden');
     fallback.classList.add('flex');
   }
+}
+
+function openItemDetailModal(item, inventory) {
+  const existingModal = document.querySelector('[data-item-detail-modal]');
+  if (existingModal) {
+    existingModal.remove();
+  }
+
+  const rarity = calculateItemRarity(item);
+  const rarityColor = rarityColors[rarity] || rarityColors.Common;
+  const isCraftable = isItemCraftable(item, inventory);
+  const buildCost = calculateBuildCost(item, inventory);
+  const { missing, missingTotal, metResources, totalResources } = getMissingSummary(item, inventory);
+  const iconPath = `images/tokens/${item.resources.icon}`;
+  const recipeRows = Object.entries(item.resources)
+    .filter(([sym]) => sym !== 'icon')
+    .map(([sym, qty]) => {
+      const material = getMaterialMeta(sym);
+      const materialRarity = material ? material.rarity : 'Common';
+      const materialColor = rarityColors[materialRarity] || rarityColors.Common;
+      const have = inventory[sym] || 0;
+      const missingQty = Math.max(qty - have, 0);
+      const statusClasses = missingQty > 0
+        ? 'border-red-700/50 bg-red-950/20'
+        : 'border-emerald-700/40 bg-emerald-950/20';
+      const statusText = missingQty > 0
+        ? `<span class="text-xs font-semibold uppercase tracking-wider text-red-300">Missing ${missingQty}</span>`
+        : '<span class="text-xs font-semibold uppercase tracking-wider text-emerald-300">Ready</span>';
+
+      return `
+        <div class="flex items-center gap-3 rounded-2xl border ${statusClasses} p-3">
+          <div class="size-10 shrink-0 rounded-full ${materialColor.bg} ${materialColor.shadow} flex items-center justify-center text-sm font-bold text-white">${sym}</div>
+          <div class="min-w-0 flex-1">
+            <p class="text-sm font-bold text-white">${material ? material.name : sym}</p>
+            <p class="text-xs text-[#9db9a8]">${material ? `${material.rarity} • ${material.base_cost}g base cost` : 'Unknown material'}${material?.notes ? ` • ${material.notes}` : ''}</p>
+          </div>
+          <div class="text-right">
+            <p class="text-sm font-bold text-white">${have}/${qty}</p>
+            ${statusText}
+          </div>
+        </div>
+      `;
+    })
+    .join('');
+
+  const modal = document.createElement('div');
+  modal.dataset.itemDetailModal = 'true';
+  modal.className = 'fixed inset-0 z-50 bg-black/80 p-4 backdrop-blur-sm md:p-8';
+  modal.innerHTML = `
+    <div class="mx-auto flex h-full max-w-5xl items-center justify-center">
+      <div role="dialog" aria-modal="true" aria-label="${item.name} details" class="relative max-h-[90vh] w-full overflow-hidden rounded-[28px] border border-[#2f4b3b] bg-[#0d1912] shadow-[0_30px_90px_rgba(0,0,0,0.55)]">
+        <button data-close-detail-modal class="absolute right-4 top-4 z-10 flex size-11 items-center justify-center rounded-full border border-white/10 bg-black/40 text-white transition-colors hover:border-primary/50 hover:text-primary" aria-label="Close item details">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+
+        <div class="grid max-h-[90vh] grid-cols-1 overflow-y-auto md:grid-cols-[minmax(0,360px)_minmax(0,1fr)]">
+          <div class="border-b border-[#1f3127] bg-gradient-to-br from-[#112117] via-[#0f1d15] to-black/70 p-5 md:border-b-0 md:border-r">
+            <div class="mb-4 flex items-center justify-between">
+              <span class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/30 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.28em] text-amber-100">
+                <span class="size-2 rounded-full ${rarityColor.bg} ${rarityColor.shadow}"></span>
+                ${rarity}
+              </span>
+              <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-bold ${isCraftable ? 'bg-primary text-[#0c1a12]' : 'bg-red-950/40 text-red-200 border border-red-700/50'}">
+                ${isCraftable ? 'Ready to Craft' : `Missing ${missingTotal}`}
+              </span>
+            </div>
+
+            <div class="relative overflow-hidden rounded-[24px] border border-white/10 bg-black">
+              <div class="aspect-[4/3] w-full">
+                <div class="absolute inset-0 flex items-center justify-center p-6">
+                  <img src="${iconPath}" alt="${item.name}" class="item-icon max-h-full max-w-full object-contain" data-detail-item-icon="true">
+                  <div data-missing-art class="hidden absolute inset-5 rounded-[20px] border border-dashed border-amber-300/40 bg-gradient-to-br from-[#162e21] via-[#13251a] to-black/70 items-center justify-center p-4 text-center">
+                    <div class="flex flex-col items-center gap-2">
+                      <span class="material-symbols-outlined text-amber-300" style="font-size: 38px;">image_not_supported</span>
+                      <span class="text-[11px] font-bold uppercase tracking-[0.3em] text-amber-100">Art Pending</span>
+                      <span class="text-sm font-semibold text-[#d5dfd8]">${item.name}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-t from-[#0d1912] via-transparent to-transparent opacity-80"></div>
+              </div>
+            </div>
+
+            <div class="mt-4 grid grid-cols-2 gap-3">
+              <div class="rounded-2xl border border-white/5 bg-black/20 p-3">
+                <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-[#9db9a8]">Market Price</p>
+                <p class="mt-1 text-2xl font-bold text-white">${item.price || 0}g</p>
+              </div>
+              <div class="rounded-2xl border border-white/5 bg-black/20 p-3">
+                <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-[#9db9a8]">Buy Missing</p>
+                <p class="mt-1 text-2xl font-bold text-white">${buildCost}g</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-5 md:p-6">
+            <div class="mb-5">
+              <p class="mb-2 text-sm font-semibold uppercase tracking-[0.28em] text-primary">Item Details</p>
+              <div class="flex flex-wrap items-start gap-3">
+                <div class="min-w-0 flex-1">
+                  <h3 class="text-3xl font-bold tracking-tight text-white">${item.name}</h3>
+                  <div class="mt-3 flex flex-wrap gap-2">
+                    <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-white">${item.type || 'Unknown Type'}</span>
+                    ${item.size ? `<span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-white">Size ${item.size}</span>` : ''}
+                    <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-white">${item.expansion || 'Base Game'}</span>
+                    ${item.relic > 0 ? `<span class="rounded-full border border-amber-400/40 bg-amber-500/10 px-3 py-1 text-xs font-semibold text-amber-200">Relic ${item.relic}</span>` : ''}
+                  </div>
+                </div>
+                <div class="rounded-2xl border border-white/5 bg-black/20 px-4 py-3 text-right">
+                  <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-[#9db9a8]">Coverage</p>
+                  <p class="mt-1 text-2xl font-bold text-white">${metResources}/${totalResources}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-5 rounded-[24px] border border-white/5 bg-black/20 p-4">
+              <div class="mb-3 flex items-center justify-between gap-3">
+                <h4 class="text-lg font-bold text-white">Crafting Recipe</h4>
+                <span class="text-xs font-semibold uppercase tracking-[0.24em] text-[#9db9a8]">${totalResources} material${totalResources === 1 ? '' : 's'}</span>
+              </div>
+              <div class="space-y-3">
+                ${recipeRows}
+              </div>
+            </div>
+
+            <div class="grid gap-4 md:grid-cols-2">
+              <div class="rounded-[24px] border border-white/5 bg-black/20 p-4">
+                <h4 class="mb-3 text-lg font-bold text-white">Status</h4>
+                <p class="text-sm leading-relaxed text-[#d5dfd8]">
+                  ${isCraftable
+                    ? 'Your current inventory covers every required material. This item can be crafted immediately.'
+                    : `You are short ${missingTotal} material${missingTotal === 1 ? '' : 's'} across ${missing.length} requirement${missing.length === 1 ? '' : 's'}.`}
+                </p>
+              </div>
+              <div class="rounded-[24px] border border-white/5 bg-black/20 p-4">
+                <h4 class="mb-3 text-lg font-bold text-white">Quick Summary</h4>
+                <div class="space-y-2 text-sm text-[#d5dfd8]">
+                  <p><span class="font-semibold text-white">Expansion:</span> ${item.expansion || 'Base Game'}</p>
+                  <p><span class="font-semibold text-white">Inventory-adjusted cost:</span> ${buildCost}g</p>
+                  <p><span class="font-semibold text-white">Material rarity:</span> ${rarity}</p>
+                  <p><span class="font-semibold text-white">Relic requirement:</span> ${item.relic > 0 ? `${item.relic}` : 'None'}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  const closeModal = () => {
+    document.removeEventListener('keydown', handleEscape);
+    modal.remove();
+  };
+
+  const handleEscape = (event) => {
+    if (event.key === 'Escape') {
+      closeModal();
+    }
+  };
+
+  modal.addEventListener('click', (event) => {
+    if (event.target === modal || event.target.closest('[data-close-detail-modal]')) {
+      closeModal();
+    }
+  });
+
+  document.addEventListener('keydown', handleEscape);
+  document.body.appendChild(modal);
+
+  const detailIcon = modal.querySelector('[data-detail-item-icon]');
+  if (detailIcon instanceof HTMLImageElement) {
+    const handleMissingArt = () => showItemArtFallback(detailIcon);
+    detailIcon.addEventListener('error', handleMissingArt, { once: true });
+    if (detailIcon.complete && detailIcon.naturalWidth === 0) {
+      handleMissingArt();
+    }
+  }
+
+  modal.querySelector('[data-close-detail-modal]')?.focus();
 }
 
 function bindPersistentShellControls() {
@@ -184,7 +368,10 @@ function buildItemCard(item, index, inventory, favourites, viewContext) {
   return `
     <div class="group relative bg-surface-dark rounded-[24px] p-3 hover:-translate-y-1 hover:shadow-[0_10px_30px_-10px_rgba(19,236,109,0.2)] transition-all duration-300 border border-transparent hover:border-primary/50 cursor-pointer overflow-hidden ${craftableClass} ${notCraftableClass}" 
          style="animation: fadeIn 0.4s ease-out forwards; animation-delay: ${index * 50}ms; opacity: 0;"
-         data-item="${item.name}">
+         data-item="${item.name}"
+         role="button"
+         tabindex="0"
+         aria-label="View details for ${item.name}">
       
       <!-- Favourite Toggle -->
       <button data-fav="${item.name}" data-view="${viewContext}" 
@@ -559,31 +746,28 @@ function attachCardEventListeners(container, viewContext) {
     });
   });
 
-  // Icon zoom modal
-  container.querySelectorAll('.item-icon').forEach(icon => {
-    icon.addEventListener('click', (e) => {
-      if (icon.dataset.broken === 'true') {
+  container.querySelectorAll('[data-item]').forEach(card => {
+    card.addEventListener('click', () => {
+      const item = cachedItems.find(entry => entry.name === card.dataset.item);
+      if (!item) {
         return;
       }
 
-      e.stopPropagation();
-      const modal = document.createElement('div');
-      modal.className = 'fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4';
-      modal.innerHTML = `
-        <div class="relative max-w-lg w-full bg-surface-dark rounded-2xl p-4">
-          <button class="absolute top-4 right-4 text-white hover:text-primary" aria-label="Close modal">
-            <span class="material-symbols-outlined">close</span>
-          </button>
-          <img src="${icon.src}" alt="${icon.alt}" class="w-full h-auto rounded-xl">
-        </div>
-      `;
-      document.body.appendChild(modal);
+      openItemDetailModal(item, loadInventory());
+    });
 
-      modal.addEventListener('click', (ev) => {
-        if (ev.target === modal || ev.target.closest('button')) {
-          document.body.removeChild(modal);
-        }
-      });
+    card.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter' && event.key !== ' ') {
+        return;
+      }
+
+      event.preventDefault();
+      const item = cachedItems.find(entry => entry.name === card.dataset.item);
+      if (!item) {
+        return;
+      }
+
+      openItemDetailModal(item, loadInventory());
     });
   });
 }
