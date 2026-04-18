@@ -1,5 +1,5 @@
 // Service worker for offline caching
-const CACHE_NAME = 'maladum-crafting-cache-v4'; // Updated cache name
+const CACHE_NAME = 'maladum-crafting-cache-v6';
 const PRECACHE_ASSETS = [
   './', // Alias for index.html
   'index.html',
@@ -8,11 +8,13 @@ const PRECACHE_ASSETS = [
   'theme.css', // Added
   'materials.json',
   'items.json',
+  'item-metadata.json',
   // JS files - ensure this list is exhaustive
   'js/app.js',
   'js/crafting.js',
   'js/favourites.js',
   'js/inventory.js',
+  'js/itemMetadata.js',
   'js/items.js',
   'js/materials.js',
   'js/pwa.js',
@@ -77,7 +79,7 @@ self.addEventListener('fetch', event => {
 
   const url = event.request.url;
 
-  if (url.endsWith('materials.json') || url.endsWith('items.json')) {
+  if (url.endsWith('materials.json') || url.endsWith('items.json') || url.endsWith('item-metadata.json')) {
     // Network-first strategy for JSON data to ensure latest updates
     event.respondWith(
       fetch(event.request)

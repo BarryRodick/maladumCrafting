@@ -9,7 +9,8 @@ import { debounce } from './utils.js';
 let cachedMaterials = [];
 let cachedItems = [];
 let cachedVersion = '';
-let currentView = 'craftable';
+let cachedItemMetadata = { glossary: {}, items: {} };
+let currentView = null;
 let currentFilters = {
   type: 'all',
   expansion: 'all',
@@ -21,7 +22,7 @@ let searchQuery = '';
 let shellControlsBound = false;
 const debouncedSearch = debounce((value) => {
   searchQuery = value;
-  setCurrentView(currentView);
+  refreshCurrentItemsView();
 }, 300);
 
 const rarityOrder = { Common: 1, Uncommon: 2, Rare: 3 };
@@ -119,6 +120,82 @@ function getMaterialMeta(symbol) {
   return cachedMaterials.find(material => material.symbol === symbol) || null;
 }
 
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function setBottomNavTab(tab) {
+  document.querySelectorAll('.bottom-nav-item').forEach(item => {
+    item.classList.toggle('active', item.dataset.tab === tab);
+  });
+}
+
+function setSettingsHash() {
+  const target = `${window.location.pathname}${window.location.search}#settings`;
+  window.history.replaceState(null, '', target);
+}
+
+function clearSettingsHash() {
+  const target = `${window.location.pathname}${window.location.search}`;
+  window.history.replaceState(null, '', target);
+}
+
+function buildViewToggleMarkup({ fullWidth = false } = {}) {
+  const containerClasses = fullWidth
+    ? 'grid grid-cols-2 rounded-full border border-[#28392f] bg-[#1a2e24] p-1'
+    : 'flex items-center rounded-full border border-[#28392f] bg-[#1a2e24] p-1';
+  const buttonClasses = fullWidth
+    ? 'px-4 py-2 rounded-full text-center text-sm font-semibold transition-all'
+    : 'px-4 py-1.5 rounded-full text-sm font-semibold transition-all';
+
+  return `
+    <div class="${containerClasses}">
+      <button class="${buttonClasses} ${currentView === 'craftable' ? 'bg-primary text-[#0c1a12]' : 'text-[#9db9a8] hover:text-white'}" data-view-toggle="craftable">
+        Ready to Craft
+      </button>
+      <button class="${buttonClasses} ${currentView === 'all' ? 'bg-primary text-[#0c1a12]' : 'text-[#9db9a8] hover:text-white'}" data-view-toggle="all">
+        All Items
+      </button>
+    </div>
+  `;
+}
+
+function bindViewToggleListeners(root) {
+  root?.querySelectorAll('[data-view-toggle]').forEach((button) => {
+    button.addEventListener('click', () => {
+      setCurrentView(button.dataset.viewToggle);
+    });
+  });
+}
+
+function getItemRuleDetails(item) {
+  const itemRules = cachedItemMetadata.items?.[item.name]?.rules ?? [];
+  return itemRules
+    .map((ruleId) => {
+      const glossaryEntry = cachedItemMetadata.glossary?.[ruleId];
+      if (!glossaryEntry) {
+        return {
+          id: ruleId,
+          label: ruleId.replace(/_/g, ' '),
+          icon: '',
+          summary: 'No summary recorded for this rule yet.'
+        };
+      }
+
+      return {
+        id: ruleId,
+        label: glossaryEntry.label,
+        icon: glossaryEntry.icon,
+        summary: glossaryEntry.summary
+      };
+    });
+}
+
 function showItemArtFallback(icon) {
   if (!(icon instanceof HTMLImageElement) || icon.dataset.broken === 'true') {
     return;
@@ -146,6 +223,7 @@ function openItemDetailModal(item, inventory) {
   const buildCost = calculateBuildCost(item, inventory);
   const { missing, missingTotal, metResources, totalResources } = getMissingSummary(item, inventory);
   const iconPath = `images/tokens/${item.resources.icon}`;
+  const ruleDetails = getItemRuleDetails(item);
   const recipeRows = Object.entries(item.resources)
     .filter(([sym]) => sym !== 'icon')
     .map(([sym, qty]) => {
@@ -176,13 +254,32 @@ function openItemDetailModal(item, inventory) {
       `;
     })
     .join('');
+  const ruleRows = ruleDetails.length > 0
+    ? ruleDetails.map(({ id, label, icon, summary }) => `
+        <div class="flex items-start gap-3 rounded-2xl border border-white/5 bg-black/20 p-3">
+          <div class="flex size-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-[#112117] p-2">
+            ${icon
+              ? `<img src="${escapeHtml(icon)}" alt="${escapeHtml(label)}" class="max-h-full max-w-full object-contain" data-rule-icon="${escapeHtml(id)}">`
+              : '<span class="material-symbols-outlined text-primary">rule</span>'}
+          </div>
+          <div class="min-w-0 flex-1">
+            <p class="text-sm font-bold text-white">${escapeHtml(label)}</p>
+            <p class="mt-1 text-sm leading-relaxed text-[#d5dfd8]">${escapeHtml(summary)}</p>
+          </div>
+        </div>
+      `).join('')
+    : `
+        <div class="rounded-2xl border border-dashed border-white/10 bg-black/10 p-4 text-sm text-[#9db9a8]">
+          No special rules recorded for this item.
+        </div>
+      `;
 
   const modal = document.createElement('div');
   modal.dataset.itemDetailModal = 'true';
   modal.className = 'fixed inset-0 z-50 bg-black/80 p-4 backdrop-blur-sm md:p-8';
   modal.innerHTML = `
     <div class="mx-auto flex h-full max-w-5xl items-center justify-center">
-      <div role="dialog" aria-modal="true" aria-label="${item.name} details" class="relative max-h-[90vh] w-full overflow-hidden rounded-[28px] border border-[#2f4b3b] bg-[#0d1912] shadow-[0_30px_90px_rgba(0,0,0,0.55)]">
+      <div role="dialog" aria-modal="true" aria-label="${escapeHtml(item.name)} details" class="relative max-h-[90vh] w-full overflow-hidden rounded-[28px] border border-[#2f4b3b] bg-[#0d1912] shadow-[0_30px_90px_rgba(0,0,0,0.55)]">
         <button data-close-detail-modal class="absolute right-4 top-4 z-10 flex size-11 items-center justify-center rounded-full border border-white/10 bg-black/40 text-white transition-colors hover:border-primary/50 hover:text-primary" aria-label="Close item details">
           <span class="material-symbols-outlined">close</span>
         </button>
@@ -202,12 +299,12 @@ function openItemDetailModal(item, inventory) {
             <div class="relative overflow-hidden rounded-[24px] border border-white/10 bg-black">
               <div class="aspect-[4/3] w-full">
                 <div class="absolute inset-0 flex items-center justify-center p-6">
-                  <img src="${iconPath}" alt="${item.name}" class="item-icon max-h-full max-w-full object-contain" data-detail-item-icon="true">
+                  <img src="${iconPath}" alt="${escapeHtml(item.name)}" class="item-icon max-h-full max-w-full object-contain" data-detail-item-icon="true">
                   <div data-missing-art class="hidden absolute inset-5 rounded-[20px] border border-dashed border-amber-300/40 bg-gradient-to-br from-[#162e21] via-[#13251a] to-black/70 items-center justify-center p-4 text-center">
                     <div class="flex flex-col items-center gap-2">
                       <span class="material-symbols-outlined text-amber-300" style="font-size: 38px;">image_not_supported</span>
                       <span class="text-[11px] font-bold uppercase tracking-[0.3em] text-amber-100">Art Pending</span>
-                      <span class="text-sm font-semibold text-[#d5dfd8]">${item.name}</span>
+                      <span class="text-sm font-semibold text-[#d5dfd8]">${escapeHtml(item.name)}</span>
                     </div>
                   </div>
                 </div>
@@ -232,11 +329,11 @@ function openItemDetailModal(item, inventory) {
               <p class="mb-2 text-sm font-semibold uppercase tracking-[0.28em] text-primary">Item Details</p>
               <div class="flex flex-wrap items-start gap-3">
                 <div class="min-w-0 flex-1">
-                  <h3 class="text-3xl font-bold tracking-tight text-white">${item.name}</h3>
+                  <h3 class="text-3xl font-bold tracking-tight text-white">${escapeHtml(item.name)}</h3>
                   <div class="mt-3 flex flex-wrap gap-2">
-                    <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-white">${item.type || 'Unknown Type'}</span>
-                    ${item.size ? `<span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-white">Size ${item.size}</span>` : ''}
-                    <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-white">${item.expansion || 'Base Game'}</span>
+                    <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-white">${escapeHtml(item.type || 'Unknown Type')}</span>
+                    ${item.size ? `<span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-white">Size ${escapeHtml(item.size)}</span>` : ''}
+                    <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-white">${escapeHtml(item.expansion || 'Base Game')}</span>
                     ${item.relic > 0 ? `<span class="rounded-full border border-amber-400/40 bg-amber-500/10 px-3 py-1 text-xs font-semibold text-amber-200">Relic ${item.relic}</span>` : ''}
                   </div>
                 </div>
@@ -257,6 +354,16 @@ function openItemDetailModal(item, inventory) {
               </div>
             </div>
 
+            <div class="mb-5 rounded-[24px] border border-white/5 bg-black/20 p-4">
+              <div class="mb-3 flex items-center justify-between gap-3">
+                <h4 class="text-lg font-bold text-white">Rules &amp; Keywords</h4>
+                <span class="text-xs font-semibold uppercase tracking-[0.24em] text-[#9db9a8]">${ruleDetails.length} rule${ruleDetails.length === 1 ? '' : 's'}</span>
+              </div>
+              <div class="space-y-3">
+                ${ruleRows}
+              </div>
+            </div>
+
             <div class="grid gap-4 md:grid-cols-2">
               <div class="rounded-[24px] border border-white/5 bg-black/20 p-4">
                 <h4 class="mb-3 text-lg font-bold text-white">Status</h4>
@@ -269,7 +376,7 @@ function openItemDetailModal(item, inventory) {
               <div class="rounded-[24px] border border-white/5 bg-black/20 p-4">
                 <h4 class="mb-3 text-lg font-bold text-white">Quick Summary</h4>
                 <div class="space-y-2 text-sm text-[#d5dfd8]">
-                  <p><span class="font-semibold text-white">Expansion:</span> ${item.expansion || 'Base Game'}</p>
+                  <p><span class="font-semibold text-white">Expansion:</span> ${escapeHtml(item.expansion || 'Base Game')}</p>
                   <p><span class="font-semibold text-white">Inventory-adjusted cost:</span> ${buildCost}g</p>
                   <p><span class="font-semibold text-white">Material rarity:</span> ${rarity}</p>
                   <p><span class="font-semibold text-white">Relic requirement:</span> ${item.relic > 0 ? `${item.relic}` : 'None'}</p>
@@ -495,12 +602,7 @@ function renderMaterialsList(materials, inventory) {
       }
     }
 
-    // Refresh items view
-    if (currentView === 'all') {
-      renderAllItemsView(cachedItems, inv, loadFavourites());
-    } else {
-      renderCraftableItemsView(cachedItems, inv, loadFavourites());
-    }
+    refreshCurrentItemsView(inv, loadFavourites());
   }, { signal: materialsListController.signal });
 }
 
@@ -508,31 +610,37 @@ function renderHeaderButtons() {
   const headerNav = document.getElementById('headerNavLinks');
   if (!headerNav) return;
 
-  headerNav.innerHTML = `
-    <div class="flex items-center bg-[#1a2e24] rounded-full p-1 border border-[#28392f]">
-      <button id="craftableViewBtn" class="px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${currentView === 'craftable' ? 'bg-primary text-[#0c1a12]' : 'text-[#9db9a8] hover:text-white'}" data-view="craftable">
-        Ready to Craft
-      </button>
-      <button id="allItemsViewBtn" class="px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${currentView === 'all' ? 'bg-primary text-[#0c1a12]' : 'text-[#9db9a8] hover:text-white'}" data-view="all">
-        All Items
-      </button>
-    </div>
-  `;
+  headerNav.innerHTML = buildViewToggleMarkup();
+  bindViewToggleListeners(headerNav);
+}
 
-  // Attach event listeners
-  document.getElementById('craftableViewBtn')?.addEventListener('click', () => setCurrentView('craftable'));
-  document.getElementById('allItemsViewBtn')?.addEventListener('click', () => setCurrentView('all'));
+function renderMobileViewToggle() {
+  const mobileToggle = document.getElementById('mobileViewToggleContainer');
+  if (!mobileToggle) return;
+
+  mobileToggle.innerHTML = buildViewToggleMarkup({ fullWidth: true });
+  bindViewToggleListeners(mobileToggle);
 }
 
 function setCurrentView(view) {
-  currentView = view;
-  renderHeaderButtons(); // Re-render to update active state
+  currentView = view || 'all';
+  refreshCurrentItemsView();
+}
 
-  if (view === 'all') {
-    renderAllItemsView(cachedItems, loadInventory(), loadFavourites());
-  } else {
-    renderCraftableItemsView(cachedItems, loadInventory(), loadFavourites());
+export function refreshCurrentItemsView(inventory = loadInventory(), favourites = loadFavourites()) {
+  if (!currentView) {
+    currentView = 'all';
   }
+
+  renderHeaderButtons();
+  renderMobileViewToggle();
+
+  if (currentView === 'craftable') {
+    renderCraftableItemsView(cachedItems, inventory, favourites);
+    return;
+  }
+
+  renderAllItemsView(cachedItems, inventory, favourites);
 }
 
 function buildOptions(options, includeAll = true) {
@@ -586,7 +694,7 @@ function renderItemsControls(container) {
       const filter = chip.dataset.filter;
       const value = chip.dataset.value;
       currentFilters[filter] = value;
-      setCurrentView(currentView);
+      refreshCurrentItemsView();
     });
   });
 
@@ -594,29 +702,35 @@ function renderItemsControls(container) {
   container.querySelectorAll('select[data-filter]').forEach(select => {
     select.addEventListener('change', (e) => {
       currentFilters[e.target.dataset.filter] = e.target.value;
-      setCurrentView(currentView);
+      refreshCurrentItemsView();
     });
   });
 }
 
-export function renderHome(materials, items, version = '') {
+export function renderHome(materials, items, version = '', itemMetadata = null) {
   cachedMaterials = materials;
   cachedItems = items;
-  cachedVersion = version;
-  currentView = 'all';
+  cachedVersion = version || cachedVersion;
+  if (itemMetadata) {
+    cachedItemMetadata = itemMetadata;
+  }
+  if (!currentView) {
+    currentView = 'all';
+  }
 
   const inventory = loadInventory();
   const favourites = loadFavourites();
 
+  clearSettingsHash();
+  setBottomNavTab('items');
+
   // Update version in sidebar
   const versionEl = document.getElementById('sidebarVersion');
-  if (versionEl) versionEl.textContent = version;
+  if (versionEl) versionEl.textContent = cachedVersion;
 
   // Render materials list in sidebar
   renderMaterialsList(cachedMaterials, inventory);
 
-  // Render header buttons
-  renderHeaderButtons();
   bindPersistentShellControls();
 
   const searchInput = document.getElementById('searchInput');
@@ -631,9 +745,10 @@ export function renderHome(materials, items, version = '') {
       <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
           <p class="text-primary text-sm font-semibold uppercase tracking-widest mb-1">Crafting Companion</p>
-          <h2 id="viewTitle" class="text-3xl md:text-4xl font-bold text-white tracking-tight">All Items</h2>
+          <h2 id="viewTitle" class="text-3xl md:text-4xl font-bold text-white tracking-tight">${currentView === 'craftable' ? 'Ready to Craft' : 'All Items'}</h2>
         </div>
       </div>
+      <div id="mobileViewToggleContainer" class="sm:hidden"></div>
       <div id="filtersContainer"></div>
     </div>
     <div id="itemsDisplayGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
@@ -644,8 +759,7 @@ export function renderHome(materials, items, version = '') {
   const filtersContainer = document.getElementById('filtersContainer');
   renderItemsControls(filtersContainer);
 
-  // Render items
-  renderAllItemsView(cachedItems, inventory, favourites);
+  refreshCurrentItemsView(inventory, favourites);
 }
 
 export function renderMaterialsGrid(materials, inventory) {
@@ -738,11 +852,7 @@ function attachCardEventListeners(container, viewContext) {
       e.stopPropagation();
       const name = btn.dataset.fav;
       toggleFavourite(name);
-      if (viewContext === 'all') {
-        renderAllItemsView(cachedItems, loadInventory(), loadFavourites());
-      } else {
-        renderCraftableItemsView(cachedItems, loadInventory(), loadFavourites());
-      }
+      refreshCurrentItemsView(loadInventory(), loadFavourites());
     });
   });
 
@@ -775,6 +885,9 @@ function attachCardEventListeners(container, viewContext) {
 export function renderSettings() {
   const app = document.getElementById('app');
   const settings = loadSettings();
+
+  setSettingsHash();
+  setBottomNavTab('settings');
 
   app.innerHTML = `
     <div class="max-w-md mx-auto">
@@ -816,6 +929,7 @@ export function renderSettings() {
   `;
 
   document.getElementById('backBtn')?.addEventListener('click', () => {
+    clearSettingsHash();
     renderHome(cachedMaterials, cachedItems, cachedVersion);
   });
 
@@ -830,6 +944,7 @@ export function renderSettings() {
     if (confirm('Are you sure you want to clear all inventory? This cannot be undone.')) {
       clearInventory();
       alert('Inventory cleared.');
+      clearSettingsHash();
       renderHome(cachedMaterials, cachedItems, cachedVersion);
     }
   });

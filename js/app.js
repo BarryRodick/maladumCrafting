@@ -1,7 +1,8 @@
 // Main app entry point
 import { loadMaterials } from './materials.js';
 import { loadItems } from './items.js';
-import { renderHome } from './ui/components.js';
+import { loadItemMetadata } from './itemMetadata.js';
+import { renderHome, renderSettings } from './ui/components.js';
 import { initializeFavourites } from './favourites.js';
 import { setupTheme } from './ui/theme.js';
 import { applyRippleEffect } from './ui/effects.js'; // Import ripple effect
@@ -14,11 +15,17 @@ window.addEventListener('DOMContentLoaded', async () => {
   initializeFavourites();
   setupTheme();
   applyRippleEffect(); // Initialize ripple effect listeners globally
+  const openSettingsOnLoad = window.location.hash === '#settings';
 
-  const [materials, items] = await Promise.all([
+  const [materials, items, itemMetadata] = await Promise.all([
     loadMaterials(),
-    loadItems()
+    loadItems(),
+    loadItemMetadata()
   ]);
-  renderHome(materials, items, APP_VERSION); // This will render buttons that will now get the ripple
-  initMobileNav(materials, items); // Initialize mobile bottom navigation
+  renderHome(materials, items, APP_VERSION, itemMetadata); // This will render buttons that will now get the ripple
+  initMobileNav(materials, items, APP_VERSION); // Initialize mobile bottom navigation
+
+  if (openSettingsOnLoad) {
+    renderSettings();
+  }
 });

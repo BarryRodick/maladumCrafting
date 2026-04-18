@@ -1,5 +1,6 @@
 import { setupTheme } from './ui/theme.js';
 import { debounce } from './ui/utils.js';
+import './pwa.js';
 
 let allTokens = [];
 let searchQuery = '';

@@ -1,0 +1,828 @@
+{
+  "glossary": {
+    "2_actions": {
+      "label": "Two Actions",
+      "icon": "images/icons/2_actions.png",
+      "summary": "Using this item or attack costs 2 actions."
+    },
+    "ammunition": {
+      "label": "Ammunition",
+      "icon": "images/icons/ammo_arrow.png",
+      "summary": "On a blue blunder, discard matching ammo from inventory or the weapon cannot be used."
+    },
+    "armour": {
+      "label": "Armour",
+      "icon": "images/icons/armour.png",
+      "summary": "A physical armour value will reduce the number of hits against the wearer by the value shown. It will also limit their ability to cast spells."
+    },
+    "balanced": {
+      "label": "Balanced",
+      "icon": "images/icons/balanced.png",
+      "summary": "This weapon rolls +1 dice when thrown."
+    },
+    "blast": {
+      "label": "Blast",
+      "icon": "images/icons/blast.png",
+      "summary": "This item has a blast effect. Blast weapons affect not only the target, but also everyone in the surrounding squares."
+    },
+    "bludgeoning": {
+      "label": "Bludgeoning",
+      "icon": "images/icons/bludgeoning.png",
+      "summary": "If this attack rolls a critical hit, the target is Fatigued, even if no damage was caused. The target suffers one additional Fatigued counter for each damage caused."
+    },
+    "burning": {
+      "label": "Burning",
+      "icon": "images/icons/burning.png",
+      "summary": "If this attack rolls a critical hit, the target is Burning, even if no damage was caused. Equipment with this icon is considered a source of fire."
+    },
+    "channel": {
+      "label": "Channel",
+      "icon": "images/icons/channel.png",
+      "summary": "This icon will be seen alongside other statistics or abilities. At least one Magic peg must be spent to use the statistic/activate the ability."
+    },
+    "cleave": {
+      "label": "Cleave",
+      "icon": "images/icons/cleave.png",
+      "summary": "If a melee attack with this weapon defeats an enemy, you may resolve the same attack against another eligible enemy, removing one hit from the roll."
+    },
+    "cumbersome": {
+      "label": "Cumbersome",
+      "icon": "images/icons/cumbersome.png",
+      "summary": "If an attack with this weapon rolls any blunders and is not broken, turn this token 180 degrees. It cannot be used in this position."
+    },
+    "defensive_re_roll": {
+      "label": "Defensive Re-roll",
+      "icon": "images/icons/defensive_re_roll.png",
+      "summary": "The character may force a single die to be re-rolled from any attack made against them, unless the attack ignores physical armour. Critical hits cannot be re-rolled."
+    },
+    "discard": {
+      "label": "Discard",
+      "icon": "images/icons/discard.png",
+      "summary": "Discard this item after use."
+    },
+    "effortless": {
+      "label": "Effortless",
+      "icon": "images/icons/effortless.png",
+      "summary": "Use this as an effortless action."
+    },
+    "entangling": {
+      "label": "Entangled",
+      "icon": "images/icons/entangling.png",
+      "summary": "If this attack causes one or more hits, the target is Fatigued. On a critical hit, the target is knocked prone even if no damage is dealt."
+    },
+    "first_strike": {
+      "label": "First Strike",
+      "icon": "images/icons/first_strike.png",
+      "summary": "When this character enters within melee range of an enemy (including when placed onto the gaming area or when a door opens), it gets an immediate free Melee Attack action."
+    },
+    "forceful_melee": {
+      "label": "Forceful Melee",
+      "icon": "images/icons/forceful_melee.png",
+      "summary": "If your character has an unarmed combat icon on their board or in their armour slot you may use that, rolling dice equal to the number inside."
+    },
+    "hawkeye": {
+      "label": "Hawkeye",
+      "icon": "images/icons/hawkeye.png",
+      "summary": "This attack ignores partial cover and can fire at engaged characters at any range without randomising the target."
+    },
+    "hit_and_run": {
+      "label": "Hit and Run",
+      "icon": "images/icons/hit_and_run.png",
+      "summary": "After making a melee attack, if this character is still engaged it will make a free Mode directly away from the defender, ignoring attacks of opportunity, if there is space to do so."
+    },
+    "immunity": {
+      "label": "Immunity",
+      "icon": "images/icons/immunity.png",
+      "summary": "This icon will be seen alongside other abilities and statuses. This character does not suffer any counters or effects from the ability shown."
+    },
+    "immunity_bludgeoning": {
+      "label": "Immunity: Bludgeoning",
+      "icon": "images/icons/bludgeoning_immunity.png",
+      "summary": "Ignore Bludgeoning when this immunity applies."
+    },
+    "immunity_poison": {
+      "label": "Immunity: Poison",
+      "icon": "images/icons/immunity.png",
+      "summary": "Ignore Poison and its related effects."
+    },
+    "immunity_sharp": {
+      "label": "Immunity: Sharp",
+      "icon": "images/icons/immunity.png",
+      "summary": "Ignore Sharp when this immunity applies."
+    },
+    "indestructible": {
+      "label": "Indestructible",
+      "icon": "images/icons/indestructible.png",
+      "summary": "This item ignores any rule that would cause it to break. If you need to determine a random item to be broken, choose another if possible."
+    },
+    "lasting": {
+      "label": "Lasting Effect",
+      "icon": "images/icons/lasting.png",
+      "summary": "Effects granted by this item last until the end of the round. Rotate the token 180 degrees as a reminder."
+    },
+    "light": {
+      "label": "Light",
+      "icon": "images/icons/light.png",
+      "summary": "Treat this item as a light counter. It will move with any character carrying it, affecting the area in short range as usual."
+    },
+    "loud": {
+      "label": "Loud",
+      "icon": "images/icons/loud.png",
+      "summary": "Increase the Dread by 1 when this item is used."
+    },
+    "magical_armour_1": {
+      "label": "Magical Armour +1",
+      "icon": "images/icons/magical_armour.png",
+      "summary": "Spend an action and up to 1 Magic peg to raise Warded by the pegs spent until the item is readied again."
+    },
+    "malacyte_regeneration_1": {
+      "label": "Magic Regeneration",
+      "icon": "images/icons/regen_magic.png",
+      "summary": "Restore 1 Magic peg in the Assessment Phase."
+    },
+    "melee": {
+      "label": "Melee",
+      "icon": "images/icons/melee.png",
+      "summary": "If your character has an unarmed combat icon on their board or in their armour slot you may use that, rolling dice equal to the number inside."
+    },
+    "parry": {
+      "label": "Parry",
+      "icon": "images/icons/parry.png",
+      "summary": "When the use of this item is the target of a melee attack, you may roll a combat die. Each hit scored will negate one hit from the enemy's attack as if it were physical armour."
+    },
+    "piercing": {
+      "label": "Piercing",
+      "icon": "images/icons/piercing.png",
+      "summary": "Physical armour cannot negate hits from this weapon."
+    },
+    "plunderer": {
+      "label": "Plunderer",
+      "icon": "images/icons/plunderer.png",
+      "summary": "If this attack causes damage, a random item from the defending character's inventory is scattered. If the attack also scored a critical hit the attacker may take take the item instead."
+    },
+    "poison": {
+      "label": "Poison",
+      "icon": "images/icons/poison.png",
+      "summary": "If this weapon rolls a critical hit, the target is Poisoned, even if no damage was caused."
+    },
+    "quickstrike": {
+      "label": "Quickstrike",
+      "icon": "images/icons/quickstrike.png",
+      "summary": "If this weapon rolls a critical hit during a melee attack, you may Dash or make another attack (with this or another weapon) for free immediately after the initial attack is resolved."
+    },
+    "re_roll": {
+      "label": "Re-roll",
+      "icon": "images/icons/re_roll.png",
+      "summary": "If on a weapon, the character may re-roll a single combat die each time the weapon is used to attack or parry."
+    },
+    "reach": {
+      "label": "Reach",
+      "icon": "images/icons/reach.png",
+      "summary": "This weapon may be used to make a Melee Attack against an enemy up to X squares away, including diagonally."
+    },
+    "reactive": {
+      "label": "Reactive",
+      "icon": "images/icons/reactive.png",
+      "summary": "Once per turn, if another character start their turn or enters a square withing range of this character's attack (intentionally or otherwise), this character immediately make a free attack against them."
+    },
+    "relentless": {
+      "label": "Relentless",
+      "icon": "images/icons/relentless.png",
+      "summary": "A character attacked multiple times in a single round by characters with this rule will have their physical armour reduced by 1 for each attack after the first, to minimum of zero."
+    },
+    "restore_action": {
+      "label": "Restore Action",
+      "icon": "images/icons/restore_action.png",
+      "summary": "Gain the shown extra actions this turn."
+    },
+    "restore_health": {
+      "label": "Restore Health",
+      "icon": "images/icons/restore_health.png",
+      "summary": "Restore the shown Health pegs to yourself or an adjacent Adventurer."
+    },
+    "restore_magic": {
+      "label": "Restore Magic",
+      "icon": "images/icons/restore_magic.png",
+      "summary": "Restore the shown Magic pegs to yourself or an adjacent Adventurer."
+    },
+    "restore_skill": {
+      "label": "Restore Skill",
+      "icon": "images/icons/restore_skill.png",
+      "summary": "Restore the shown Skill pegs to yourself or an adjacent Adventurer."
+    },
+    "retaliation": {
+      "label": "Retaliation",
+      "icon": "images/icons/retaliation.png",
+      "summary": "If this item/character blocks at least one hit from a melee attack that rolls any blunders, resolve an attack against the attacker with one die for each blunder (skull) rolled."
+    },
+    "scramble": {
+      "label": "Scramble",
+      "icon": "images/icons/scramble.png",
+      "summary": "The top number is the max height or width in square/inches of objects/characters that the character can move up or over as part of a normal Move action - they do not need to Climb them or spend any actions, just like a regular character climbing stairs."
+    },
+    "sharp": {
+      "label": "Sharp",
+      "icon": "images/icons/sharp.png",
+      "summary": "If this weapon rolls a critical hit the target is Wounded, even if no damage was caused."
+    },
+    "shield_block": {
+      "label": "Shield Block",
+      "icon": "images/icons/shield_block.png",
+      "summary": "This character may spend an action to raise the shield, taking this token from their inventory and placing it on their miniature to gain the effects shown inside the shield icon."
+    },
+    "skill_frenzy_1": {
+      "label": "Frenzy (lvl 1)",
+      "icon": "images/icons/skill_frenzy_1.png",
+      "summary": "(1) Use before making a melee attack. Add two dice to the attack."
+    },
+    "skill_frenzy_2": {
+      "label": "Frenzy (lvl 2)",
+      "icon": "images/icons/skill_frenzy_2.png",
+      "summary": "(2) Use before making a melee attack. Add three dice to the attack."
+    },
+    "skill_frenzy_3": {
+      "label": "Frenzy (lvl 3)",
+      "icon": "images/icons/skill_frenzy_3.png",
+      "summary": "(3) Use before making a melee attack. Add four dice to the attack."
+    },
+    "skill_impervious_1": {
+      "label": "Skill: Impervious (lvl 1)",
+      "icon": "images/icons/skill_impervious_1.png",
+      "summary": "(1) Reaction: Use whenever you would suffer a status counter of any type. Discard the counter with no effect."
+    },
+    "skill_impervious_2": {
+      "label": "Skill: Impervious (lvl 2)",
+      "icon": "images/icons/skill_impervious_2.png",
+      "summary": "(2) Gain +2 Armour until the end of the round."
+    },
+    "skill_impervious_3": {
+      "label": "Skill: Impervious (lvl 3)",
+      "icon": "images/icons/skill_impervious_3.png",
+      "summary": "(3) Restore 1 Health. This may take you above your starting level as long as there is space on your dashboard."
+    },
+    "skill_natural_remedies_1": {
+      "label": "Natural Remedies (Lvl 1)",
+      "icon": "images/icons/skill_nature_1.png",
+      "summary": "This item grants Natural Remedies level 1."
+    },
+    "skill_natural_remedies_2": {
+      "label": "Natural Remedies (Lvl 2)",
+      "icon": "images/icons/skill_nature_2.png",
+      "summary": "This item grants Natural Remedies level 2."
+    },
+    "skill_persuasion_1": {
+      "label": "Skill: Persuasion (lvl 1)",
+      "icon": "images/icons/skill_persuasion_1.png",
+      "summary": "(1) Use before making a Persuade roll. Add two automatic hits to the roll."
+    },
+    "skill_persuasion_2": {
+      "label": "Skill: Persuasion (lvl 2)",
+      "icon": "images/icons/skill_persuasion_2.png",
+      "summary": "(2) Make a Persuade action against an Adventurer from another party to try to dissuade them from their mission. They suffer one Fatigued counter per unblocked hit."
+    },
+    "skill_persuasion_3": {
+      "label": "Skill: Persuasion (lvl 3)",
+      "icon": "images/icons/skill_persuasion_3.png",
+      "summary": "(3) Make a Persuade action against any character, adding three automatic hits. The normal options apply, except that Adventurers from other parties will not join you."
+    },
+    "skill_reflexes_1": {
+      "label": "Skill: Reflexes (lvl 1)",
+      "icon": "images/icons/skill_reflexes_1.png",
+      "summary": "(1) Reaction: Use when an enemy engages you. In any order, make a Move action, ignoring attacks of opportunity, and an Attack action."
+    },
+    "spell_cocoon": {
+      "label": "Cocoon (Elemental Magic)",
+      "icon": "images/icons/spell_cocoon.png",
+      "summary": "Gain the benefits of a Rest action, regardless of enemies in the room or in short range and LoS (enemies engaged with a Resting character will still prevent it as normal)."
+    },
+    "spell_rearrange_cells": {
+      "label": "Rearrange cells (Proximate Magic)",
+      "icon": "images/icons/spell_rearrange_cells.png",
+      "summary": "Temporarily mutate your body into that of a beast."
+    },
+    "terrifying": {
+      "label": "Terrifying",
+      "icon": "images/icons/terrifying.png",
+      "summary": "If this character rolls a critical hit when attacking, the target is Terrified. If an enemy character ends their turn within short range of this character, roll the Magic Die."
+    },
+    "unreliable": {
+      "label": "Unreliable",
+      "icon": "images/icons/unreliable.png",
+      "summary": "If an attack with this weapon rolls a single (skull), it has jammed. Turn the token 180 degrees."
+    },
+    "vampiric": {
+      "label": "Vampiric (peg type)",
+      "icon": "images/icons/vampiric.png",
+      "summary": "If this attack rolls a critical hit the target loses a peg of the type shown if possible, in addition to any damage caused."
+    },
+    "vicious": {
+      "label": "Vicious",
+      "icon": "images/icons/vicious.png",
+      "summary": "Regular hits on the blue die on attacks made with this weapon are critical hits."
+    },
+    "warded": {
+      "label": "Warded",
+      "icon": "images/icons/magical_armour.png",
+      "summary": "Gain Warded while this item is active."
+    },
+    "x_dice": {
+      "label": "+X Dice",
+      "icon": "images/icons/x_dice.png",
+      "summary": "Spend Magic pegs to add that many extra attack dice when this effect is used."
+    }
+  },
+  "items": {
+    "Arrow - Entangle": {
+      "rules": [
+        "ammunition",
+        "entangling"
+      ],
+      "sourceToken": "Net Arrows"
+    },
+    "Arrow - Viscous/Sharp": {
+      "rules": [
+        "ammunition",
+        "sharp",
+        "vicious"
+      ],
+      "sourceToken": "Barbed Arrows"
+    },
+    "Arrow - Poison/Sharp": {
+      "rules": [
+        "ammunition",
+        "sharp",
+        "poison"
+      ],
+      "sourceToken": "Poison Arrows"
+    },
+    "Magic Potion": {
+      "rules": [
+        "effortless",
+        "discard",
+        "restore_magic"
+      ],
+      "sourceToken": "Manual override"
+    },
+    "Health Potion": {
+      "rules": [
+        "effortless",
+        "discard",
+        "restore_health"
+      ],
+      "sourceToken": "Manual override"
+    },
+    "Arrow - Hawkeye/Sharp": {
+      "rules": [
+        "ammunition",
+        "sharp",
+        "hawkeye"
+      ],
+      "sourceToken": "Homing Arrows"
+    },
+    "Skill Potion": {
+      "rules": [
+        "effortless",
+        "discard",
+        "restore_skill"
+      ],
+      "sourceToken": "Manual override"
+    },
+    "Ethereal Edge": {
+      "rules": []
+    },
+    "Shilielagh": {
+      "rules": [
+        "forceful_melee",
+        "first_strike",
+        "bludgeoning"
+      ],
+      "sourceToken": "Shillelagh"
+    },
+    "Mighty Brew": {
+      "rules": [
+        "x_dice",
+        "lasting",
+        "effortless",
+        "discard"
+      ],
+      "sourceToken": "Mighty Brew"
+    },
+    "Cordial of Cognisance": {
+      "rules": [
+        "lasting",
+        "effortless",
+        "discard"
+      ],
+      "sourceToken": "Cordial of Cognisance"
+    },
+    "Bullet - Burning": {
+      "rules": [
+        "blast",
+        "ammunition",
+        "burning"
+      ],
+      "sourceToken": "Explosive Bullets"
+    },
+    "Honed Leather Armour": {
+      "rules": [
+        "defensive_re_roll",
+        "skill_reflexes_1"
+      ],
+      "sourceToken": "Honed Leather Armour"
+    },
+    "Hat of Cunning": {
+      "rules": [
+        "defensive_re_roll"
+      ],
+      "sourceToken": "Hat of Cunning"
+    },
+    "Action Potion": {
+      "rules": [
+        "effortless",
+        "discard",
+        "restore_action"
+      ],
+      "sourceToken": "Manual override"
+    },
+    "Dreamers Draught": {
+      "rules": []
+    },
+    "Horned War Axe": {
+      "rules": [
+        "melee",
+        "sharp",
+        "vicious",
+        "indestructible"
+      ],
+      "sourceToken": "Honed War Axe"
+    },
+    "Spiked Armour": {
+      "rules": [
+        "melee",
+        "forceful_melee",
+        "retaliation"
+      ],
+      "sourceToken": "Spiked Armour"
+    },
+    "Honed Long Sword": {
+      "rules": [
+        "melee",
+        "sharp",
+        "parry",
+        "indestructible"
+      ],
+      "sourceToken": "Honed Long Sword"
+    },
+    "Eld Short Bow": {
+      "rules": [
+        "ammunition",
+        "channel",
+        "x_dice"
+      ],
+      "sourceToken": "Eld Short Bow"
+    },
+    "Potion of Finesse": {
+      "rules": [
+        "vicious",
+        "lasting",
+        "effortless",
+        "discard"
+      ],
+      "sourceToken": "Potion of Finesse"
+    },
+    "Starstrike Flail": {
+      "rules": [
+        "melee",
+        "entangling",
+        "sharp",
+        "vicious",
+        "reach"
+      ],
+      "sourceToken": "Starstrike Flail"
+    },
+    "Herbalist's Cloak": {
+      "rules": [
+        "immunity_poison",
+        "skill_natural_remedies_1",
+        "skill_natural_remedies_2"
+      ],
+      "sourceToken": "Herbalist's Cloak"
+    },
+    "Mastercrafted Bow": {
+      "rules": [
+        "re_roll",
+        "ammunition"
+      ],
+      "sourceToken": "Mastercrafted Bow"
+    },
+    "Curative Cuirass": {
+      "rules": [
+        "2_actions",
+        "restore_health"
+      ],
+      "sourceToken": "Curative Cuirass"
+    },
+    "Wardweaver's Nip": {
+      "rules": [
+        "warded",
+        "lasting",
+        "effortless",
+        "discard"
+      ],
+      "sourceToken": "Wardweaver's Nip"
+    },
+    "Crafted Great Axe": {
+      "rules": [
+        "sharp",
+        "cumbersome",
+        "cleave",
+        "forceful_melee"
+      ],
+      "sourceToken": "Crafted Great Axe"
+    },
+    "Crafted Great Sword": {
+      "rules": [
+        "forceful_melee",
+        "sharp",
+        "parry",
+        "reach",
+        "cleave"
+      ],
+      "sourceToken": "Crafted Great Sword"
+    },
+    "Viperfang": {
+      "rules": [
+        "melee",
+        "vicious",
+        "poison"
+      ],
+      "sourceToken": "Viperfang"
+    },
+    "Disarming Staff": {
+      "rules": [
+        "melee",
+        "reach",
+        "plunderer",
+        "indestructible"
+      ],
+      "sourceToken": "Disarming Staff"
+    },
+    "Destiny's Tincture": {
+      "rules": [
+        "re_roll",
+        "lasting",
+        "effortless",
+        "discard"
+      ],
+      "sourceToken": "Destiny's Tincture"
+    },
+    "Keltic Falchion": {
+      "rules": [
+        "melee",
+        "quickstrike",
+        "cleave",
+        "indestructible"
+      ],
+      "sourceToken": "Keltic Falchion"
+    },
+    "Blitz-Hammer": {
+      "rules": [
+        "melee",
+        "quickstrike",
+        "relentless"
+      ],
+      "sourceToken": "Blitz Hammer"
+    },
+    "Makeshift Wings": {
+      "rules": [
+        "scramble"
+      ],
+      "sourceToken": "Makeshift Wings"
+    },
+    "Sentient Scimitar": {
+      "rules": [
+        "forceful_melee",
+        "sharp",
+        "channel",
+        "reactive"
+      ],
+      "sourceToken": "Sentient Scimitar"
+    },
+    "Warrior Totem": {
+      "rules": [
+        "skill_frenzy_1",
+        "skill_frenzy_2"
+      ],
+      "sourceToken": "Warrior Totem"
+    },
+    "Sacrificium": {
+      "rules": []
+    },
+    "Keltmail Armour": {
+      "rules": [
+        "indestructible",
+        "immunity_sharp",
+        "immunity_bludgeoning"
+      ],
+      "sourceToken": "Keltmail Armour"
+    },
+    "Arcane Steel": {
+      "rules": [
+        "sharp",
+        "indestructible",
+        "channel",
+        "x_dice"
+      ],
+      "sourceToken": "Arcane Steel"
+    },
+    "Crafted Breastplate Amour": {
+      "rules": [],
+      "sourceToken": "Crafted Breastplate Armour"
+    },
+    "Bewitched Blade": {
+      "rules": [
+        "sharp",
+        "melee",
+        "parry",
+        "channel",
+        "x_dice"
+      ],
+      "sourceToken": "Bewitched Blade"
+    },
+    "Calamitous Caber": {
+      "rules": [
+        "melee",
+        "bludgeoning",
+        "reach",
+        "balanced"
+      ],
+      "sourceToken": "Calamitous Caber"
+    },
+    "Reaper's Riposte": {
+      "rules": [
+        "melee",
+        "parry",
+        "re_roll",
+        "retaliation"
+      ],
+      "sourceToken": "Reaper's Riposte"
+    },
+    "Bladed Shield": {
+      "rules": [
+        "melee",
+        "indestructible",
+        "sharp",
+        "shield_block",
+        "armour"
+      ],
+      "sourceToken": "Bladed Shield"
+    },
+    "Spelleater": {
+      "rules": [
+        "melee",
+        "vicious",
+        "vampiric"
+      ],
+      "sourceToken": "Spelleater"
+    },
+    "Necrotic Censor": {
+      "rules": []
+    },
+    "Liberator Of Souls": {
+      "rules": []
+    },
+    "Mechanical Musket": {
+      "rules": [
+        "unreliable",
+        "loud",
+        "ammunition"
+      ],
+      "sourceToken": "Mechanical Musket"
+    },
+    "Blade of Momentum": {
+      "rules": [
+        "melee",
+        "sharp",
+        "first_strike",
+        "channel",
+        "hit_and_run"
+      ],
+      "sourceToken": "Blade of Momentum"
+    },
+    "Adamantine Elixir": {
+      "rules": [
+        "immunity",
+        "armour",
+        "lasting",
+        "effortless",
+        "discard"
+      ],
+      "sourceToken": "Adamantine Elixir"
+    },
+    "Vampiric Blade": {
+      "rules": []
+    },
+    "Robes Of Invulnerability": {
+      "rules": [
+        "skill_impervious_1",
+        "skill_impervious_2",
+        "skill_impervious_3"
+      ],
+      "sourceToken": "Robes of Invulnerability"
+    },
+    "Cloak Of Cloning": {
+      "rules": []
+    },
+    "Anyssal Trophy": {
+      "rules": []
+    },
+    "Protection Orb": {
+      "rules": [
+        "spell_cocoon"
+      ],
+      "sourceToken": "Protection Orb"
+    },
+    "Daemon Mantle": {
+      "rules": [
+        "spell_rearrange_cells"
+      ],
+      "sourceToken": "Daemon Mantle"
+    },
+    "Hellfire Blade": {
+      "rules": [
+        "melee",
+        "terrifying",
+        "vicious",
+        "burning",
+        "indestructible"
+      ],
+      "sourceToken": "Hellfire Blade"
+    },
+    "Sword Of Tephysus": {
+      "rules": [
+        "melee",
+        "sharp",
+        "reach",
+        "cleave",
+        "channel",
+        "piercing",
+        "light",
+        "indestructible"
+      ],
+      "sourceToken": "Sword of Tephysus"
+    },
+    "Soul Siphon": {
+      "rules": [
+        "melee",
+        "vampiric",
+        "vicious"
+      ],
+      "sourceToken": "Soul Siphon"
+    },
+    "Astral Arbiter": {
+      "rules": []
+    },
+    "Natures Fury": {
+      "rules": [
+        "melee",
+        "bludgeoning",
+        "vicious",
+        "skill_frenzy_1",
+        "skill_frenzy_2",
+        "skill_frenzy_3"
+      ],
+      "sourceToken": "Nature's Fury"
+    },
+    "Sceptre of Domion": {
+      "rules": [
+        "skill_persuasion_1",
+        "skill_persuasion_2",
+        "skill_persuasion_3",
+        "2_actions"
+      ],
+      "sourceToken": "Sceptre of Dominion"
+    },
+    "Refined Robes": {
+      "rules": [
+        "magical_armour_1",
+        "malacyte_regeneration_1"
+      ],
+      "sourceToken": "Refined Robes"
+    },
+    "Acendant Blades": {
+      "rules": []
+    },
+    "Uncanny Oculus": {
+      "rules": []
+    },
+    "Light In The Darkness": {
+      "rules": []
+    },
+    "Grail of the Gods": {
+      "rules": [
+        "restore_health"
+      ],
+      "sourceToken": "Grail of the Gods"
+    }
+  }
+}

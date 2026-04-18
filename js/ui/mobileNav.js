@@ -1,10 +1,11 @@
 // Mobile navigation and draggable bottom sheet controller
 import { loadInventory, updateInventory } from '../inventory.js';
 import { loadFavourites } from '../favourites.js';
-import { renderSettings, renderAllItemsView } from './components.js';
+import { renderHome, renderSettings, refreshCurrentItemsView } from './components.js';
 
 let cachedMaterials = [];
 let cachedItems = [];
+let cachedVersion = '';
 let currentPanelState = 'peek'; // 'peek', 'half', 'full'
 
 // Rarity colors for material display
@@ -21,9 +22,10 @@ let startY = 0;
 let startTranslateY = 0;
 let panelHeight = 0;
 
-export function initMobileNav(materials, items) {
+export function initMobileNav(materials, items, version = '') {
     cachedMaterials = materials;
     cachedItems = items;
+    cachedVersion = version;
 
     // Only initialize on mobile
     if (window.innerWidth >= 768) return;
@@ -42,10 +44,7 @@ function setupBottomNavListeners() {
     navItems?.addEventListener('click', () => {
         setActiveNavItem('items');
         setPanelState('peek');
-        // Re-render items view
-        const inventory = loadInventory();
-        const favourites = loadFavourites();
-        renderAllItemsView(cachedItems, inventory, favourites);
+        renderHome(cachedMaterials, cachedItems, cachedVersion);
     });
 
     navInventory?.addEventListener('click', () => {
@@ -277,7 +276,7 @@ function handleInventoryClick(e) {
 
     // Refresh items view in background
     const favourites = loadFavourites();
-    renderAllItemsView(cachedItems, inv, favourites);
+    refreshCurrentItemsView(inv, favourites);
 }
 
 function updateMaterialDisplay(sym, count) {
